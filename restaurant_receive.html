@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <title>查看訂單-店名</title>
+</head>
+
+<body>
+    <nav>
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo">查看訂單</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li>
+                    <a href="sass.html">Sass</a>
+                </li>
+                <li>
+                    <a href="badges.html">Components</a>
+                </li>
+                <li>
+                    <a href="collapsible.html">JavaScript</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
+    <script>
+        var config = {
+            apiKey: "AIzaSyDd2rFHwPXyIkq0iRSinBBfzg31NYJLapE",
+            authDomain: "nchumis2017-5566.firebaseapp.com",
+            databaseURL: "https://nchumis2017-5566.firebaseio.com",
+            projectId: "nchumis2017-5566",
+            storageBucket: "nchumis2017-5566.appspot.com",
+            messagingSenderId: "501160127423"
+        };
+        firebase.initializeApp(config);
+        var database = firebase.database();
+    </script>
+
+    <div class="row">
+        <ul id="list_orders" class="collapsible popout" data-collapsible="accordion"></ul>
+    </div>
+    <script>
+        var ordersRef = database.ref("Orders/");
+        ordersRef.on('value', function(snapshot){
+            $('#list_orders').empty();                
+            snapshot.forEach(function(childSnap){
+                var str ="";
+                str += '<li><div class="collapsible-header"><i class="material-icons">local_dining</i>'+ childSnap.key+'</div>';
+                var obj = childSnap.child("OrderDetail").val();
+                str += '<div class="collapsible-body"><ul>';
+                $.each(obj, function(key, value){
+                    var num = 0;
+                    $.each(value.OrderPeople, function(person){
+                        num += Number(value.OrderPeople[person].number);
+                    });
+                    str += '<li>'+key + ":"+ num+'</li>';
+                });
+                str += '</ul></div></li>';
+                $('#list_orders').append(str);
+            });
+        });
+    </script>
+</body>
+
+</html>

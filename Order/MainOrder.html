@@ -33,44 +33,93 @@ body{
   <!-- navbar -->
 
 
+  <div class="card">
+    <!-- <div class="card-title" style="font-weight:bold;">
+      訂單資料
+    </div> -->
+    <div class="card-tabs">
+      <ul class="tabs tabs-fixed-width">
+        <li class="tab"><a class="active" href="#test4" id="a_tab1">基本資料</a></li>
+        <li class="tab"><a href="#test5" id="a_tab2">訂購餐點</a></li>
+        <li class="tab"><a href="#test6" id="a_tab3">查看他人</a></li>
+      </ul>
+    </div>
+    <div class="card-content grey lighten-4">
+
+
+      <div id="test4">
+
+
+
+        <div class="card" id="form1">
+
+
+          <div class="card-content">
+
+        <form class="" action="javascript:writeData()" method="post">
+
+          單號 <input type="text" id="OrderId" value="" placeholder="OrderId" disabled>
+          名字 <input type="text" id="OrderName" value="" placeholder="OrderName">
+          電話 <input type="text" id="TEL" value="" placeholder="TEL">
+          地址 <input type="text" id="Address" value="" placeholder="Address">
+          時間 <input type="text" id="OrderTime" class="timepicker value=" >
+
+
+          狀態<input type="number" id="OrderStatus" value="1" placeholder="OrderStatus">
+          <input type="submit" value="下一步" id="submit" class="btn">
+
+          <br>
 
 
 
 
-    <div class="card" id="form1">
-      <div class="card-title" style="font-weight:bold;">
-        訂單資料
+        </form>
+    </div>
+  </div>
+
+
+
       </div>
-
-      <div class="card-content">
-
-    <form class="" action="javascript:writeData()" method="post">
-
-      單號 <input type="text" id="OrderId" value="" placeholder="OrderId" disabled>
-      名字 <input type="text" id="OrderName" value="" placeholder="OrderName">
-      電話 <input type="text" id="TEL" value="" placeholder="TEL">
-      地址 <input type="text" id="Address" value="" placeholder="Address">
-      時間 <input type="text" id="OrderTime" class="timepicker value=" >
+      <div id="test5">
 
 
-      狀態<input type="number" id="OrderStatus" value="1" placeholder="OrderStatus">
-      <input type="submit" value="送出" id="submit" class="btn">
 
-      <br>
+        <div id="div_products">
+        </div>
 
-      <div id="div_products">
+
+
+
+
+
+
       </div>
+      <div id="test6">
 
 
-      <p id="message1"></p>
-    </form>
-</div>      </div>
 
-<button type="button" name="button" onclick="javascript:check()" class="btn">查看目前訂購</button>
+        <button type="button" name="button" onclick="javascript:check()" class="btn">查看目前訂購</button>
 
-<div class="card">
-<div class="card-content" id="joinPeople">
-</div></div>
+        <div class="card">
+        <div class="card-content" id="joinPeople">
+        </div></div>
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -202,7 +251,7 @@ initBento();
 
     var submit_btn = document.getElementById("submit");
     submit_btn.disabled = true;
-    submit_btn.value = "已送出";
+    submit_btn.value = "開始訂餐";
   }
 
 

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style media="screen">
+      body{
+        display: inline-block;
+      }
+    </style>
+  </head>
+
+  <script>
+
+    </script>
+  <body>
+    <div class="" id="form1">
+    <form class="" action="javascript:writeData()" method="post">
+      ..........資料
+      <br>....................名字 <input type="text" id="OrderName" value="" placeholder="OrderName">
+      <br>....................電話 <input type="text" id="TEL" value="" placeholder="TEL">
+      <br>....................地址 <input type="text" id="Address" value="" placeholder="Address">
+      <br>....................時間 <input type="datetime-local" id="OrderTime" value="" >
+      <br>
+
+      <br>
+      <hr>
+      ..........狀態<input type="number" id="OrderStatus" value="1" placeholder="OrderStatus">
+      <br>
+      <br>
+      <input type="submit" value="送出" id="submit">
+      <br>
+      單號 <input type="text" id="OrderId" value="" placeholder="OrderId" disabled>
+
+    <hr>
+    <br>
+      ..........訂單內容
+
+      <br>
+      <div id="div_products">
+        <hr>
+      </div>
+
+
+      <p id="message1"></p>
+    </form>
+</div>
+<button type="button" name="button" onclick="javascript:check()" >查看目前訂購</button>
+<div class="" id="joinPeople">
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDd2rFHwPXyIkq0iRSinBBfzg31NYJLapE",
+    authDomain: "nchumis2017-5566.firebaseapp.com",
+    databaseURL: "https://nchumis2017-5566.firebaseio.com",
+    projectId: "nchumis2017-5566",
+    storageBucket: "nchumis2017-5566.appspot.com",
+    messagingSenderId: "501160127423"
+  };
+  firebase.initializeApp(config);
+
+
+  /////////////////初始化////////////////////
+
+  var database = firebase.database();
+
+//////////////init products/////////////////////
+
+function initBento(){
+  var numBento;
+  database.ref("Products/Bento/Data/").once("value", function(snapshot) {
+    numBento = snapshot.numChildren();
+    for(var i = 1 ;i<=numBento ; i++){
+    var a = snapshot.child("Bento"+i+"/ProductName/").val();
+    var b = snapshot.child("Bento"+i+"/ProductIntro/").val();
+    var c = snapshot.child("Bento"+i+"/ProductPrice/").val();
+    var div_products = document.getElementById("div_products");
+
+    div_products.innerHTML+="品名:<span id='name"+i+"'>"+a+"</span><br>價格:<span id='price"+i+"'>"+c+" </span><br>數量<span id = 'number"+i+"'>0</span><button type='button' onclick='javascript:add_number("+i+")' >+</button><button type='button' onclick='javascript:del_number("+i+")' >-</button><br>小計:<span id='total"+i+"'>0</span><br><div id='people_in"+i+"'></div><br><hr>";
+  }
+});
+}
+
+/////////////////////
+
+
+function add_number(i){
+  var name_i = document.getElementById("name"+i).innerHTML;
+  var price_i = document.getElementById("price"+i).innerHTML;
+  var number_i = document.getElementById("number"+i);
+
+
+  ++number_i.innerHTML;
+  document.getElementById("total"+i).innerHTML=price_i*number_i.innerHTML;
+  var total_i = document.getElementById("total"+i).innerHTML;
+  var number_inner = number_i.innerHTML;
+
+  ///////count price//////
+
+  var OrderId = document.getElementById("OrderId").value;
+  var OrderName = document.getElementById("OrderName").value;
+
+  database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/"+OrderName+"/").set({
+    number : number_inner,
+    price : price_i,
+    total : total_i
+  });
+
+
+}
+function del_number(i){
+  var name_i = document.getElementById("name"+i).innerHTML;
+  var price_i = document.getElementById("price"+i).innerHTML;
+  var number_i = document.getElementById("number"+i);
+
+  if(number_i.innerHTML!=0){
+
+    --number_i.innerHTML;
+    document.getElementById("total"+i).innerHTML=price_i*number_i.innerHTML;
+    var total_i = document.getElementById("total"+i).innerHTML;
+    var number_inner = number_i.innerHTML;
+
+    ///////count price//////
+
+    var OrderId = document.getElementById("OrderId").value;
+    var OrderName = document.getElementById("OrderName").value;
+
+    database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/"+OrderName+"/").set({
+      number : number_inner,
+      price : price_i,
+      total : total_i
+    });
+
+}
+
+}
+/////////////////////////////////////////////////////
+
+
+
+
+
+  //////////////寫資料/////////////////////
+
+  var ref = firebase.database().ref("Orders/");
+  ref.once("value").then(function(snapshot) {
+      var counter = snapshot.numChildren();
+      document.getElementById("OrderId").value = ++counter;
+      document.getElementById("OrderId").value = "Order"+document.getElementById("OrderId").value
+    });
+
+
+  function writeData(){
+
+    var OrderId = document.getElementById("OrderId").value;
+    var OrderName = document.getElementById("OrderName").value;
+    var TEL = document.getElementById("TEL").value;
+    var Address = document.getElementById("Address").value;
+    var OrderTime = document.getElementById("OrderTime").value;
+    var OrderStatus = document.getElementById("OrderStatus").value;
+    database.ref("Orders/"+OrderId).set({
+
+      OrderId:OrderId,
+      OrderStatus:OrderStatus,
+      OrderInfo:{
+        OrderMainName:OrderName,
+        TEL : TEL,
+        Address : Address,
+        OrderTime : OrderTime
+      }
+    });
+
+initBento();
+
+    var submit_btn = document.getElementById("submit");
+    submit_btn.disabled = true;
+    submit_btn.value = "已送出";
+  }
+
+
+
+
+//////////////////read people orders////////////////////////
+function check(){
+var OrderId = document.getElementById("OrderId").value;
+
+database.ref("Orders/"+OrderId+"/OrderDetail/").on("value", function(snapshot) {
+
+  var DetailBentoNum = snapshot.numChildren();
+  document.getElementById("joinPeople").innerHTML="";
+  for(var i = 1 ;i<=DetailBentoNum ; i++){
+    var a = snapshot.child("Bento"+i+"/"+"OrderPeople/").val();
+    document.getElementById("joinPeople").innerHTML+="Bento"+i+":"+JSON.stringify(a)+"<br>";
+
+  }
+
+});
+}
+  /////////////////////////////////////
+
+
+
+
+</script>
+  </body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style media="screen">
+      body{
+        display: inline-block;
+      }
+    </style>
+  </head>
+
+  <script>
+
+    </script>
+  <body>
+    <div class="" id="form1">
+    <form class="" action="" method="post">
+      <br>名字 <input type="text" id="OrderName" value="" placeholder="OrderName">
+      <br>單號 <input type="text" id="OrderId" value="" placeholder="OrderXX" >
+      <br>
+      <div id="div_products">
+        <hr>
+      </div>
+
+    </form>
+
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDd2rFHwPXyIkq0iRSinBBfzg31NYJLapE",
+    authDomain: "nchumis2017-5566.firebaseapp.com",
+    databaseURL: "https://nchumis2017-5566.firebaseio.com",
+    projectId: "nchumis2017-5566",
+    storageBucket: "nchumis2017-5566.appspot.com",
+    messagingSenderId: "501160127423"
+  };
+  firebase.initializeApp(config);
+
+
+  /////////////////初始化////////////////////
+
+  var database = firebase.database();
+
+//////////////init products/////////////////////
+  var numBento;
+  database.ref("Products/Bento/Data/").once("value", function(snapshot) {
+    numBento = snapshot.numChildren();
+    for(var i = 1 ;i<=numBento ; i++){
+    var a = snapshot.child("Bento"+i+"/ProductName/").val();
+    var b = snapshot.child("Bento"+i+"/ProductIntro/").val();
+    var c = snapshot.child("Bento"+i+"/ProductPrice/").val();
+    var div_products = document.getElementById("div_products");
+
+    div_products.innerHTML+="品名:<span id='name"+i+"'>"+a+"</span><br>價格:<span id='price"+i+"'>"+c+" </span><br>數量<span id = 'number"+i+"'>0</span><button type='button' onclick='javascript:add_number("+i+")' >+</button><button type='button' onclick='javascript:del_number("+i+")' >-</button><br>小計:<span id='total"+i+"'>0</span><br><div id='people_in"+i+"'></div><br><hr>";
+  }
+});
+
+
+
+function add_number(i){
+
+
+  var name_i = document.getElementById("name"+i).innerHTML;
+  var price_i = document.getElementById("price"+i).innerHTML;
+  var number_i = document.getElementById("number"+i);
+
+
+  ++number_i.innerHTML;
+  document.getElementById("total"+i).innerHTML=price_i*number_i.innerHTML;
+  var total_i = document.getElementById("total"+i).innerHTML;
+  var number_inner = number_i.innerHTML;
+
+  ///////count price//////
+
+  var OrderId = document.getElementById("OrderId").value;
+  var OrderName = document.getElementById("OrderName").value;
+
+  database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/"+OrderName+"/").set({
+    number : number_inner,
+    price : price_i,
+    total : total_i
+  });
+
+
+
+
+  // database.ref("Orders/"+OrderId+"/OrderPeople/"+OrderName+"/"+name_i+"/").set({
+  //   number : number_inner,
+  //   price : price_i,
+  //   total : total_i
+  // });
+
+
+}
+
+
+function del_number(i){
+  var name_i = document.getElementById("name"+i).innerHTML;
+  var price_i = document.getElementById("price"+i).innerHTML;
+  var number_i = document.getElementById("number"+i);
+
+  if(number_i.innerHTML!=0){
+
+    --number_i.innerHTML;
+    document.getElementById("total"+i).innerHTML=price_i*number_i.innerHTML;
+    var total_i = document.getElementById("total"+i).innerHTML;
+    var number_inner = number_i.innerHTML;
+
+    ///////count price//////
+
+    var OrderId = document.getElementById("OrderId").value;
+    var OrderName = document.getElementById("OrderName").value;
+
+
+    database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/"+OrderName+"/").set({
+      number : number_inner,
+      price : price_i,
+      total : total_i
+    });
+
+    // database.ref("Orders/"+OrderId+"/OrderPeople/"+OrderName+"/"+name_i+"/").set({
+    //   number : number_inner,
+    //   price : price_i,
+    //   total : total_i
+    // });
+
+}
+
+}
+/////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+</script>
+  </body>
+</html>

@@ -122,24 +122,20 @@ function add_number(i){
   var OrderName = document.getElementById("OrderName").value;
 
 
-  database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/").set({
-    name : name_i,
-    people : OrderName
+  var dd = database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/");
+  dd.once("value").then(function(snapshot){
+    if(!snapshot.child("name").exists()){
+      dd.set({
+        name: name_i
+      });
+    }
+    database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/"+OrderName+"/").set({
+      number : number_inner,
+      price : price_i,
+      total : total_i
+    });
   });
-  database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/"+OrderName+"/").set({
-    number : number_inner,
-    price : price_i,
-    total : total_i
-  });
 
-
-
-
-  // database.ref("Orders/"+OrderId+"/OrderPeople/"+OrderName+"/"+name_i+"/").set({
-  //   number : number_inner,
-  //   price : price_i,
-  //   total : total_i
-  // });
 
 
 }
@@ -162,22 +158,19 @@ function del_number(i){
     var OrderId = document.getElementById("OrderId").value;
     var OrderName = document.getElementById("OrderName").value;
 
-    database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/").set({
-      name : name_i,
-      people : OrderName
+    var dd = database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/");
+    dd.once("value").then(function(snapshot){
+      if(!snapshot.child("name").exists()){
+        dd.set({
+          name: name_i
+        });
+      }
+      database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/"+OrderName+"/").set({
+        number : number_inner,
+        price : price_i,
+        total : total_i
+      });
     });
-
-    database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/"+OrderName+"/").set({
-      number : number_inner,
-      price : price_i,
-      total : total_i
-    });
-
-    // database.ref("Orders/"+OrderId+"/OrderPeople/"+OrderName+"/"+name_i+"/").set({
-    //   number : number_inner,
-    //   price : price_i,
-    //   total : total_i
-    // });
 
 }
 

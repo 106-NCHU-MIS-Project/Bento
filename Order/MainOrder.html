@@ -179,19 +179,22 @@ function add_number(i){
   var OrderId = document.getElementById("OrderId").value;
   var OrderName = document.getElementById("OrderName").value;
 
-  database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/").set({
-    name : name_i,
-
+  var dd = database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/");
+  dd.once("value").then(function(snapshot){
+    if(!snapshot.child("name").exists()){
+      dd.set({
+        name: name_i
+      });
+    }
+    database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/"+OrderName+"/").set({
+      number : number_inner,
+      price : price_i,
+      total : total_i
+    });
   });
-
-  database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/"+OrderName+"/").set({
-    number : number_inner,
-    price : price_i,
-    total : total_i
-  });
-
 
 }
+
 function del_number(i){
   var name_i = document.getElementById("name"+i).innerHTML;
   var price_i = document.getElementById("price"+i).innerHTML;
@@ -209,17 +212,19 @@ function del_number(i){
     var OrderId = document.getElementById("OrderId").value;
     var OrderName = document.getElementById("OrderName").value;
 
-    database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/").set({
-      name : name_i,
-
+    var dd = database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/");
+    dd.once("value").then(function(snapshot){
+      if(!snapshot.child("name").exists()){
+        dd.set({
+          name: name_i
+        });
+      }
+      database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/"+OrderName+"/").set({
+        number : number_inner,
+        price : price_i,
+        total : total_i
+      });
     });
-
-    database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/"+OrderName+"/").set({
-      number : number_inner,
-      price : price_i,
-      total : total_i
-    });
-
 }
 
 }
@@ -282,6 +287,7 @@ database.ref("Orders/"+OrderId+"/OrderDetail/").on("value", function(snapshot) {
     var a = snapshot.child("Bento"+i+"/"+"OrderPeople/").val();
 
     document.getElementById("joinPeople").innerHTML+=JSON.stringify(a)+"<br>";
+
 
   }
 

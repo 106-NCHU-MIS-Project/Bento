@@ -179,7 +179,7 @@ function add_number(i){
   var OrderId = document.getElementById("OrderId").value;
   var OrderName = document.getElementById("OrderName").value;
 
-  database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/").set({
+  database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/").set({
     name : name_i,
 
   });
@@ -209,7 +209,7 @@ function del_number(i){
     var OrderId = document.getElementById("OrderId").value;
     var OrderName = document.getElementById("OrderName").value;
 
-    database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/").set({
+    database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/").set({
       name : name_i,
 
     });

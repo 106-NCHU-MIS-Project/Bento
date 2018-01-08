@@ -179,7 +179,9 @@ function add_number(i){
   var OrderId = document.getElementById("OrderId").value;
   var OrderName = document.getElementById("OrderName").value;
 
-  var dd = database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/");
+
+
+  var dd = database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/");
   dd.once("value").then(function(snapshot){
     if(!snapshot.child("name").exists()){
       dd.set({
@@ -212,7 +214,7 @@ function del_number(i){
     var OrderId = document.getElementById("OrderId").value;
     var OrderName = document.getElementById("OrderName").value;
 
-    var dd = database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/");
+    var dd = database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/");
     dd.once("value").then(function(snapshot){
       if(!snapshot.child("name").exists()){
         dd.set({
@@ -225,6 +227,7 @@ function del_number(i){
         total : total_i
       });
     });
+    
 }
 
 }

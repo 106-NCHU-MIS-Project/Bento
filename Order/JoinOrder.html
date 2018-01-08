@@ -124,7 +124,7 @@ function add_number(i){
 
   database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/").set({
     name : name_i,
-
+    people : OrderName
   });
   database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/"+OrderName+"/").set({
     number : number_inner,
@@ -164,8 +164,9 @@ function del_number(i){
 
     database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/").set({
       name : name_i,
-
+      people : OrderName
     });
+
     database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/"+OrderName+"/").set({
       number : number_inner,
       price : price_i,

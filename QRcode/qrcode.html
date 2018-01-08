@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+
+    <title></title>
+    <div id="qrcode"></div>
+
+    <a id="QRString" href='https://BentoSystem/Order/'>https://BentoSystem/Order/</a>
+    <br>
+    <script src="./qrcode.js">
+
+    </script>
+<script type="text/javascript">
+new QRCode(document.getElementById("qrcode"), "https://BentoSystem/Order/");
+
+function randomString(length, chars) {
+    var mask = '';
+    if (chars.indexOf('a') > -1) mask += 'abcdefghijklmnopqrstuvwxyz';
+    if (chars.indexOf('A') > -1) mask += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    if (chars.indexOf('#') > -1) mask += '0123456789';
+    if (chars.indexOf('!') > -1) mask += '~`!@#$%^&*()_+-={}[]:";\'<>?,./|\\';
+    var result = '';
+    for (var i = length; i > 0; --i) result += mask[Math.floor(Math.random() * mask.length)];
+    return result;
+}
+
+
+function newQRcode(){
+  document.getElementById("qrcode").innerHTML="";
+  var randomQRcode = "https://BentoSystem/Order/"+randomString(2,'A')+randomString(4,'#');
+  console.log(randomQRcode);
+  new QRCode(document.getElementById("qrcode"), randomQRcode);
+  document.getElementById("QRString").innerHTML = randomQRcode;
+  document.getElementById("QRString").href=randomQRcode;
+}
+</script>
+
+  </head>
+  <body>
+    <button type="button" name="button" onclick="newQRcode()">randomQRcode</button>
+    <button type="button" name="button" onclick="location.href='./Scanner.html'">SCANNER</button>
+  </body>
+</html>

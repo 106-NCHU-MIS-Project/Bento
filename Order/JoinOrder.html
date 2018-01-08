@@ -6,8 +6,12 @@
     <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-    <link rel="stylesheet" href="/css/main.css">
 
+    <style media="screen">
+    body{
+      font-family: microsoft jhenghei;
+      }
+    </style>
 
   </head>
 
@@ -42,14 +46,17 @@
     <form class="" action="" method="post">
       <div class="container">
         <div class="row">
-          <div class="input-field col s6">
+
+
+    <div class="input-field col s3">
+        單號 <input type="text" id="OrderId" value="" placeholder="OrderXX" disabled>
+    </div>
+
+    <div class="input-field col s9">
       名字 <input type="text" id="OrderName" value="" placeholder="OrderName">
     </div>
 
-      <div class="input-field col s6">
 
-      單號 <input type="text" id="OrderId" value="" placeholder="OrderXX" >
-    </div>
   </div>
 
 
@@ -114,6 +121,11 @@ function add_number(i){
   var OrderId = document.getElementById("OrderId").value;
   var OrderName = document.getElementById("OrderName").value;
 
+
+  database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/").set({
+    name : name_i,
+
+  });
   database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/"+OrderName+"/").set({
     number : number_inner,
     price : price_i,
@@ -150,7 +162,10 @@ function del_number(i){
     var OrderId = document.getElementById("OrderId").value;
     var OrderName = document.getElementById("OrderName").value;
 
+    database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/").set({
+      name : name_i,
 
+    });
     database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/"+OrderName+"/").set({
       number : number_inner,
       price : price_i,

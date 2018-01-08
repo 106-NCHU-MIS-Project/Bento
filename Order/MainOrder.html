@@ -59,7 +59,7 @@ body{
         <form class="" action="javascript:writeData()" method="post">
 
           單號 <input type="text" id="OrderId" value="" placeholder="OrderId" disabled>
-          名字 <input type="text" id="OrderName" value="" placeholder="OrderName">
+          名字 <input type="text" id="OrderName" value="主揪人" placeholder="Name">
           電話 <input type="text" id="TEL" value="" placeholder="TEL">
           地址 <input type="text" id="Address" value="" placeholder="Address">
           時間 <input type="text" id="OrderTime" class="timepicker value=" >
@@ -85,6 +85,7 @@ body{
 
 
         <div id="div_products">
+          請先送出訂單資料
         </div>
 
 
@@ -98,11 +99,12 @@ body{
 
 
 
-        <button type="button" name="button" onclick="javascript:check()" class="btn">查看目前訂購</button>
+      查看目前訂購
 
-        <div class="card">
+        <div class="card" style="display:none;" id="joinPeopleCard">
         <div class="card-content" id="joinPeople">
-        </div></div>
+        </div>
+        </div>
 
 
 
@@ -144,6 +146,7 @@ body{
 //////////////init products/////////////////////
 
 function initBento(){
+  document.getElementById("div_products").innerHTML="";
   var numBento;
   database.ref("Products/Bento/Data/").once("value", function(snapshot) {
     numBento = snapshot.numChildren();
@@ -157,7 +160,6 @@ function initBento(){
   }
 });
 }
-
 /////////////////////
 
 
@@ -176,6 +178,11 @@ function add_number(i){
 
   var OrderId = document.getElementById("OrderId").value;
   var OrderName = document.getElementById("OrderName").value;
+
+  database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/").set({
+    name : name_i,
+
+  });
 
   database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/"+OrderName+"/").set({
     number : number_inner,
@@ -201,6 +208,11 @@ function del_number(i){
 
     var OrderId = document.getElementById("OrderId").value;
     var OrderName = document.getElementById("OrderName").value;
+
+    database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/").set({
+      name : name_i,
+
+    });
 
     database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/"+OrderName+"/").set({
       number : number_inner,
@@ -248,7 +260,7 @@ function del_number(i){
     });
 
 initBento();
-
+check();
     var submit_btn = document.getElementById("submit");
     submit_btn.disabled = true;
     submit_btn.value = "開始訂餐";
@@ -258,6 +270,7 @@ initBento();
 
 
 //////////////////read people orders////////////////////////
+
 function check(){
 var OrderId = document.getElementById("OrderId").value;
 
@@ -267,11 +280,16 @@ database.ref("Orders/"+OrderId+"/OrderDetail/").on("value", function(snapshot) {
   document.getElementById("joinPeople").innerHTML="";
   for(var i = 1 ;i<=DetailBentoNum ; i++){
     var a = snapshot.child("Bento"+i+"/"+"OrderPeople/").val();
-    document.getElementById("joinPeople").innerHTML+="Bento"+i+":"+JSON.stringify(a)+"<br>";
+
+    document.getElementById("joinPeople").innerHTML+=JSON.stringify(a)+"<br>";
 
   }
 
 });
+
+
+
+document.getElementById("joinPeopleCard").style = "display:show;";
 }
   /////////////////////////////////////
 

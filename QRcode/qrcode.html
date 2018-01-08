@@ -2,11 +2,20 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+
 
     <title></title>
+    <div class="card">
+      <div class="container">
     <div id="qrcode"></div>
-
-    <a id="QRString" href='https://BentoSystem/Order/'>https://BentoSystem/Order/</a>
+</div></div>
+    <a id="QRString" href='../Order/JoinOrder.html'></a>
     <br>
     <script src="./qrcode.js">
 
@@ -31,14 +40,14 @@ function newQRcode(){
   var randomQRcode = randomString(2,'A')+randomString(4,'#');
   console.log(randomQRcode);
   new QRCode(document.getElementById("qrcode"), randomQRcode);
-  document.getElementById("QRString").innerHTML = randomQRcode;
-  document.getElementById("QRString").href=randomQRcode;
+  document.getElementById("QRString").innerHTML = '../Order/JoinOrder.html?'+randomQRcode;
+  document.getElementById("QRString").href='../Order/JoinOrder.html?'+randomQRcode;
 }
 </script>
 
   </head>
   <body>
-    <button type="button" name="button" onclick="newQRcode()">randomQRcode</button>
-    <button type="button" name="button" onclick="location.href='./Scanner.html'">SCANNER</button>
+    <button type="button" name="button" class="btn" onclick="newQRcode()">randomQRcode</button>
+    <button type="button" name="button" class="btn" onclick="location.href='./Scanner.html'">SCANNER</button>
   </body>
 </html>

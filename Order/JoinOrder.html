@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <style media="screen">
-      body{
-        display: inline-block;
-      }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+
   </head>
 
   <script>
@@ -14,16 +16,26 @@
   <body>
     <div class="" id="form1">
     <form class="" action="" method="post">
-      <br>名字 <input type="text" id="OrderName" value="" placeholder="OrderName">
-      <br>單號 <input type="text" id="OrderId" value="" placeholder="OrderXX" >
-      <br>
+      <div class="container">
+        <div class="row">
+          <div class="input-field col s6">
+      名字 <input type="text" id="OrderName" value="" placeholder="OrderName">
+    </div>
+
+      <div class="input-field col s6">
+
+      單號 <input type="text" id="OrderId" value="" placeholder="OrderXX" >
+    </div>
+  </div>
+
+
       <div id="div_products">
         <hr>
       </div>
-
+</div>
     </form>
 
-</div>
+  </div>
 
 <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
 <script>
@@ -53,9 +65,10 @@
     var c = snapshot.child("Bento"+i+"/ProductPrice/").val();
     var div_products = document.getElementById("div_products");
 
-    div_products.innerHTML+="品名:<span id='name"+i+"'>"+a+"</span><br>價格:<span id='price"+i+"'>"+c+" </span><br>數量<span id = 'number"+i+"'>0</span><button type='button' onclick='javascript:add_number("+i+")' >+</button><button type='button' onclick='javascript:del_number("+i+")' >-</button><br>小計:<span id='total"+i+"'>0</span><br><div id='people_in"+i+"'></div><br><hr>";
+    div_products.innerHTML+="<div class='card'><div class='card-content'>品名:<span id='name"+i+"'>"+a+"</span><br>價格:<span id='price"+i+"'>"+c+" </span><br>數量<span id = 'number"+i+"'>0</span><br>小計:<span id='total"+i+"'>0</span><br><div id='people_in"+i+"'><button type='button' class='btn' onclick='javascript:add_number("+i+")' >+</button> <button type='button'  class='btn' onclick='javascript:del_number("+i+")' >-</button></div></div></div>";
   }
 });
+
 
 
 
@@ -143,4 +156,19 @@ function del_number(i){
 
 </script>
   </body>
+  <script type="text/javascript">
+  //////////getURL///
+  function getURL() {
+      var url = location.href;
+      var decode = decodeURIComponent(url);
+      var temp = decode.split("?");
+      var vars = temp[1].split("&");
+      console.log(vars[0]);
+      document.getElementById("OrderId").value=vars[0];
+
+   }
+   getURL();
+  //////////////////
+
+  </script>
 </html>

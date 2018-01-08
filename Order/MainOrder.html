@@ -1,51 +1,57 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <style media="screen">
-      body{
-        display: inline-block;
-      }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+
+
   </head>
 
   <script>
 
     </script>
   <body>
-    <div class="" id="form1">
-    <form class="" action="javascript:writeData()" method="post">
-      ..........資料
-      <br>....................名字 <input type="text" id="OrderName" value="" placeholder="OrderName">
-      <br>....................電話 <input type="text" id="TEL" value="" placeholder="TEL">
-      <br>....................地址 <input type="text" id="Address" value="" placeholder="Address">
-      <br>....................時間 <input type="datetime-local" id="OrderTime" value="" >
-      <br>
+    <div class="card" id="form1">
+      <div class="card-title">
+        訂單資料
+      </div>
+      <div class="card-content">
 
-      <br>
-      <hr>
-      ..........狀態<input type="number" id="OrderStatus" value="1" placeholder="OrderStatus">
-      <br>
-      <br>
-      <input type="submit" value="送出" id="submit">
+    <form class="" action="javascript:writeData()" method="post">
+      名字 <input type="text" id="OrderName" value="" placeholder="OrderName">
+      電話 <input type="text" id="TEL" value="" placeholder="TEL">
+      地址 <input type="text" id="Address" value="" placeholder="Address">
+      時間 <input type="text" id="OrderTime" class="timepicker value=" >
+
+
+      狀態<input type="number" id="OrderStatus" value="1" placeholder="OrderStatus">
+      <input type="submit" value="送出" id="submit" class="btn">
       <br>
       單號 <input type="text" id="OrderId" value="" placeholder="OrderId" disabled>
 
-    <hr>
-    <br>
-      ..........訂單內容
+      <br>
+      訂單內容
 
       <br>
       <div id="div_products">
-        <hr>
       </div>
 
 
       <p id="message1"></p>
     </form>
-</div>
-<button type="button" name="button" onclick="javascript:check()" >查看目前訂購</button>
-<div class="" id="joinPeople">
-</div>
+</div>      </div>
+
+<button type="button" name="button" onclick="javascript:check()" class="btn">查看目前訂購</button>
+
+<div class="card">
+<div class="card-content" id="joinPeople">
+</div></div>
+
+
 
 <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
 <script>
@@ -77,7 +83,7 @@ function initBento(){
     var c = snapshot.child("Bento"+i+"/ProductPrice/").val();
     var div_products = document.getElementById("div_products");
 
-    div_products.innerHTML+="品名:<span id='name"+i+"'>"+a+"</span><br>價格:<span id='price"+i+"'>"+c+" </span><br>數量<span id = 'number"+i+"'>0</span><button type='button' onclick='javascript:add_number("+i+")' >+</button><button type='button' onclick='javascript:del_number("+i+")' >-</button><br>小計:<span id='total"+i+"'>0</span><br><div id='people_in"+i+"'></div><br><hr>";
+    div_products.innerHTML+="<div class='card'><div class='card-content'>品名:<span id='name"+i+"'>"+a+"</span><br>價格:<span id='price"+i+"'>"+c+" </span><br>數量<span id = 'number"+i+"'>0</span><br>小計:<span id='total"+i+"'>0</span><br><div id='people_in"+i+"'><button type='button' class='btn' onclick='javascript:add_number("+i+")' >+</button> <button type='button'  class='btn' onclick='javascript:del_number("+i+")' >-</button></div></div></div>";
   }
 });
 }
@@ -202,6 +208,19 @@ database.ref("Orders/"+OrderId+"/OrderDetail/").on("value", function(snapshot) {
 
 
 
+</script>
+<script type="text/javascript">
+$('.timepicker').pickatime({
+default: 'now', // Set default time: 'now', '1:30AM', '16:30'
+fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
+twelvehour: false, // Use AM/PM or 24-hour format
+donetext: 'OK', // text for done-button
+cleartext: 'Clear', // text for clear-button
+canceltext: 'Cancel', // Text for cancel-button
+autoclose: false, // automatic close timepicker
+ampmclickable: true, // make AM PM clickable
+aftershow: function(){} //Function for after opening timepicker
+});
 </script>
   </body>
 </html>

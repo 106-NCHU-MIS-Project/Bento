@@ -28,7 +28,7 @@ function randomString(length, chars) {
 
 function newQRcode(){
   document.getElementById("qrcode").innerHTML="";
-  var randomQRcode = "https://BentoSystem/Order/"+randomString(2,'A')+randomString(4,'#');
+  var randomQRcode = randomString(2,'A')+randomString(4,'#');
   console.log(randomQRcode);
   new QRCode(document.getElementById("qrcode"), randomQRcode);
   document.getElementById("QRString").innerHTML = randomQRcode;

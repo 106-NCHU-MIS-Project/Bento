@@ -2,26 +2,51 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 
 
   </head>
 
-  <script>
+<style media="screen">
+body{
+  font-family: microsoft jhenghei;
+}
+</style>
 
-    </script>
+
   <body>
+
+
+    <!-- navbar -->
+<div id="navbar"></div>
+<script type="text/javascript">
+    var ajax = new XMLHttpRequest();
+    ajax.open("GET", "/navbar.html", false);
+    ajax.send();
+    document.getElementById("navbar").innerHTML += ajax.responseText;
+</script>
+<script type="text/javascript">$(".button-collapse").sideNav();</script>
+
+  <!-- navbar -->
+
+
+
+
+
+
     <div class="card" id="form1">
-      <div class="card-title">
+      <div class="card-title" style="font-weight:bold;">
         訂單資料
       </div>
+
       <div class="card-content">
 
     <form class="" action="javascript:writeData()" method="post">
+
+      單號 <input type="text" id="OrderId" value="" placeholder="OrderId" disabled>
       名字 <input type="text" id="OrderName" value="" placeholder="OrderName">
       電話 <input type="text" id="TEL" value="" placeholder="TEL">
       地址 <input type="text" id="Address" value="" placeholder="Address">
@@ -30,13 +55,9 @@
 
       狀態<input type="number" id="OrderStatus" value="1" placeholder="OrderStatus">
       <input type="submit" value="送出" id="submit" class="btn">
-      <br>
-      單號 <input type="text" id="OrderId" value="" placeholder="OrderId" disabled>
 
       <br>
-      訂單內容
 
-      <br>
       <div id="div_products">
       </div>
 
@@ -150,11 +171,11 @@ function del_number(i){
   //////////////寫資料/////////////////////
 
   var ref = firebase.database().ref("Orders/");
-  ref.once("value").then(function(snapshot) {
-      var counter = snapshot.numChildren();
-      document.getElementById("OrderId").value = ++counter;
-      document.getElementById("OrderId").value = "Order"+document.getElementById("OrderId").value
-    });
+  // ref.once("value").then(function(snapshot) {
+  //     var counter = snapshot.numChildren();
+  //     document.getElementById("OrderId").value = ++counter;
+  //     document.getElementById("OrderId").value = "Order"+document.getElementById("OrderId").value
+  //   });
 
 
   function writeData(){
@@ -221,6 +242,22 @@ autoclose: false, // automatic close timepicker
 ampmclickable: true, // make AM PM clickable
 aftershow: function(){} //Function for after opening timepicker
 });
+</script>
+
+<script type="text/javascript">
+//////////getURL///
+function getURL() {
+    var url = location.href;
+    var decode = decodeURIComponent(url);
+    var temp = decode.split("?");
+    var vars = temp[1].split("&");
+    console.log(vars[0]);
+    document.getElementById("OrderId").value=vars[0];
+
+ }
+ getURL();
+//////////////////
+
 </script>
   </body>
 </html>

@@ -2,37 +2,43 @@
 <html>
   <head>
     <meta charset="utf-8">
+
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <link rel="stylesheet" href="/css/main.css">
 
-<style media="screen">
-  body{
-    display: block;
-    text-align: center;
-  }
-</style>
-  <!-- Compiled and minified CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
 
-  <!-- Compiled and minified JavaScript -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 
     <title>index</title>
   </head>
   <body>
-    <div class="row">
+
+    <!-- navbar -->
+<div id="navbar"></div>
+<script type="text/javascript">
+    var ajax = new XMLHttpRequest();
+    ajax.open("GET", "/navbar.html", false);
+    ajax.send();
+    document.getElementById("navbar").innerHTML += ajax.responseText;
+</script>
+<script type="text/javascript">$(".button-collapse").sideNav();</script>
+
+  <!-- navbar -->
+
+
+
       <div class="container">
 
-
       <div class="card">
-      <a class="waves-effect waves-light btn-large" href="./Order/MainOrder.html">主揪人</a>
-      <a class="waves-effect waves-light btn-large" href="./Order/JoinOrder.html">參加者</a>
-      <a class="waves-effect waves-light btn-large" href="./QRcode/qrcode.html">QRcode</a>
-      </div>
+
+        <div class="row"><div class="col s12"><a class="waves-effect waves-light btn-large" href="./Order/MainOrder.html">主揪人</a></div></div>
+        <div class="row"><div class="col s12"><a class="waves-effect waves-light btn-large" href="./Order/JoinOrder.html">參加者</a></div></div>
+        <div class="row"><div class="col s12"><a class="waves-effect waves-light btn-large" href="./QRcode/qrcode.html">QRcode</a></div></div>
+        <div class="row"><div class="col s12"><a class="waves-effect waves-light btn-large" href="./">DEMO</a></div></div>
+
     </div>
 </div>
   </body>

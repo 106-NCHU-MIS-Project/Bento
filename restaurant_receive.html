@@ -53,18 +53,21 @@
             $('#list_orders').empty();                
             snapshot.forEach(function(childSnap){
                 var str ="";
-                str += '<li><div class="collapsible-header"><i class="material-icons">local_dining</i>'+ childSnap.key+'</div>';
+                str += '<li><div class="collapsible-header"><i class="material-icons">local_dining</i>'+ childSnap.key+'<span class="new badge" data-badge-caption="">新訂單</span></div>';
                 var obj = childSnap.child("OrderDetail").val();
                 str += '<div class="collapsible-body"><ul>';
                 $.each(obj, function(key, value){
                     var num = 0;
+
                     $.each(value.OrderPeople, function(person){
                         num += Number(value.OrderPeople[person].number);
                     });
-                    str += '<li>'+key + ":"+ num+'</li>';
+
+                    str += '<li>'+value.name+ ":"+ num+'</li>';
                 });
                 str += '</ul></div></li>';
                 $('#list_orders').append(str);
+
             });
         });
     </script>

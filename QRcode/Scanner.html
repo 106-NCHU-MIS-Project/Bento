@@ -23,13 +23,26 @@
   <body>
 
     <!-- navbar -->
-<div id="navbar"></div>
-<script type="text/javascript">
-    var ajax = new XMLHttpRequest();
-    ajax.open("GET", "/navbar.html", false);
-    ajax.send();
-    document.getElementById("navbar").innerHTML += ajax.responseText;
-</script>
+    <link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet'>
+    <nav>
+      <div class='nav-wrapper'>
+        <a href='../index.html' class='brand-logo'>BENTO</a>
+        <a href='#' data-activates='mobile-demo' class='button-collapse'><i class='material-icons'>menu</i></a>
+        <ul class='right hide-on-med-and-down'>
+          <li><a href='#'>Default</a></li>
+          <li><a href='#'>Default</a></li>
+          <li><a href='#'>Default</a></li>
+          <li><a href='#'>Default</a></li>
+        </ul>
+        <ul class='side-nav' id='mobile-demo'>
+          <li><a href='#'>Default</a></li>
+          <li><a href='#'>Default</a></li>
+          <li><a href='#'>Default</a></li>
+          <li><a href='#'>Default</a></li>
+        </ul>
+      </div>
+    </nav>
+    </div>
 <script type="text/javascript">$(".button-collapse").sideNav();</script>
 
   <!-- navbar -->

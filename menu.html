@@ -61,6 +61,7 @@
     <script>
         var rootRef = database.ref("Products/");
         rootRef.on('value', function(snapshot){
+            $('#menu').empty(); 
             
             $.each(snapshot.val(), function(key, value){
                 var str = "";
@@ -92,7 +93,7 @@
                 edit_str += '<div class="row">';
                 edit_str += '<div class="input-field col s6"><input value="' + obj.ProductIntro + '" id="ProductIntro" type="text" class="validate">';
                 edit_str += '<label class="active" for="ProductIntro">產品簡介</label></div>';
-                edit_str += '<div class="input-field col s6">';
+                edit_str += '<div class="input-field col s6" >';
                 if (obj.ProductStatus == 'true')
                 {   
                     edit_str += '<input name="ProductStatus" type="radio" id="ProductStatusT" value="true" checked /><label for="ProductStatusT">開放訂購</label>';

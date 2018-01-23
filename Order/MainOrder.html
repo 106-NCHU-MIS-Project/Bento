@@ -14,6 +14,19 @@
 body{
   font-family: microsoft jhenghei;
 }
+#div_confirm{
+  position: absolute;
+  bottom: 0;
+
+}
+footer{
+  width: 100%;
+  bottom : 0;
+  position: absolute;
+}
+.a_footer{
+  width: 100%;
+}
 </style>
 
 
@@ -78,7 +91,7 @@ body{
           時間 <input type="text" id="OrderTime" class="timepicker value=" >
 
 
-          狀態<input type="number" id="OrderStatus" value="1" placeholder="OrderStatus">
+          狀態<input type="number" id="OrderStatus" value="0" placeholder="OrderStatus">
           <input type="submit" value="下一步" id="submit" class="btn">
 
           <br>
@@ -117,9 +130,10 @@ body{
         <div class="card" style="display:none;" id="joinPeopleCard">
         <div class="card-content" id="joinPeople">
         </div>
+        <br>
+        <footer><button class="btn a_footer" onclick="javascript:send()">送出訂單</button></footer>
+
         </div>
-
-
 
 
 
@@ -315,10 +329,16 @@ database.ref("Orders/"+OrderId+"/OrderDetail/").on("value", function(snapshot) {
 
 document.getElementById("joinPeopleCard").style = "display:show;";
 }
-  /////////////////////////////////////
+  ///////////////send order (change status)//////////////////////
+function send(){
+  var OrderId = document.getElementById("OrderId").value;
 
+var OrderStatusRef = database.ref('Orders/'+OrderId);
+OrderStatusRef.child('OrderStatus').set(1);
 
+}
 
+//////////////////////////////////
 
 </script>
 <script type="text/javascript">

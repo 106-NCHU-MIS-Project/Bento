@@ -323,7 +323,7 @@ database.ref("Orders/"+OrderId+"/OrderDetail/").on("value", function(snapshot) {
   var DetailBentoNum = snapshot.numChildren();
   document.getElementById("joinPeople").innerHTML="";
   for(var i = 1 ;i<=DetailBentoNum ; i++){
-    
+
     // var a = snapshot.child("Bento"+i+"/"+"name").val();
     // document.getElementById("joinPeople").innerHTML+=JSON.stringify(a)+"<br>";
 
@@ -338,7 +338,7 @@ database.ref("Orders/"+OrderId+"/OrderDetail/").on("value", function(snapshot) {
           var childPrice = childSnapshot.child("price").val();
           var childTotal = childSnapshot.child("total").val();
           var childBento = childSnapshot.child("name").val();
-          document.getElementById("joinPeople").innerHTML+="<div class='row'><div class='col s12'><b><p>"+key+":"+childBento+"</p></b><p>數量:"+childNumber+" 價格:"+childPrice+" 小計:"+childTotal+"</p></div></div>";
+          document.getElementById("joinPeople").innerHTML+="<div class='row'><div class='col s12'><b><p>"+key+":"+childBento+"</p></b><p>數量:"+childNumber+" 價格:"+childPrice+" 小計:"+childTotal+"</p></div></div><hr>";
 
       });
     });

@@ -129,6 +129,9 @@ footer{
 
         <div class="card" style="display:none;" id="joinPeopleCard">
         <div class="card-content" id="joinPeople">
+
+          <div class='row'><div class='col s12'><b><p>123</p></b><p>GGG</p></div></div>
+
         </div>
         <br>
         <footer><button class="btn a_footer" onclick="javascript:send()">送出訂單</button></footer>
@@ -191,6 +194,7 @@ function initBento(){
 
 
 function add_number(i){
+
   var name_i = document.getElementById("name"+i).innerHTML;
   var price_i = document.getElementById("price"+i).innerHTML;
   var number_i = document.getElementById("number"+i);
@@ -218,7 +222,8 @@ function add_number(i){
     database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/"+OrderName+"/").set({
       number : number_inner,
       price : price_i,
-      total : total_i
+      total : total_i,
+      name : name_i
     });
   });
 
@@ -251,7 +256,9 @@ function del_number(i){
       database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/"+OrderName+"/").set({
         number : number_inner,
         price : price_i,
-        total : total_i
+        total : total_i,
+        name : name_i
+
       });
     });
 
@@ -316,9 +323,25 @@ database.ref("Orders/"+OrderId+"/OrderDetail/").on("value", function(snapshot) {
   var DetailBentoNum = snapshot.numChildren();
   document.getElementById("joinPeople").innerHTML="";
   for(var i = 1 ;i<=DetailBentoNum ; i++){
-    var a = snapshot.child("Bento"+i+"/"+"OrderPeople/").val();
+    
+    // var a = snapshot.child("Bento"+i+"/"+"name").val();
+    // document.getElementById("joinPeople").innerHTML+=JSON.stringify(a)+"<br>";
 
-    document.getElementById("joinPeople").innerHTML+=JSON.stringify(a)+"<br>";
+
+    var query = firebase.database().ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/").orderByKey();
+    query.once("value").then(function(snapshot) {
+        snapshot.forEach(function(childSnapshot) {
+
+          var key = childSnapshot.key;
+
+          var childNumber = childSnapshot.child("number").val();
+          var childPrice = childSnapshot.child("price").val();
+          var childTotal = childSnapshot.child("total").val();
+          var childBento = childSnapshot.child("name").val();
+          document.getElementById("joinPeople").innerHTML+="<div class='row'><div class='col s12'><b><p>"+key+":"+childBento+"</p></b><p>數量:"+childNumber+" 價格:"+childPrice+" 小計:"+childTotal+"</p></div></div>";
+
+      });
+    });
 
 
   }

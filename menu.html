@@ -13,15 +13,10 @@
     <title>Menu - 店家</title>
     <script>
       $(document).ready(function () {
-            // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
             $('.modal').modal();
       });
     </script>
-    <style>
-        .radio-btn{
-              overflow: visible;
-        }
-    </style>
+
 </head>
 <body>
     <script>
@@ -99,10 +94,10 @@
                 edit_str += '<div class="input-field col s6"><input value="' + obj.ProductIntro + '" id="ProductIntro" type="text" class="validate">';
                 edit_str += '<label class="active" for="ProductIntro">產品簡介</label></div>';
                 edit_str += '<div class="input-field col s6" >';
-                if (obj.ProductStatus == 'true')
+                if (obj.ProductStatus)
                 {   
-                    edit_str += '<input class="radio-btn" name="ProductStatus" type="radio" id="ProductStatusT" value="true" checked /><label for="ProductStatusT">開放訂購</label>';
-                    edit_str += '<input class="radio-btn" name="ProductStatus" type="radio" id="ProductStatusF" value="false"/><label for="ProductStatusF">關閉訂購</label>';
+                    edit_str += '<input name="ProductStatus" type="radio" id="ProductStatusT" value="true" checked /><label for="ProductStatusT" >開放訂購</label>';
+                    edit_str += '<input name="ProductStatus" type="radio" id="ProductStatusF" value="false"/><label for="ProductStatusF" >關閉訂購</label>';
                 }
                 else 
                 {
@@ -114,6 +109,7 @@
             $('#modal1-content').append(edit_str);
             $('#modal1').modal('open');
         }
+
         $('#edit_submit').on('click', function(){
 
             var obj = {
@@ -121,7 +117,7 @@
                 ProductIntro: $('#ProductIntro').val(),
                 ProductPrice: $('#ProductPrice').val(),
                 ProductName: $('#ProductName').val(),
-                ProductStatus: $("input[checked]").attr('value'),    
+                ProductStatus: $("#ProductStatusT").is(":checked")    
             };
             var cate = obj.ProductID.slice(0, obj.ProductID.length - 1);
             var productRef = database.ref('Products/' + cate + '/Data/' + obj.ProductID);

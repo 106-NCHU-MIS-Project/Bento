@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+  #map {
+    height: 400px;
+    width: 100%;
+   }
+</style>
+  </head>
+  <body>
+<script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
+<script>
+  // Initialize Google map
+     var map;
+     var marker;
+     var uluru = {lat: -25.363, lng: 131.044};
+     function initMap() {
+       map = new google.maps.Map(document.getElementById('map'), {
+         zoom: 4,
+         center: uluru
+       });
+       marker = new google.maps.Marker({
+         position: uluru,
+         map: map
+       });
+     }
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDd2rFHwPXyIkq0iRSinBBfzg31NYJLapE",
+    authDomain: "nchumis2017-5566.firebaseapp.com",
+    databaseURL: "https://nchumis2017-5566.firebaseio.com",
+    projectId: "nchumis2017-5566",
+    storageBucket: "nchumis2017-5566.appspot.com",
+    messagingSenderId: "501160127423"
+  };
+  firebase.initializeApp(config);
+
+
+  /////////////////初始化////////////////////
+
+  var database = firebase.database();
+
+  ///////////////檢查總人數///////////////////////
+  function AddPeople(){
+    database.ref("Deliverys/").once("value").then(function(snapshot) {
+      setPosition(snapshot.numChildren()+1);
+   });
+ };
+
+    function setPosition(id){
+     if (navigator.geolocation) {
+           navigator.geolocation.getCurrentPosition(function(position){
+             writeData(id,position.coords.latitude,position.coords.longitude);
+           });
+       } else {
+           console.log("Geolocation is not supported by this browser.");
+       }
+    }
+
+   function writeData(id,latitude,longitude){
+     database.ref("Deliverys/Man"+id).update({
+       Latitude:latitude,
+       Longitude:longitude
+     });
+   }
+//////////////////讀資料////////////////////////
+
+  function readPeople(id){
+    var x = document.getElementById("myText").value;
+    database.ref("Deliverys/Man"+x).on("value", function(snapshot) {
+      var a = snapshot.val().Latitude;
+      var b = snapshot.val().Longitude;
+      marker.setMap(null);
+      var haightAshbury = {lat: a, lng: b};
+      marker = new google.maps.Marker({
+          position: haightAshbury,
+          map: map,
+          center: haightAshbury
+        });
+        var center = new google.maps.LatLng(a, b);
+        map.setZoom(17);
+        map.panTo(center);
+      document.getElementById("demo").innerHTML = "Latitude:"+a+"Longitude:"+b;
+
+  });
+  }
+  /////////////////////////////////////
+</script>
+<button onclick="AddPeople()">新增外送員</button>
+<input type="text" id="myText" value="輸入ID">
+<button onclick="readPeople()">查詢外送員</button>
+<div id="map"></div>
+<p id="demo"></p>
+
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9niNiTIfnyVn4nZKieMFr_QXJb5ZV7eM&callback=initMap">
+</script>
+  </body>
+</html>

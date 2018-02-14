@@ -43,19 +43,61 @@ var app = {
     }
 };
 function initializeSuccess(obj) {
+    $('div.app').empty();
     var paramsObj = { serviceUuids: [] };
+    var beacon_record = { 'D0:B5:C2:96:C3:B6': false, 
+                          'D0:B5:C2:96:BF:5B': false};
+    var preloader = '';
+    preloader+='<div class="row" id="preload"><h4>掃描中，請稍後....</h4>';
+    preloader+='<div class="progress">';
+    preloader +='<div class="indeterminate"></div></div></div>';
+    preloader += '<div class="row">'
+    preloader+='<div class="col s4"></div><a class="waves-effect waves-light btn col s4" id="stopScan">停止掃描</a></div>';
+    $('div.app').prepend(preloader);
+    $('#stopScan').on('click', function(){
+        bluetoothle.stopScan(function(){
+            console.log('STOP SCAN');
+        }, function(){
+            console.log('Fail to stop ');
+        });
+        $('#preload').remove();
+        $('#stopScan').remove();
+
+    });
     bluetoothle.startScan(function (obj) {
-        if (obj.status == "scanResult") {
-            
-            if (obj.address == 'D0:B5:C2:96:C3:B6') {
-                // $('div.app').prepend('<h1>Welcome</h1>');
-                $('div.app').prepend('<h5>'+obj.rssi+'</h5>'); 
+
+        if (obj.status == "scanResult") {        
+            if (obj.address == 'D0:B5:C2:96:C3:B6' && beacon_record['D0:B5:C2:96:C3:B6'] !== true) {
+                beacon_record['D0:B5:C2:96:C3:B6'] = true;
+                var str = '';
+                str += '<img src="./img/test.jpg" style="border-radius:100%;margin-top:10%;margin-bottom:10%;"width="60%" height="60%">';
+                str += '<div class="row"><div class="col s4"></div>';
+                str += '<a class="waves-effect waves-light btn col s4" href="./user.html">排這家！</a>';
+                str += '</div>';
+                $('div.app').append(str); 
                  
                 // bluetoothle.stopScan(function(){
-                //     $('div.app').prepend('<h1>STOP SCAN</h1>'); 
+                //     console.log('STOP SCAN');
                 // }, function(){
-                //     $('div.app').prepend('<h1>fail to stop</h1>'); 
-                // });            
+                //     console.log('Fail to stop ');
+                // });
+            }
+
+            if (obj.address == 'D0:B5:C2:96:BF:5B' && beacon_record['D0:B5:C2:96:BF:5B'] !== true) {
+                beacon_record['D0:B5:C2:96:BF:5B'] = true;
+
+                var str = '';
+                str += '<img src="./img/test2.jpg" style="border-radius:100%;margin-top:10%;margin-bottom:10%;"width="60%" height="60%">';
+                str += '<div class="row"><div class="col s4"></div>';
+                str += '<a class="waves-effect waves-light btn col s4" href="./user.html">排這家！</a>';
+                str += '</div>';
+                $('div.app').append(str);
+
+                // bluetoothle.stopScan(function(){
+                //     console.log('STOP SCAN');
+                // }, function(){
+                //     console.log('Fail to stop ');
+                // });
             }
 
         }

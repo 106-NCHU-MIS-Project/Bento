@@ -13,11 +13,35 @@
     <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.0.7/sweetalert2.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.0.7/sweetalert2.all.js"></script>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+    <script>
+        $(document).ready(function(){
+            
+            $('select').material_select();
+        });
+    </script>
+    <style>
+        body{
+            background-color: #ffcc80
+        }
+    
+    </style>
 </head>
 
 <body>
+
+    <script>
+        var config = {
+            apiKey: "AIzaSyDd2rFHwPXyIkq0iRSinBBfzg31NYJLapE",
+            authDomain: "nchumis2017-5566.firebaseapp.com",
+            databaseURL: "https://nchumis2017-5566.firebaseio.com",
+            projectId: "nchumis2017-5566",
+            storageBucket: "nchumis2017-5566.appspot.com",
+            messagingSenderId: "501160127423"
+        };
+        firebase.initializeApp(config);
+        var database = firebase.database();
+    </script>
     <nav>
         <div class="nav-wrapper">
             <a href="#" class="brand-logo">Logo</a>
@@ -34,7 +58,189 @@
             </ul>
         </div>
     </nav>
+    <script>
+        var rootRef = database.ref("/");
+        
+        rootRef.on("value", function(snapshot){
+            var isExists = snapshot.child("Table").exists();
+            if(!isExists)
+            {
+                swal({
+                    type: 'error',
+                    title: '無店家資料',
+                    text: '請先初始化您的桌資料',
+                    
+                })
+                $('button.swal2-confirm').on('click', function(){
+                    $('#tableForm').css('display', 'block');        
+                });
+
+            }
+            else {
+                
+            }
+        });
+        
     
+    
+    </script>
+    <div class="container">
+        <div class="row"></div>
+        <div id="tableForm" style="display:none">
+            <div class="row">
+
+                <div class="row">
+                    <div class="col s12 m3">
+                        <div class="card blue-grey darken-1">
+                            <div class="card-content white-text">
+                                <span class="card-title">1人</span>
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <select multiple id="table_1p" >
+                                            <option value="" disabled selected>請選擇桌號</option>
+                                            <option value="1">1號</option>
+                                            <option value="2">2號</option>
+                                            <option value="3">3號</option>
+                                            <option value="4">4號</option>
+                                            <option value="5">5號</option>
+                                            <option value="6">6號</option>
+                                            <option value="7">7號</option>
+                                            <option value="8">8號</option>
+                                            <option value="9">9號</option>
+                                        </select>
+                                        <label>請選擇桌號</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col s12 m3">
+                        <div class="card blue-grey darken-1">
+                            <div class="card-content white-text">
+                                <span class="card-title">2人</span>
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <select multiple id="table_2p" >
+                                            <option value="" disabled selected>請選擇桌號</option>
+                                            <option value="1">1號</option>
+                                            <option value="2">2號</option>
+                                            <option value="3">3號</option>
+                                            <option value="4">4號</option>
+                                            <option value="5">5號</option>
+                                            <option value="6">6號</option>
+                                            <option value="7">7號</option>
+                                            <option value="8">8號</option>
+                                            <option value="9">9號</option>
+                                        </select>
+                                        <label>請選擇桌號</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col s12 m3">
+                        <div class="card blue-grey darken-1">
+                            <div class="card-content white-text">
+                                <span class="card-title">4人</span>
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <select multiple id="table_4p" >
+                                            <option value="" disabled selected>請選擇桌號</option>
+                                            <option value="1">1號</option>
+                                            <option value="2">2號</option>
+                                            <option value="3">3號</option>
+                                            <option value="4">4號</option>
+                                            <option value="5">5號</option>
+                                            <option value="6">6號</option>
+                                            <option value="7">7號</option>
+                                            <option value="8">8號</option>
+                                            <option value="9">9號</option>
+                                        </select>
+                                        <label>請選擇桌號</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col s12 m3">
+                        <div class="card blue-grey darken-1">
+                            <div class="card-content white-text">
+                                <span class="card-title">5人以上</span>
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <select multiple id="table_5p" >
+                                            <option value="" disabled selected>請選擇桌號</option>
+                                            <option value="1">1號</option>
+                                            <option value="2">2號</option>
+                                            <option value="3">3號</option>
+                                            <option value="4">4號</option>
+                                            <option value="5">5號</option>
+                                            <option value="6">6號</option>
+                                            <option value="7">7號</option>
+                                            <option value="8">8號</option>
+                                            <option value="9">9號</option>
+                                        </select>
+                                        <label>請選擇桌號</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    
+            </div>
+            <img src="./success.svg" width="30%" height="30%" style="margin-left:35%" onclick="javascript:init_table()">
+        </div>
+
+    </div>    
+    
+    <script>
+        function init_table(){
+            var p1 = {}, p2 = {}, p4 = {}, p5 = {};
+            $.each($('#table_1p').val(), function(key, value){
+                var tmp = {};
+                p1[value] = {
+                    tableNum: value,
+                    tableStatus: 'free'
+                };
+                
+            });
+            $.each($('#table_2p').val(), function (key, value) {
+                var tmp = {};
+                p2[value] = {
+                    tableNum: value,
+                    tableStatus: 'free'
+                };
+
+            });
+            $.each($('#table_4p').val(), function (key, value) {
+                var tmp = {};
+                p4[value] = {
+                    tableNum: value,
+                    tableStatus: 'free'
+                };
+
+            });
+            $.each($('#table_5p').val(), function (key, value) {
+                var tmp = {};
+                p5[value] = {
+                    tableNum: value,
+                    tableStatus: 'free'
+                };
+
+            });
+            // console.log(p1);
+            rootRef.child('Table/1P').set(p1);
+            rootRef.child('Table/2P').set(p2);
+            rootRef.child('Table/4P').set(p4);
+            rootRef.child('Table/5P').set(p5);
+            
+        }
+    </script>
+
 </body>
 
 </html>

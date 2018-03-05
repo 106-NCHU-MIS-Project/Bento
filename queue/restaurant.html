@@ -18,6 +18,7 @@
         $(document).ready(function(){
             
             $('select').material_select();
+            $('.modal').modal();
         });
     </script>
     <style>
@@ -89,11 +90,13 @@
                             $.each(value, function(k, v){
                                 if (k == 'counter')
                                     return;
-                                tmp += '<div class="col s12 m3 l3">';
+                                tmp += '<div class="col s12 m3 l3" onclick="javascript:edit(\''+key+'/'+v.tableNum+'\')">';
                                 if (v.tableStatus == 'free')
                                     tmp += '<div class="card green accent-3">';
-                                else 
+                                else if (v.tableStatus == 'busy')
                                     tmp += '<div class="card red accent-3">';
+                                else if (v.tableStatus == 'disabled')
+                                    tmp += '<div class="card grey darken-3">';
                                 tmp += '<div class="card-content white-text">';
                                 tmp += '<span class="card-title">'+v.tableNum+'號桌</span>';
                                 tmp += '</div></div></div>';
@@ -107,11 +110,13 @@
                             $.each(value, function (k, v) {
                                 if (k == 'counter')
                                     return;
-                                tmp += '<div class="col s12 m3 l3">';
+                                tmp += '<div class="col s12 m3 l3" onclick="javascript:edit(\'' + key + '/' + v.tableNum +'\')">';
                                 if (v.tableStatus == 'free')
                                     tmp += '<div class="card green accent-3">';
-                                else
+                                else if (v.tableStatus == 'busy')
                                     tmp += '<div class="card red accent-3">';
+                                else if (v.tableStatus == 'disabled')
+                                    tmp += '<div class="card grey darken-3">';
                                 tmp += '<div class="card-content white-text">';
                                 tmp += '<span class="card-title">' + v.tableNum + '號桌</span>';
                                 tmp += '</div></div></div>';
@@ -125,11 +130,13 @@
                             $.each(value, function (k, v) {
                                 if (k == 'counter')
                                     return;
-                                tmp += '<div class="col s12 m3 l3">';
+                                tmp += '<div class="col s12 m3 l3" onclick="javascript:edit(\'' + key + '/' + v.tableNum +'\')">';
                                 if (v.tableStatus == 'free')
                                     tmp += '<div class="card green accent-3">';
-                                else
+                                else if (v.tableStatus == 'busy')
                                     tmp += '<div class="card red accent-3">';
+                                else if (v.tableStatus == 'disabled')
+                                    tmp += '<div class="card grey darken-3">';
                                 tmp += '<div class="card-content white-text">';
                                 tmp += '<span class="card-title">' + v.tableNum + '號桌</span>';
                                 tmp += '</div></div></div>';
@@ -143,11 +150,13 @@
                             $.each(value, function (k, v) {
                                 if (k == 'counter')
                                     return;
-                                tmp += '<div class="col s12 m3 l3">';
+                                tmp += '<div class="col s12 m3 l3" onclick="javascript:edit(\'' + key + '/' + v.tableNum +'\')">';
                                 if (v.tableStatus == 'free')
                                     tmp += '<div class="card green accent-3">';
-                                else
+                                else if (v.tableStatus == 'busy')
                                     tmp += '<div class="card red accent-3">';
+                                else if (v.tableStatus == 'disabled')
+                                    tmp += '<div class="card grey darken-3">';
                                 tmp += '<div class="card-content white-text">';
                                 tmp += '<span class="card-title">' + v.tableNum + '號桌</span>';
                                 tmp += '</div></div></div>';
@@ -275,9 +284,60 @@
                 
         </div>
         <img src="./success.svg" width="30%" height="30%" style="margin-left:35%" onclick="javascript:init_table()">
-    </div>   
+    </div>  
+
+    <div id="modal1" class="modal">
+        <div id="modal1-content" class="modal-content">
     
+        </div>
+        <div class="modal-footer">
+            <a href="#!" id="edit_submit" class="modal-action modal-close waves-effect waves-green btn">更新</a>
+        </div>
+    </div>
     <script>
+        function edit(tableName){
+            var tableRef = database.ref("Table/"+tableName);
+            var edit_str = "";
+            tableRef.once('value', function (snapshot) {
+                $('#modal1-content').empty();
+                var obj = snapshot.val();
+                edit_str += '<h4>桌號：'+ obj.tableNum + '號桌</h4>';
+                edit_str += '<input value="' + obj.tableNum + '" id="tableNum" type="text" style="display:none" class="validate">';
+                edit_str += '<input value="' + tableName + '" id="tableRef" type="text" style="display:none" class="validate">';                
+                if (obj.tableStatus == 'free') {
+                    edit_str += '<input name="TableStatus" type="radio" id="TableStatusFree" value="free" checked /><label for="TableStatusFree" >空閒</label>';
+                    edit_str += '<input name="TableStatus" type="radio" id="TableStatusBusy" value="busy" /><label for="TableStatusBusy" >使用中</label>';
+                    edit_str += '<input name="TableStatus" type="radio" id="TableStatusDisabled" value="disabled" /><label for="TableStatusDisabled" >停用</label>';
+
+                }
+                else if (obj.tableStatus == 'busy') {
+                    edit_str += '<input name="TableStatus" type="radio" id="TableStatusFree" value="free"  /><label for="TableStatusFree" >空閒</label>';
+                    edit_str += '<input name="TableStatus" type="radio" id="TableStatusBusy" value="busy" checked/><label for="TableStatusBusy" >使用中</label>';
+                    edit_str += '<input name="TableStatus" type="radio" id="TableStatusDisabled" value="disabled" /><label for="TableStatusDisabled" >停用</label>';
+
+                }
+                            
+                else {
+                    edit_str += '<input name="TableStatus" type="radio" id="TableStatusFree" value="free"  /><label for="TableStatusFree" >空閒</label>';
+                    edit_str += '<input name="TableStatus" type="radio" id="TableStatusBusy" value="busy" /><label for="TableStatusBusy" >使用中</label>';
+                    edit_str += '<input name="TableStatus" type="radio" id="TableStatusDisabled" value="disabled" checked/><label for="TableStatusDisabled" >停用</label>';
+
+                }
+            });
+            $('#modal1-content').append(edit_str);
+            $('#modal1').modal('open');
+        }
+
+        $('#edit_submit').on('click', function () {
+            var obj = {
+                tableNum: $('#tableNum').val(),
+                tableStatus: $("input[name=TableStatus]:checked").val()
+            };
+            var tableRef = database.ref("Table/" + $('#tableRef').val());
+            tableRef.set(obj);
+
+        });
+        
         function init_table(){
             var p1 = {}, p2 = {}, p4 = {}, p5 = {};
             $.each($('#table_1p').val(), function(key, value){

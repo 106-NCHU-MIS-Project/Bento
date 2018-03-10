@@ -180,18 +180,36 @@ function initBento(){
   var numBento;
   database.ref("Products/Bento/Data/").once("value", function(snapshot) {
     numBento = snapshot.numChildren();
+
+    // var OrderId = document.getElementById("OrderId").value;
+
     for(var i = 1 ;i<=numBento ; i++){
-    var a = snapshot.child("Bento"+i+"/ProductName/").val();
-    var b = snapshot.child("Bento"+i+"/ProductIntro/").val();
-    var c = snapshot.child("Bento"+i+"/ProductPrice/").val();
-    var div_products = document.getElementById("div_products");
+      var a = snapshot.child("Bento"+i+"/ProductName/").val();
+      var b = snapshot.child("Bento"+i+"/ProductIntro/").val();
+      var c = snapshot.child("Bento"+i+"/ProductPrice/").val();
+      var div_products = document.getElementById("div_products");
 
     div_products.innerHTML+="<div class='card'><div class='card-content'>品名:<span id='name"+i+"'>"+a+"</span><br>價格:<span id='price"+i+"'>"+c+" </span><br>數量<span id = 'number"+i+"'>0</span><br>小計:<span id='total"+i+"'>0</span><br><div id='people_in"+i+"'><button type='button' class='btn' onclick='javascript:add_number("+i+")' >+</button> <button type='button'  class='btn' onclick='javascript:del_number("+i+")' >-</button></div></div></div>";
-  }
+
+    //
+    // database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/"+"TEST"+"/").set({
+    //   number : 0,
+    //   price : c,
+    //   total : 0,
+    //   name : a
+    // });
+    }
 });
 }
 /////////////////////
+function TimeFunction(){
+  var theDate = new Date();
+  var theTime = theDate.getTime();
 
+  var OrderId = document.getElementById("OrderId").value;
+
+  database.ref("Orders/"+OrderId+"/OrderDetail/time/").set(theTime);
+}
 
 function add_number(i){
 
@@ -225,8 +243,13 @@ function add_number(i){
       total : total_i,
       name : name_i
     });
+
+
+
   });
 
+
+setTimeout(TimeFunction,1000);
 }
 
 function del_number(i){
@@ -315,6 +338,9 @@ document.getElementById("a_tab2").click();  ////tab轉到訂餐
 
 //////////////////read people orders////////////////////////
 
+
+
+
 function check(){
 var OrderId = document.getElementById("OrderId").value;
 
@@ -338,8 +364,9 @@ database.ref("Orders/"+OrderId+"/OrderDetail/").on("value", function(snapshot) {
           var childPrice = childSnapshot.child("price").val();
           var childTotal = childSnapshot.child("total").val();
           var childBento = childSnapshot.child("name").val();
+          if(childNumber!=0){
           document.getElementById("joinPeople").innerHTML+="<div class='row'><div class='col s12'><b><p>"+key+":"+childBento+"</p></b><p>數量:"+childNumber+" 價格:"+childPrice+" 小計:"+childTotal+"</p></div></div><hr>";
-
+          }
       });
     });
 

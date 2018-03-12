@@ -87,8 +87,9 @@
                     return;
                 str += '<h3>'+key+'</h3>';
                 str += '<div class="row">'
+                // console.log(Object.keys(value));
                 $.each(value, function(k, v){
-                    str += '<div class="token"><span>'+k+'</span></div>';
+                    str += '<div class="token" onclick="javascript:token_info(\'' + key + '/' + k +'\')"><span>'+k+'</span></div>';
                     // console.log(k +"XXXX"+ JSON.stringify(v));
                     
                 });
@@ -96,9 +97,37 @@
             });
             $('#showQueue').append(str);
         });
+
+        function token_info(tokenLink){
+            var tokenRef = database.ref("Queue/"+tokenLink);
+            
+            var edit_str = "";
+            tokenRef.once('value', function (snapshot) {
+                $('#modal1-content').empty();
+                var obj = snapshot.val();
+                edit_str += '<h4>序號：' + obj.reservationID + '號</h4>';
+                edit_str += '<h4>訂位人：' + obj.reservationName + '</h4>';
+                edit_str += '<h4>人數：' + obj.reservationNumPeople + '人</h4>';
+                edit_str += '<h4>聯絡電話：' + obj.reservationTelephone + '</h4>';
+               
+            });
+            $('#modal1-content').append(edit_str);
+            $('#modal1').modal('open');
+        }
+ 
+ 
+
     </script>
     <div id="showQueue">
         
+    </div>
+    <div id="modal1" class="modal">
+        <div id="modal1-content" class="modal-content">
+    
+        </div>
+        <div class="modal-footer">
+            <a href="#!" id="edit_submit" class="modal-action modal-close waves-effect waves-green btn">更新</a>
+        </div>
     </div>
 </body>
 

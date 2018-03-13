@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <link rel="stylesheet" href="../css/main.css">
+
+    <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyDHJvCW6LwYl0fih2PynaWmX3fYGqmel00",
+        authDomain: "all-store-a0408.firebaseapp.com",
+        databaseURL: "https://all-store-a0408.firebaseio.com",
+        projectId: "all-store-a0408",
+        storageBucket: "",
+        messagingSenderId: "982261178985"
+      };
+      firebase.initializeApp(config);
+    </script>
+
+    <title>JOINUS</title>
+  </head>
+  <body>
+
+    <!-- navbar -->
+    <!-- <div id="navbar"></div> -->
+
+    <!-- <script type="text/javascript">
+    var ajax = new XMLHttpRequest();
+    ajax.open("GET", "/navbar.html", false);
+    ajax.send();
+    document.getElementById("navbar").innerHTML += ajax.responseText;
+    </script>
+    <script type="text/javascript">$(".button-collapse").sideNav();</script> -->
+    <link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet'>
+    <nav>
+      <div class='nav-wrapper'>
+        <a href='./index.html' class='brand-logo'>BENTO</a>
+        <a href='#' data-activates='mobile-demo' class='button-collapse'><i class='material-icons'>menu</i></a>
+        <ul class='right hide-on-med-and-down'>
+          <li><a href='#'>Default</a></li>
+          <li><a href='#'>Default</a></li>
+          <li><a href='#'>Default</a></li>
+          <li><a href='#'>Default</a></li>
+        </ul>
+        <ul class='side-nav' id='mobile-demo'>
+          <li><a href='#'>Default</a></li>
+          <li><a href='#'>Default</a></li>
+          <li><a href='#'>Default</a></li>
+          <li><a href='#'>Default</a></li>
+        </ul>
+      </div>
+    </nav>
+    </div>
+<script type="text/javascript">$(".button-collapse").sideNav();</script>
+
+
+  <!-- navbar -->
+
+<br>
+
+<div class="container">
+
+<h4 style="text-align:left;">基本資料</h4>
+<hr>
+  <div class="card">
+
+    <div class="container">
+
+<form class="col s12" id="form1" action="javascript:addshop()" method="post">
+<br>
+
+  <div class="row">
+    <div class="input-field col s12">
+      <input type="text" id="shopName" name= value="">
+      <label for="shopName">商店名稱</label>
+  </div>
+</div>
+
+  <div class="row">
+    <div class="input-field col s12">
+      <input type="text" id="firebaseID" name="firebaseID" value="">
+      <label for="firebaseID">Firebase序號</label>
+  </div>
+</div>
+
+<div class="row">
+
+  <input type="submit" class="btn" name="" value="下一步">
+<br>  <br>
+</div>
+</form>
+    </div>
+</div>
+</div>
+  </body>
+
+  <script type="text/javascript">
+
+  var database = firebase.database();
+
+function addshop(){
+  var shopName = document.getElementById("shopName").value;
+  var firebaseID = document.getElementById("firebaseID").value;
+  database.ref("stores").once("value").then(function(snapshot){
+    var counter = snapshot.child("counter").val();
+    counter++;
+    database.ref("stores/"+"shop"+counter).set({
+      shopName:shopName,
+      firebaseID:firebaseID
+    });
+    database.ref("stores/counter").set(counter);
+  });
+
+document.getElementById("form1").reset();
+}
+  </script>
+
+
+</html>

@@ -91,6 +91,13 @@
 </div>
 
 <div class="row">
+  <div class="input-field col s12">
+    <input type="text" id="apiKey" name="apiKey" value="">
+    <label for="apiKey">apiKey</label>
+</div>
+</div>
+
+<div class="row">
 
   <input type="submit" class="btn" name="" value="下一步">
 <br>  <br>
@@ -108,12 +115,15 @@
 function addshop(){
   var shopName = document.getElementById("shopName").value;
   var firebaseID = document.getElementById("firebaseID").value;
+  var apiKey = document.getElementById("apiKey").value;
+
   database.ref("stores").once("value").then(function(snapshot){
     var counter = snapshot.child("counter").val();
     counter++;
     database.ref("stores/"+"shop"+counter).set({
       shopName:shopName,
-      firebaseID:firebaseID
+      firebaseID:firebaseID,
+      apiKey:apiKey
     });
     database.ref("stores/counter").set(counter);
   });

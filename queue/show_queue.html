@@ -13,18 +13,32 @@
     <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.0.7/sweetalert2.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.0.7/sweetalert2.all.js"></script>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <script>
         $(document).ready(function () {
 
             $('select').material_select();
             $('.modal').modal();
+            // $('.carousel').carousel();
+            $('.carousel.carousel-slider').carousel({ fullWidth: true});
+            var token_type = ['1P', '2P', '3P', '4P', '5P'];
+            var i = 0;
+            $('#show_token_type').append('<h3>' + token_type[i] + '</h3>');
+            
+            setInterval(function(){
+                $('#show_token_type').empty();
+                $('.carousel').carousel('next');
+                i++;
+                i %= 5;
+                $('#show_token_type').append('<h3>'+token_type[i]+'</h3>');
+            }, 4000);
+            
         });
     </script>
     <style>
         :root {
-            --token-width: 100px;
-            --token-height: 100px;
+            --token-width: 200px;
+            --token-height: 200px;
 
         }
 
@@ -33,17 +47,22 @@
         }
 
         .token {
+            display: inline-block;
             width: var(--token-width);
             height: var(--token-height);
             background-color: #bbdefb;
             border-radius: 100%;
             text-align: center;
             box-shadow: 0 0 30px #424242;
+            position: relative;
+            transform:translateY(50%);
+            
+            
         }
 
         .token span {
             line-height: var(--token-height);
-            font-size: 50px;
+            font-size: 40px;
         }
     </style>
 </head>
@@ -78,7 +97,65 @@
             </ul>
         </div>
     </nav>
+    <script>
+        queueRef = database.ref("/Queue");
 
+        // Test
+        // var test = {
+        //     "1P": null,
+        //     "2P": 3,
+        //     "3P": 1, 
+        //     "4P": 6, 
+        //     "5P": null
+        // };
+        // queueRef.child("call").set(test);
+
+
+        callRef = database.ref("/Queue/call");
+        callRef.on('value', function(snapshot){
+        var obj = snapshot.val();
+            for(var i = 1; i <= 5; i++){
+                if (obj[i+'P'] == undefined)
+                    $('#show_'+i+'P').append('<div class="token "><span>暫無人排隊</span></div>');
+                else 
+                    $('#show_' + i + 'P').append('<div class="token"><span>'+obj[i+'P']+'</span></div>');                    
+            }
+        });
+    </script>
+    <div class="row"></div>
+    <div class="row">
+        <div class="col s2 m1 l1 " id="show_token_type"></div>
+        <div class="col m1 l1"></div>
+        <div class="col s10 m8 l8" id="show_token">
+            
+            <div class="carousel carousel-slider center" data-indicators="true">
+                <div class="carousel-fixed-item center">
+                    <!-- <a class="btn waves-effect white grey-text darken-text-2">button</a> -->
+                </div>
+                <div class="carousel-item red white-text" href="#one!" id="show_1P">
+                    <!-- <h2>First Panel</h2> -->
+                    <!-- <p class="white-text">This is your first panel</p> -->
+                </div>
+                <div class="carousel-item amber white-text" href="#two!" id="show_2P">
+                    <!-- <h2>Second Panel</h2> -->
+                    <!-- <p class="white-text">This is your second panel</p> -->
+                </div>
+                <div class="carousel-item green white-text" href="#three!" id="show_3P">
+                    <!-- <h2>Third Panel</h2> -->
+                    <!-- <p class="white-text">This is your third panel</p> -->
+                </div>
+                <div class="carousel-item blue white-text" href="#four!" id="show_4P">
+                    <!-- <h2>Fourth Panel</h2> -->
+                    <!-- <p class="white-text">This is your fourth panel</p> -->
+                </div>
+                <div class="carousel-item orange white-text" href="#five!" id="show_5P">
+                    <!-- <h2>Fifth Panel</h2> -->
+                    <!-- <p class="white-text">This is your fourth panel</p> -->
+                </div>
+            </div>
+        </div>
+        
+    </div>
     
 
 </body>

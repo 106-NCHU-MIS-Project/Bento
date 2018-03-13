@@ -187,29 +187,28 @@
 
                 });     
 
-                queueRef = database.ref("/Queue");
-                queueRef.on("value", function (snapshot) {
-                    var obj = snapshot.val();
-                    var str = "";
-                    $.each(obj, function (key, value) {
-                        if (key == 'counter')
-                            return;
-                        str += '<h3>' + key + '</h3>';
-                        str += '<div class="row">'
-                        // console.log(Object.keys(value));
-                        $.each(value, function (k, v) {
-                            str += '<div class="token" style="float:left" onclick="javascript:token_info(\'' + key + '/' + k + '\')"><span>' + k + '</span></div>';
-                            // console.log(k +"XXXX"+ JSON.stringify(v));
-
-                        });
-                        str += '</div>';
-                    });
-                    $('#queue').append(str);
-                });     
-
 
             }
         });
+        queueRef = database.ref("/Queue");
+        queueRef.on("value", function (snapshot) {
+            var obj = snapshot.val();
+            var str = "";
+            $.each(obj, function (key, value) {
+                if (key == 'counter')
+                    return;
+                str += '<h3>' + key + '</h3>';
+                str += '<div class="row">'
+                // console.log(Object.keys(value));
+                $.each(value, function (k, v) {
+                    str += '<div class="token" style="float:left" onclick="javascript:token_info(\'' + key + '/' + k + '\')"><span>' + k + '</span></div>';
+                    // console.log(k +"XXXX"+ JSON.stringify(v));
+
+                });
+                str += '</div>';
+            });
+            $('#queue').append(str);
+        });     
 
     
     

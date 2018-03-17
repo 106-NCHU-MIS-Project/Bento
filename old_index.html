@@ -10,21 +10,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
     <link rel="stylesheet" href="./css/main.css">
 
-    <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
-
-<script type="text/javascript">
-// Initialize Firebase
-var config = {
-  apiKey: "AIzaSyDHJvCW6LwYl0fih2PynaWmX3fYGqmel00",
-  authDomain: "all-store-a0408.firebaseapp.com",
-  databaseURL: "https://all-store-a0408.firebaseio.com",
-  projectId: "all-store-a0408",
-  storageBucket: "",
-  messagingSenderId: "982261178985"
-};
-firebase.initializeApp(config);
-
-</script>
 
 
     <title>index</title>
@@ -67,42 +52,21 @@ firebase.initializeApp(config);
   <!-- navbar -->
 
 <br>
-<div class='container' id='store_list'>
 
-<br><br><br><br><br><br><br><br><br>
-  <div class="preloader-wrapper big active">
-    <div class="spinner-layer spinner-blue-only">
-      <div class="circle-clipper left">
-        <div class="circle"></div>
-      </div><div class="gap-patch">
-        <div class="circle"></div>
-      </div><div class="circle-clipper right">
-        <div class="circle"></div>
-      </div>
+      <div class="container">
+
+      <div class="card">
+<br><br>
+        <div class="row"><div class="col s12"><a class="waves-effect waves-light btn-large" href="./stores.html">店家列表</a></div></div>
+        <div class="row"><div class="col s12"><a class="waves-effect waves-light btn-large" href="./QRcode/qrcode.html">開新訂單</a></div></div>
+        <div class="row"><div class="col s12"><a class="waves-effect waves-light btn-large" href="./QRcode/Scanner.html">進入訂單</a></div></div>
+        <div class="row"><div class="col s12"><a class="waves-effect waves-light btn-large" href="./restaurant_receive.html">店家接收</a></div></div>
+        <div class="row"><div class="col s12"><a class="waves-effect waves-light btn-large" href="./Delivery/index.html">外送人員</a></div></div>
+        <div class="row"><div class="col s12"><a class="waves-effect waves-light btn-large" href="./JoinUS/JoinUS.html">加入我們</a></div></div>
+
+<br>
     </div>
-  </div>
-
-
-
-
 </div>
-
-<script type="text/javascript">
-
-var database = firebase.database();
-
-  database.ref("stores").once("value").then(function(snapshot){
-    var counter = snapshot.child("counter").val();
-    document.getElementById("store_list").innerHTML="";
-    for(var i =1 ; i<=counter ; i++){
-      var temp = snapshot.child("shop"+i+"/shopName").val();
-      var store_list = document.getElementById("store_list");
-
-      store_list.innerHTML +=   "<div class='col s12 m8 offset-m2 l6 offset-l3'><div class='card-panel grey lighten-5 z-depth-1'><div class='row valign-wrapper'><div class='col s2'><img src='image/test.png' alt='' class='responsive-img'></div><div class='col s10'><span class='black-text'>"+temp+"</span></div></div></div></div>";
-    }
-  });
-
-</script>
 
   </body>
 </html>

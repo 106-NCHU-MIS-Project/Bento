@@ -107,6 +107,8 @@
                             $.each(value, function(k, v){
                                 if (k == 'counter')
                                     return;
+                                if (k == 'available')
+                                    return;
                                 tmp += '<div class="col s12 m3 l3" onclick="javascript:edit(\''+key+'/'+v.tableNum+'\')">';
                                 if (v.tableStatus == 'free')
                                     tmp += '<div class="card green accent-3">';
@@ -126,6 +128,8 @@
                             var tmp = '<div id="2P"><h3>2人座</h3><div class="row">';
                             $.each(value, function (k, v) {
                                 if (k == 'counter')
+                                    return;
+                                if (k == 'available')
                                     return;
                                 tmp += '<div class="col s12 m3 l3" onclick="javascript:edit(\'' + key + '/' + v.tableNum +'\')">';
                                 if (v.tableStatus == 'free')
@@ -147,6 +151,8 @@
                             $.each(value, function (k, v) {
                                 if (k == 'counter')
                                     return;
+                                if (k == 'available')
+                                    return;
                                 tmp += '<div class="col s12 m3 l3" onclick="javascript:edit(\'' + key + '/' + v.tableNum +'\')">';
                                 if (v.tableStatus == 'free')
                                     tmp += '<div class="card green accent-3">';
@@ -166,6 +172,8 @@
                             var tmp = '<div id="5P"><h3>5人座以上</h3><div class="row">';
                             $.each(value, function (k, v) {
                                 if (k == 'counter')
+                                    return;
+                                if (k == 'available')
                                     return;
                                 tmp += '<div class="col s12 m3 l3" onclick="javascript:edit(\'' + key + '/' + v.tableNum +'\')">';
                                 if (v.tableStatus == 'free')
@@ -196,6 +204,8 @@
             var str = "";
             $.each(obj, function (key, value) {
                 if (key == 'counter')
+                    return;
+                if (key == 'call')
                     return;
                 str += '<h3>' + key + '</h3>';
                 str += '<div class="row">'
@@ -344,12 +354,14 @@
         </div>
     </div>
     <script>
+        var origin_table_status = 'free';
         function edit(tableName){
             var tableRef = database.ref("Table/"+tableName);
             var edit_str = "";
             tableRef.once('value', function (snapshot) {
                 $('#modal1-content').empty();
                 var obj = snapshot.val();
+                origin_table_status = obj.tableStatus;
                 edit_str += '<h4>桌號：'+ obj.tableNum + '號桌</h4>';
                 edit_str += '<input value="' + obj.tableNum + '" id="tableNum" type="text" style="display:none" class="validate">';
                 edit_str += '<input value="' + tableName + '" id="tableRef" type="text" style="display:none" class="validate">';                
@@ -378,11 +390,32 @@
         }
 
         $('#edit_submit').on('click', function () {
+            var availableRef = database.ref("Table/" + $('#tableRef').val().slice(0, 2) + "/available");
+            availableRef.once("value", function(snapshot){
+                var tmp = snapshot.val();
+                if (origin_table_status == 'free')
+                {
+                    if (origin_table_status == $("input[name=TableStatus]:checked").val()){}
+                    else
+                    {
+                        tmp--;
+                    }
+                }
+                else 
+                {
+                    if ($("input[name=TableStatus]:checked").val() == 'free') 
+                    {
+                        tmp++;
+                    }                    
+                }
+                availableRef.set(tmp);
+            });
             var obj = {
                 tableNum: $('#tableNum').val(),
                 tableStatus: $("input[name=TableStatus]:checked").val()
             };
             var tableRef = database.ref("Table/" + $('#tableRef').val());
+            
             tableRef.set(obj);
 
         });
@@ -396,6 +429,7 @@
                     tableStatus: 'free'
                 };
                 p1.counter = $('#table_1p').val().length;
+                p1.available = $('#table_1p').val().length;
                 
             });
             $.each($('#table_2p').val(), function (key, value) {
@@ -405,6 +439,8 @@
                     tableStatus: 'free'
                 };
                 p2.counter = $('#table_2p').val().length;
+                p2.available = $('#table_2p').val().length;
+                
             });
             $.each($('#table_4p').val(), function (key, value) {
                 var tmp = {};
@@ -413,6 +449,8 @@
                     tableStatus: 'free'
                 };
                 p4.counter = $('#table_4p').val().length;
+                p4.available = $('#table_4p').val().length;
+                
             });
             $.each($('#table_5p').val(), function (key, value) {
                 var tmp = {};
@@ -421,12 +459,14 @@
                     tableStatus: 'free'
                 };
                 p5.counter = $('#table_5p').val().length;
+                p5.available = $('#table_5p').val().length;
             });
             
             rootRef.child('Table/1P').set(p1);
             rootRef.child('Table/2P').set(p2);
             rootRef.child('Table/4P').set(p4);
             rootRef.child('Table/5P').set(p5);
+                        
             location.reload();
         }
 

@@ -69,9 +69,11 @@ a{
     </div>
 <script type="text/javascript">$(".button-collapse").sideNav();</script>
 
+<div class="">
+
 
   <!-- navbar -->
-<div class="row" style="margin-bottom:0px!important;">
+<div class="row" style="margin-bottom:0px!important;border-bottom:9px white solid">
     <div class="carousel carousel-slider" data-indicators="true">
       <a class="carousel-item" href="#one!"><img src="./image/food1.jpg"></a>
       <a class="carousel-item" href="#two!"><img src="./image/food2.jpg"></a>
@@ -84,7 +86,17 @@ a{
     </div>
 </div>
 
-<div class="row" style="margin-bottom:0px!important;opacity:0.85;">
+<script type="text/javascript">
+
+function autoplay() {
+  $('.carousel').carousel('next');
+  setTimeout(autoplay, 3000);
+}
+autoplay();
+</script>
+
+
+<div class="row" style="margin-bottom:0px!important;opacity:0.9;border-bottom:9px white solid;">
 
 <a href="./stores.html" >
   <div class="col s7 waves-effect waves-light" style="width:(100/12*3)%;background-color:#ffca28;background-image:url('./image/food8.jpg'); background-size:cover; background-repeat:no-repeat; padding-top:8vh;padding-bottom:8vh; text-align:center;">
@@ -101,7 +113,7 @@ a{
 
 </div>
 
-<div class="row" style="margin-bottom:0px!important;opacity:0.85;">
+<div class="row" style="margin-bottom:0px!important;opacity:0.9;border-bottom:9px white solid;">
 
   <a href="./QRcode/Scanner.html">
     <div class="col s4 waves-effect waves-light" style="width:(100/3)%;background-color:#4fc3f7;background-image:url('./image/food6.jpg'); background-size:cover; background-repeat:no-repeat; padding-top:8vh;padding-bottom:8vh; text-align:center;">
@@ -125,7 +137,7 @@ a{
 
 
 
-<div class="row" style="margin-bottom:0px!important;opacity:0.85;">
+<div class="row" style="margin-bottom:0px!important;opacity:0.9;border-bottom:9px white solid;">
 
 <a href="#?">
   <div class="col s6 waves-effect waves-light" style="width:50%;background-color:#4caf50; background-image:url('./image/food3.jpg'); background-size:cover; background-repeat:no-repeat; padding-top:8vh;padding-bottom:8vh; text-align:center;">
@@ -141,7 +153,7 @@ a{
 
 </div>
 
-<div class="row" style="margin-bottom:0px!important;opacity:0.85;">
+<div class="row" style="margin-bottom:0px!important;opacity:0.9;">
 
 <a href="#?">
   <div class="col s4 waves-effect waves-light" style="width:(100%/3);background-color:#e040fb;background-image:url('./image/food1.jpg'); background-size:cover; background-repeat:no-repeat; padding-top:8vh;padding-bottom:8vh; text-align:center;">
@@ -156,7 +168,7 @@ a{
 </a>
 
 </div>
-
+</div>
 
 
   </body>

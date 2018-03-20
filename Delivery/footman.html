@@ -11,6 +11,8 @@
   </head>
   <body>
 <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
+<script src="jquery.min.js"></script>
+<script src="jquery.tinyMap‐3.4.10.min.js"></script>
 <script>
 
   // Initialize Firebase
@@ -32,8 +34,7 @@
   var marker;
   var uluru = {lat: 24.121045, lng: 120.673275};
   var id = null;
-  var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  var labelIndex = 0;
+
   // Initialize Google map
 
      function initMap() {
@@ -41,12 +42,15 @@
          zoom: 13,
          center: uluru
        });
+
+  ////////新增Marker/////////////////////////////
+
+////////////////////////////////////////////////////////
        marker = new google.maps.Marker({
          position: uluru,
          map: map
        });
      }
-
 ////////取得現在地址////////////////////////////
     function setPosition(id){
      if (navigator.geolocation) {
@@ -65,16 +69,49 @@
      });
    }
 
-   function addMarker(location, map) {
-        var marker = new google.maps.Marker({
-          position: location,
-          label: labels[labelIndex++ % labels.length],
-          map: map
-        });
-      }
-
+/////將地址轉爲經緯度////////////////////
+function addressToLatLng(addr) {
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({
+        "address": addr
+    }, function (results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            map.setCenter(results[0].geometry.location);
+            var marker = new google.maps.Marker({
+	                map: map,
+	                position: results[0].geometry.location
+	            });
+              var bounds = new google.maps.LatLngBounds();
+              bounds.extend(results[0].geometry.location);
+              map.fitBounds(bounds);
+        } else {
+          alert('Geocode was not successful for the following reason: ' + status);
+        }
+    });
+}
 //////////////////讀資料////////////////////////
+  function readAddress(){
+    database.ref("Orders/EM7412/OrderInfo").on("value", function(snapshot) {
+      var a = snapshot.val().Address;
+      addressToLatLng(a);
+  });
+  }
 
+
+    function readAddress2(){
+      database.ref("Orders/IC6558/OrderInfo").on("value", function(snapshot) {
+        var a = snapshot.val().Address;
+        addressToLatLng(a);
+    });
+    }
+
+    function readAddress3(){
+      database.ref("Orders/QA8088/OrderInfo").on("value", function(snapshot) {
+      var a = snapshot.val().Address;
+      addressToLatLng(a);
+    });
+    }
+/////////////////////////////////////////////////
   function resetPosition(){
 
      if (navigator.geolocation) {
@@ -89,7 +126,7 @@
                  center: haightAshbury
                });
                var center = new google.maps.LatLng(a, b);
-               map.setZoom(17);
+               ////map.setZoom(17);
                map.panTo(center);
              document.getElementById("demo").innerHTML = "Latitude:"+a+"<br>Longitude:"+b;
       })
@@ -98,9 +135,11 @@
        }
 
 }
-
-  setInterval(setPosition(id),15000);
-  setInterval(resetPosition(),5000);
+  readAddress();
+  readAddress2();
+  readAddress3();
+  var t1 = window.setInterval("setPosition("+id+")",15000);
+  var t2 = window.setInterval("resetPosition()",5000);
 
 
 </script>

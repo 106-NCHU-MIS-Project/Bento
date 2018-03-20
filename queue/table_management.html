@@ -13,7 +13,7 @@
     <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.0.7/sweetalert2.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.0.7/sweetalert2.all.js"></script>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <script>
         $(document).ready(function(){
             
@@ -197,7 +197,40 @@
 
 
             }
+            var obj = snapshot.child("Table").val();
+            
+                
+            if(obj['1P'].available !== 0)
+            {
+                var available_call = obj['1P'].available; //- $('#1P_queue').children().length;
+                
+                for(var i = 0; i < available_call; i++)
+                {
+                    console.log('#1P_' + Number(i+1));
+                    $('#1P_' + Number(i + 1)).css("background-color", "#69f0ae");
+                    $('#1P_' + Number(i + 1)).addClass('animated bounce infinite');
+                }
+            }
+            else if (obj['1P'].available == 0)
+            {
+                $('#1P_' + Number(i + 1)).removeClass('animated bounce infinite');                
+            }
+            
+            if (obj['2P'].available !== 0) {
+                // - $('#2P_queue').children().length
+                var available_call = obj['2P'].available;
+
+                for (var i = 0; i < available_call; i++) {
+                    console.log('#2P_' + Number(i + 1));
+                    $('#2P_' + Number(i + 1)).css("background-color", "#69f0ae");
+                    $('#2P_' + Number(i + 1)).addClass('animated bounce infinite');
+                }
+            }
+
         });
+
+        
+
         queueRef = database.ref("/Queue");
         queueRef.on("value", function (snapshot) {
             var obj = snapshot.val();
@@ -208,10 +241,12 @@
                 if (key == 'call')
                     return;
                 str += '<h3>' + key + '</h3>';
-                str += '<div class="row">'
+                str += '<div class="row" id="'+key+'_queue">'
                 // console.log(Object.keys(value));
+                var count = 0;
                 $.each(value, function (k, v) {
-                    str += '<div class="token" style="float:left" onclick="javascript:token_info(\'' + key + '/' + k + '\')"><span>' + k + '</span></div>';
+                    count++;
+                    str += '<div class="token" id="'+key+"_"+count+'" style="float:left" onclick="javascript:token_info(\'' + key + '/' + k + '\')"><span>' + k + '</span></div>';
                     // console.log(k +"XXXX"+ JSON.stringify(v));
 
                 });

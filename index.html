@@ -10,7 +10,28 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
     <link rel="stylesheet" href="./css/main.css">
 
+<style media="screen">
+body{
+  font-size: 20px;
+}
+a{
+  color:black;
+  text-decoration: none;
 
+}
+.font1{
+  color:white;
+  font-size: 22px;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+
+}
+.font2{
+  color:white;
+  font-size: 20px;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+
+}
+</style>
 
     <title>index</title>
   </head>
@@ -28,7 +49,7 @@
     <script type="text/javascript">$(".button-collapse").sideNav();</script> -->
     <link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet'>
     <nav>
-      <div class='nav-wrapper'>
+      <div class='nav-wrapper #00838f cyan darken-4'>
         <a href='./index.html' class='brand-logo'>BENTO</a>
         <a href='#' data-activates='mobile-demo' class='button-collapse'><i class='material-icons'>menu</i></a>
         <ul class='right hide-on-med-and-down'>
@@ -48,22 +69,111 @@
     </div>
 <script type="text/javascript">$(".button-collapse").sideNav();</script>
 
+<div class="">
+
 
   <!-- navbar -->
-
-<br>
-
-      <div class="container">
-
-      <div class="card">
-<br><br>
-        <div class="row"><div class="col s12"><a class="waves-effect waves-light btn-large" href="#">店家列表</a></div></div>
-        <div class="row"><div class="col s12"><a class="waves-effect waves-light btn-large" href="./QRcode/qrcode.html">開新訂單</a></div></div>
-        <div class="row"><div class="col s12"><a class="waves-effect waves-light btn-large" href="./QRcode/Scanner.html">進入訂單</a></div></div>
-        <div class="row"><div class="col s12"><a class="waves-effect waves-light btn-large" href="./restaurant_receive.html">店家接收</a></div></div>
-        <div class="row"><div class="col s12"><a class="waves-effect waves-light btn-large" href="./Delivery/index.html">外送人員</a></div></div>
-<br>
+<div class="row" style="margin-bottom:0px!important;border-bottom:9px white solid">
+    <div class="carousel carousel-slider" data-indicators="true">
+      <a class="carousel-item" href="#one!"><img src="./image/food1.jpg"></a>
+      <a class="carousel-item" href="#two!"><img src="./image/food2.jpg"></a>
+      <a class="carousel-item" href="#three!"><img src="./image/food3.jpg"></a>
+      <a class="carousel-item" href="#four!"><img src="./image/food4.jpg"></a>
+      <a class="carousel-item" href="#three!"><img src="./image/food5.jpg"></a>
+      <a class="carousel-item" href="#four!"><img src="./image/food6.jpg"></a>
+      <a class="carousel-item" href="#three!"><img src="./image/food7.jpg"></a>
+      <a class="carousel-item" href="#four!"><img src="./image/food8.jpg"></a>
     </div>
 </div>
+
+<script type="text/javascript">
+
+function autoplay() {
+  $('.carousel').carousel('next');
+  setTimeout(autoplay, 3000);
+}
+autoplay();
+</script>
+
+
+<div class="row" style="margin-bottom:0px!important;opacity:0.9;border-bottom:9px white solid;">
+
+<a href="./stores.html" >
+  <div class="col s7 waves-effect waves-light" style="width:(100/12*3)%;background-color:#ffca28;background-image:url('./image/food8.jpg'); background-size:cover; background-repeat:no-repeat; padding-top:8vh;padding-bottom:8vh; text-align:center;">
+    <font class="font1" >瀏覽商家</font>
+  </div>
+</a>
+
+<a href="./QRcode/qrcode.html">
+  <div class="col s5 waves-effect waves-light" style="width:(100/12*3)%;background-color:#bcaaa4;background-image:url('./image/food7.jpg'); background-size:cover; background-repeat:no-repeat; padding-top:8vh;padding-bottom:8vh; text-align:center;">
+  <font class="font1">發起揪團</font>
+  </div>
+</a>
+
+
+</div>
+
+<div class="row" style="margin-bottom:0px!important;opacity:0.9;border-bottom:9px white solid;">
+
+  <a href="./QRcode/Scanner.html">
+    <div class="col s4 waves-effect waves-light" style="width:(100/3)%;background-color:#4fc3f7;background-image:url('./image/food6.jpg'); background-size:cover; background-repeat:no-repeat; padding-top:8vh;padding-bottom:8vh; text-align:center;">
+      <font class="font2">加入團購</font>
+    </div>
+  </a>
+
+<a href="./restaurant_receive.html">
+  <div class="col s4 waves-effect waves-light" style="width:(100/3)%;background-color:#0097a7;background-image:url('./image/food5.jpg'); background-size:cover; background-repeat:no-repeat; padding-top:8vh;padding-bottom:8vh; text-align:center;">
+    <font class="font2">店家接收</font>
+  </div></a>
+
+<a href="./JoinUS/JoinUS.html">
+  <div class="col s4 waves-effect waves-light" style="width:(100/3)%;background-color:#eeff41; background-image:url('./image/food4.jpg'); background-size:cover; background-repeat:no-repeat; padding-top:8vh;padding-bottom:8vh; text-align:center;">
+    <font class="font2">加入我們</font>
+  </div></a>
+
+</div>
+
+
+
+
+
+<div class="row" style="margin-bottom:0px!important;opacity:0.9;border-bottom:9px white solid;">
+
+<a href="#?">
+  <div class="col s6 waves-effect waves-light" style="width:50%;background-color:#4caf50; background-image:url('./image/food3.jpg'); background-size:cover; background-repeat:no-repeat; padding-top:8vh;padding-bottom:8vh; text-align:center;">
+    <font class="font1">外送人員</font>
+  </div>
+</a>
+
+<a href="#?">
+  <div class="col s6 waves-effect waves-light" style="width:50%;background-color:#f06292; background-image:url('./image/food2.jpg'); background-size:cover; background-repeat:no-repeat; padding-top:8vh;padding-bottom:8vh; text-align:center;">
+    <font class="font1">XXXX</font>
+  </div>
+</a>
+
+</div>
+
+<div class="row" style="margin-bottom:0px!important;opacity:0.9;">
+
+<a href="#?">
+  <div class="col s4 waves-effect waves-light" style="width:(100%/3);background-color:#e040fb;background-image:url('./image/food1.jpg'); background-size:cover; background-repeat:no-repeat; padding-top:8vh;padding-bottom:8vh; text-align:center;">
+    <font class="font1">XXXX</font>
+  </div>
+</a>
+
+<a href="#?">
+  <div class="col s8 waves-effect waves-light" style="width:(100%/3*2);background-color:#bdbdbd; background-image:url('./image/food5.jpg'); background-size:cover; background-repeat:no-repeat; padding-top:8vh;padding-bottom:8vh; text-align:center;">
+    <font class="font1">XXXX</font>
+  </div>
+</a>
+
+</div>
+</div>
+
+
   </body>
+  <script type="text/javascript">
+  $('.carousel.carousel-slider').carousel({fullWidth: true});
+
+  </script>
 </html>

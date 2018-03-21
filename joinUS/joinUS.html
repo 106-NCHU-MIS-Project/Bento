@@ -83,7 +83,7 @@
   </div>
 </div>
 
-  <div class="row">
+<div class="row">
     <div class="input-field col s12">
       <input type="text" id="firebaseID" name="firebaseID" value="">
       <label for="firebaseID">Firebase序號</label>
@@ -94,8 +94,43 @@
   <div class="input-field col s12">
     <input type="text" id="apiKey" name="apiKey" value="">
     <label for="apiKey">apiKey</label>
+  </div>
 </div>
+
+<div class="row">
+  <div class="input-field col s12">
+    <input type="text" id="briefInfo" name="briefInfo" value="">
+    <label for="briefInfo">briefInfo</label>
+  </div>
 </div>
+
+<div class="row">
+  <div class="input-field col s12">
+    <input type="text" id="openHours" name="openHours" value="">
+    <label for="openHours">openHours</label>
+  </div>
+</div>
+
+<div class="row">
+  <div class="input-field col s12">
+    <input type="text" id="address" name="address" value="">
+    <label for="address">address</label>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="input-field col s6">
+    <input type="text" id="lat" name="lat" value="">
+    <label for="lat">lat</label>
+  </div>
+  <div class="input-field col s6">
+    <input type="text" id="lon" name="lon" value="">
+    <label for="lon">lon</label>
+  </div>
+</div>
+
+
 
 <div class="row">
 
@@ -110,21 +145,55 @@
 
   <script type="text/javascript">
 
+  function getLocation() {
+      if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(showPosition);
+      } else {
+          alert("Geolocation is not supported by this browser.");
+      }
+  }
+
+  function showPosition(position) {
+      var lat = position.coords.latitude;
+      var lon = position.coords.longitude;
+      document.getElementById("lat").value=lat;
+      document.getElementById("lon").value=lon;
+  }
+
+  getLocation();
+
+//////////////////////////////////////////////
+
+
+
   var database = firebase.database();
 
 function addshop(){
   var shopName = document.getElementById("shopName").value;
   var firebaseID = document.getElementById("firebaseID").value;
   var apiKey = document.getElementById("apiKey").value;
+  var address = document.getElementById("address").value;
+  var briefInfo = document.getElementById("briefInfo").value;
+  var openHours = document.getElementById("openHours").value;
+  var lat = document.getElementById("lat").value;
+  var lon = document.getElementById("lon").value;
 
   database.ref("stores").once("value").then(function(snapshot){
     var counter = snapshot.child("counter").val();
     counter++;
-    database.ref("stores/"+"shop"+counter).set({
-      shopName:shopName,
+    database.ref("stores/"+"shop"+counter+"/shopName").set(shopName);
+    database.ref("stores/"+"shop"+counter+"/shopInfo/address").set(address);
+    database.ref("stores/"+"shop"+counter+"/shopInfo/briefInfo").set(briefInfo);
+    database.ref("stores/"+"shop"+counter+"/shopInfo/openHours").set(openHours);
+    database.ref("stores/"+"shop"+counter+"/shopInfo/location").set({
+      lat:lat,
+      lon:lon
+    });
+
+    database.ref("stores/"+"shop"+counter+"/firebase_auth/").set({
       firebaseID:firebaseID,
       apiKey:apiKey
-    });
+    })
     database.ref("stores/counter").set(counter);
   });
 

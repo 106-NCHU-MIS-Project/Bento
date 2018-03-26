@@ -12,7 +12,6 @@
 
 <style media="screen">
 body{
-  font-size: 20px;
 }
 a{
   color:black;
@@ -30,6 +29,22 @@ a{
   font-size: 20px;
   text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 
+}
+
+.row1{
+
+}
+
+.row2{
+
+}
+
+.row3{
+
+}
+
+td{
+  text-align: center;
 }
 </style>
 
@@ -96,16 +111,24 @@ autoplay();
 </script>
 
 
-<div class="row" style="margin-bottom:0px!important;opacity:0.9;border-bottom:9px white solid;">
+<div class="row" style="margin-bottom:10px;">
+  <i class="tiny material-icons" style="color:blue;">place</i>
+<font style="text-align:center; font-size:18px;font-weight:bold;color:blue;">外送地址</font>
+  <br>
+  <font style="font-size:15px;" id="address"></font>
+</div>
+
+
+<div class="row" style="margin-bottom:0px!important;opacity:0.9;border-bottom:1px white solid;">
 
 <a href="./stores.html" >
-  <div class="col s7 waves-effect waves-light" style="width:(100/12*3)%;background-color:#ffca28;background-image:url('./image/food8.jpg'); background-size:cover; background-repeat:no-repeat; padding-top:8vh;padding-bottom:8vh; text-align:center;">
+  <div class="col s7 waves-effect waves-light" style="border:2px white solid;border-radius:20px;width:(100/12*3)%;background-color:#ffca28;background-image:url('./image/food8.jpg'); background-size:cover; background-repeat:no-repeat; padding-top:8vh;padding-bottom:8vh; text-align:center;">
     <font class="font1" >瀏覽商家</font>
   </div>
 </a>
 
 <a href="./QRcode/qrcode.html">
-  <div class="col s5 waves-effect waves-light" style="width:(100/12*3)%;background-color:#bcaaa4;background-image:url('./image/food7.jpg'); background-size:cover; background-repeat:no-repeat; padding-top:8vh;padding-bottom:8vh; text-align:center;">
+  <div class="col s5 waves-effect waves-light" style="border:2px white solid;border-radius:20px;width:(100/12*3)%;background-color:#bcaaa4;background-image:url('./image/food7.jpg'); background-size:cover; background-repeat:no-repeat; padding-top:8vh;padding-bottom:8vh; text-align:center;">
   <font class="font1">發起揪團</font>
   </div>
 </a>
@@ -113,21 +136,52 @@ autoplay();
 
 </div>
 
+
+
+<div class="row" style="margin-bottom:0px;">
+  <ul class="collapsible">
+    <li>
+      <div class="collapsible-header"><i class="material-icons">favorite</i>我的最愛</div>
+      <div class="collapsible-body" style="padding:0px;">
+        <p>目前沒有最愛清單</p>
+      </div>
+    </li>
+    <li>
+      <div class="collapsible-header" ><i class="material-icons">near_me</i>附近店家</div>
+      <div class="collapsible-body" style="padding:0px;" >
+        <table class="striped">
+          <tr>
+            <td><i class="tiny material-icons">mood</i>123</td><td>789</td><td>100m</td>
+          </tr>
+          <tr>
+            <td><i class="tiny material-icons">mood</i>abc</td><td>def</td><td>200m</td>
+          </tr>
+          <tr>
+            <td><i class="tiny material-icons">mood</i>fde</td><td>aaa</td><td>300m</td>
+          </tr>
+        </table>
+      </div>
+    </li>
+
+  </ul>
+</div>
+
+
 <div class="row" style="margin-bottom:0px!important;opacity:0.9;border-bottom:9px white solid;">
 
   <a href="./QRcode/Scanner.html">
-    <div class="col s4 waves-effect waves-light" style="width:(100/3)%;background-color:#4fc3f7;background-image:url('./image/food6.jpg'); background-size:cover; background-repeat:no-repeat; padding-top:8vh;padding-bottom:8vh; text-align:center;">
+    <div class="col s4 waves-effect waves-light" style="border:2px white solid;border-radius:20px;width:(100/3)%;background-color:#4fc3f7;background-image:url('./image/food6.jpg'); background-size:cover; background-repeat:no-repeat; padding-top:7vh;padding-bottom:7vh; text-align:center;">
       <font class="font2">加入團購</font>
     </div>
   </a>
 
 <a href="./restaurant_receive.html">
-  <div class="col s4 waves-effect waves-light" style="width:(100/3)%;background-color:#0097a7;background-image:url('./image/food5.jpg'); background-size:cover; background-repeat:no-repeat; padding-top:8vh;padding-bottom:8vh; text-align:center;">
+  <div class="col s4 waves-effect waves-light" style="border:2px white solid;border-radius:20px;width:(100/3)%;background-color:#0097a7;background-image:url('./image/food5.jpg'); background-size:cover; background-repeat:no-repeat; padding-top:7vh;padding-bottom:7vh; text-align:center;">
     <font class="font2">店家接收</font>
   </div></a>
 
 <a href="./JoinUS/JoinUS.html">
-  <div class="col s4 waves-effect waves-light" style="width:(100/3)%;background-color:#eeff41; background-image:url('./image/food4.jpg'); background-size:cover; background-repeat:no-repeat; padding-top:8vh;padding-bottom:8vh; text-align:center;">
+  <div class="col s4 waves-effect waves-light" style="border:2px white solid;border-radius:20px;width:(100/3)%;background-color:#eeff41; background-image:url('./image/food4.jpg'); background-size:cover; background-repeat:no-repeat; padding-top:7vh;padding-bottom:7vh; text-align:center;">
     <font class="font2">加入我們</font>
   </div></a>
 
@@ -176,4 +230,21 @@ autoplay();
   $('.carousel.carousel-slider').carousel({fullWidth: true});
 
   </script>
+  <script>
+var x=document.getElementById("address");
+function getLocation()
+  {
+  if (navigator.geolocation)
+    {
+    navigator.geolocation.getCurrentPosition(showPosition);
+    }
+  else{x.innerHTML="Geolocation is not supported by this browser.";}
+  }
+function showPosition(position)
+  {
+  x.innerHTML="Lat: " + parseFloat(position.coords.latitude).toFixed(5) +
+  " Lon: " + parseFloat(position.coords.longitude).toFixed(5);
+  }
+  getLocation();
+</script>
 </html>

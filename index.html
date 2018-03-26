@@ -31,17 +31,7 @@ a{
 
 }
 
-.row1{
 
-}
-
-.row2{
-
-}
-
-.row3{
-
-}
 
 td{
   text-align: center;
@@ -149,16 +139,9 @@ autoplay();
     <li>
       <div class="collapsible-header" ><i class="material-icons">near_me</i>附近店家</div>
       <div class="collapsible-body" style="padding:0px;" >
-        <table class="striped">
-          <tr>
-            <td><i class="tiny material-icons">mood</i>123</td><td>789</td><td>100m</td>
-          </tr>
-          <tr>
-            <td><i class="tiny material-icons">mood</i>abc</td><td>def</td><td>200m</td>
-          </tr>
-          <tr>
-            <td><i class="tiny material-icons">mood</i>fde</td><td>aaa</td><td>300m</td>
-          </tr>
+        <table class='striped' id='table_nearby'>
+
+
         </table>
       </div>
     </li>
@@ -246,5 +229,31 @@ function showPosition(position)
   " Lon: " + parseFloat(position.coords.longitude).toFixed(5);
   }
   getLocation();
+</script>
+
+
+<script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+
+<script type="text/javascript">
+    var config = {
+      apiKey: "AIzaSyDHJvCW6LwYl0fih2PynaWmX3fYGqmel00",
+      authDomain: "all-store-a0408.firebaseapp.com",
+      databaseURL: "https://all-store-a0408.firebaseio.com",
+      projectId: "all-store-a0408",
+      storageBucket: "",
+      messagingSenderId: "982261178985"
+    };
+    firebase.initializeApp(config);
+
+    var database = firebase.database();
+    database.ref("stores").once("value").then(function(snapshot){
+      for(var i =1 ; i<=4; i++){
+        var shopName = snapshot.child("shop"+i+"/shopName").val();
+        var shopBriefInfo = snapshot.child("shop"+i+"/shopInfo/briefInfo").val();
+        var table_nearby = document.getElementById("table_nearby");
+        table_nearby.innerHTML+="<tr><td><i class='tiny material-icons'>mood</i>"+shopName+"</td><td>"+shopBriefInfo+"</td><td>"+50*i+"m</td></tr>";
+      }
+});
+
 </script>
 </html>

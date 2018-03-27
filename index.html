@@ -133,7 +133,10 @@ autoplay();
     <li>
       <div class="collapsible-header"><i class="material-icons">favorite</i>我的最愛</div>
       <div class="collapsible-body" style="padding:0px;">
-        <p>目前沒有最愛清單</p>
+        <p id="favorite_p_status">目前沒有最愛清單</p>
+        <table class="striped" id="table_favorite">
+
+        </table>
       </div>
     </li>
     <li>
@@ -251,9 +254,23 @@ function showPosition(position)
         var shopName = snapshot.child("shop"+i+"/shopName").val();
         var shopBriefInfo = snapshot.child("shop"+i+"/shopInfo/briefInfo").val();
         var table_nearby = document.getElementById("table_nearby");
-        table_nearby.innerHTML+="<tr><td><i class='tiny material-icons'>mood</i>"+shopName+"</td><td>"+shopBriefInfo+"</td><td>"+50*i+"m</td></tr>";
+        table_nearby.innerHTML+="<tr><td><i class='tiny material-icons'>mood</i>"+shopName+"</td><td>"+shopBriefInfo+"</td><td>"+(7*i*i+9*i+1)+"m</td></tr>";
       }
 });
+
+</script>
+
+<script type="text/javascript">
+  // localStorage
+var favorite_counter = localStorage.favorite_store_counter;
+var favorite_p_status = document.getElementById("favorite_p_status");
+for(var i = 1 ; i<=favorite_counter ; i++){
+
+  var value = window.localStorage.getItem("favorite_store"+i);
+  var table_favorite = document.getElementById("table_favorite");
+  table_favorite.innerHTML+="<tr><td>"+i+"</td><td>"+value+"</td></tr>";
+}
+
 
 </script>
 </html>

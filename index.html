@@ -261,9 +261,12 @@ function showPosition(position)
 </script>
 
 <script type="text/javascript">
-  // localStorage
+  // localStorage  favorite_store list
 var favorite_counter = localStorage.favorite_store_counter;
-var favorite_p_status = document.getElementById("favorite_p_status");
+if(favorite_counter>0){
+  var favorite_p_status = document.getElementById("favorite_p_status");
+  favorite_p_status.remove();
+}
 for(var i = 1 ; i<=favorite_counter ; i++){
 
   var value = window.localStorage.getItem("favorite_store"+i);

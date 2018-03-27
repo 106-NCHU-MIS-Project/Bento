@@ -197,35 +197,8 @@
 
 
             }
-            var obj = snapshot.child("Table").val();
-            
-                
-            if(obj['1P'].available !== 0)
-            {
-                var available_call = obj['1P'].available; //- $('#1P_queue').children().length;
-                
-                for(var i = 0; i < available_call; i++)
-                {
-                    console.log('#1P_' + Number(i+1));
-                    $('#1P_' + Number(i + 1)).css("background-color", "#69f0ae");
-                    $('#1P_' + Number(i + 1)).addClass('animated bounce infinite');
-                }
-            }
-            else if (obj['1P'].available == 0)
-            {
-                $('#1P_' + Number(i + 1)).removeClass('animated bounce infinite');                
-            }
-            
-            if (obj['2P'].available !== 0) {
-                // - $('#2P_queue').children().length
-                var available_call = obj['2P'].available;
+            check_available_token();
 
-                for (var i = 0; i < available_call; i++) {
-                    console.log('#2P_' + Number(i + 1));
-                    $('#2P_' + Number(i + 1)).css("background-color", "#69f0ae");
-                    $('#2P_' + Number(i + 1)).addClass('animated bounce infinite');
-                }
-            }
 
         });
 
@@ -255,6 +228,171 @@
             $('#queue').append(str);
         });     
 
+
+        function check_available_token(){
+            var rootRef = database.ref("/");
+            rootRef.once('value', function(snapshot){
+
+                var obj = snapshot.child("Table").val();
+
+
+                if (obj['1P'].available !== 0) {
+                    var available_call = obj['1P'].available; //- $('#1P_queue').children().length;
+
+                    for (var i = 0; i < $('#1P_queue').children().length; i++) {
+                        $('#1P_' + Number(i + 1)).removeClass('animated bounce infinite');
+                        $('#1P_' + Number(i + 1)).css("background-color", "#bbdefb");
+                    }
+
+                    for (var i = 0; i < available_call; i++) {
+                        console.log('#1P_' + Number(i + 1));
+                        $('#1P_' + Number(i + 1)).css("background-color", "#69f0ae");
+                        $('#1P_' + Number(i + 1)).addClass('animated bounce infinite');
+                    }
+
+                    if (available_call % 2 == 0)
+                    {
+                        var available_2P = available_call / 2;
+                        // for (var i = 0; i < $('#2P_queue').children().length; i++) {
+                        //     $('#2P_' + Number(i + 1)).removeClass('animated bounce infinite');
+                        //     $('#2P_' + Number(i + 1)).css("background-color", "#bbdefb");
+                        // }
+
+                        for (var i = 0; i < available_2P; i++) {
+
+                            console.log('#2P_' + Number(i + 1));
+                            $('#2P_' + Number(i + 1)).css("background-color", "#eeff41");
+                            $('#2P_' + Number(i + 1)).addClass('animated bounce infinite');
+                        }
+
+                    }
+                    // console.log(available_call % 2  +"XXXX"+available_call / 2 );
+
+                    else if (available_call % 2 !== 0 && Math.floor(available_call / 2) == 0) {
+                        var available_2P = available_call / 2;
+                        for (var i = 0; i < $('#2P_queue').children().length; i++) {
+                            $('#2P_' + Number(i + 1)).removeClass('animated bounce infinite');
+                            $('#2P_' + Number(i + 1)).css("background-color", "#bbdefb");
+                        }
+
+
+                    }
+
+                }
+                else if (obj['1P'].available == 0)
+                {
+                    for (var i = 0; i < $('#1P_queue').children().length; i++)
+                    {
+                        $('#1P_' + Number(i + 1)).removeClass('animated bounce infinite');                
+                        $('#1P_' + Number(i + 1)).css("background-color", "#bbdefb");
+                    }
+                }
+
+                if (obj['2P'].available !== 0) {
+                    // - $('#2P_queue').children().length
+                    var available_call = obj['2P'].available;
+
+                    for (var i = 0; i < $('#2P_queue').children().length; i++) {
+                        $('#2P_' + Number(i + 1)).removeClass('animated bounce infinite');
+                        $('#2P_' + Number(i + 1)).css("background-color", "#bbdefb");
+
+                    }
+
+                    for (var i = 0; i < available_call; i++) {
+                        console.log('#2P_' + Number(i + 1));
+                        $('#2P_' + Number(i + 1)).css("background-color", "#69f0ae");
+                        $('#2P_' + Number(i + 1)).addClass('animated bounce infinite');
+                    }
+
+                    if ($('#2P_queue').children().length < available_call)
+                    {
+                        for (var i = 0; i < Math.abs(available_call * 2 - $('#1P_queue').children().length); i++)
+                        {
+                            $('#1P_' + Number(i + 1)).css("background-color", "#ab47bc");
+                            $('#1P_' + Number(i + 1)).addClass('animated bounce infinite');                            
+                        }
+                    }
+                }
+                else if (obj['2P'].available == 0 && obj['1P'].available / 2 == 0) {
+                    for (var i = 0; i < $('#2P_queue').children().length; i++) {
+                        $('#2P_' + Number(i + 1)).removeClass('animated bounce infinite');
+                        $('#2P_' + Number(i + 1)).css("background-color", "#bbdefb");
+
+                    }
+                }
+
+                if (obj['4P'].available !== 0) {
+                    // - $('#2P_queue').children().length
+                    var available_call = obj['4P'].available;
+
+                    for (var i = 0; i < $('#3P_queue').children().length; i++) {
+                        $('#3P_' + Number(i + 1)).removeClass('animated bounce infinite');
+                        $('#3P_' + Number(i + 1)).css("background-color", "#bbdefb");
+
+                    }
+
+                    for (var i = 0; i < available_call; i++) {
+                        console.log('#3P_' + Number(i + 1));
+                        $('#3P_' + Number(i + 1)).css("background-color", "#69f0ae");
+                        $('#3P_' + Number(i + 1)).addClass('animated bounce infinite');
+                    }
+
+
+
+                    for (var i = 0; i < $('#4P_queue').children().length; i++) {
+                        $('#4P_' + Number(i + 1)).removeClass('animated bounce infinite');
+                        $('#4P_' + Number(i + 1)).css("background-color", "#bbdefb");
+
+                    }
+
+                    for (var i = 0; i < available_call; i++) {
+                        console.log('#4P_' + Number(i + 1));
+                        $('#4P_' + Number(i + 1)).css("background-color", "#69f0ae");
+                        $('#4P_' + Number(i + 1)).addClass('animated bounce infinite');
+                    }
+                }
+                else if (obj['4P'].available == 0) {
+                    for (var i = 0; i < $('#4P_queue').children().length; i++) {
+                        $('#4P_' + Number(i + 1)).removeClass('animated bounce infinite');
+                        $('#4P_' + Number(i + 1)).css("background-color", "#bbdefb");
+
+                    }
+                    for (var i = 0; i < $('#3P_queue').children().length; i++) {
+                        $('#3P_' + Number(i + 1)).removeClass('animated bounce infinite');
+                        $('#3P_' + Number(i + 1)).css("background-color", "#bbdefb");
+
+                    }
+                }
+
+
+                if (obj['5P'].available !== 0) {
+                    // - $('#2P_queue').children().length
+                    var available_call = obj['5P'].available;
+
+                    for (var i = 0; i < $('#5P_queue').children().length; i++) {
+                        $('#5P_' + Number(i + 1)).removeClass('animated bounce infinite');
+                        $('#5P_' + Number(i + 1)).css("background-color", "#bbdefb");
+
+                    }
+
+                    for (var i = 0; i < available_call; i++) {
+                        console.log('#5P_' + Number(i + 1));
+                        $('#5P_' + Number(i + 1)).css("background-color", "#69f0ae");
+                        $('#5P_' + Number(i + 1)).addClass('animated bounce infinite');
+                    }
+                }
+                else if (obj['5P'].available == 0) {
+                    for (var i = 0; i < $('#5P_queue').children().length; i++) {
+                        $('#5P_' + Number(i + 1)).removeClass('animated bounce infinite');
+                        $('#5P_' + Number(i + 1)).css("background-color", "#bbdefb");
+
+                    }
+                }
+
+
+
+            });
+        }
     
     
     </script>
@@ -427,6 +565,8 @@
         $('#edit_submit').on('click', function () {
             var availableRef = database.ref("Table/" + $('#tableRef').val().slice(0, 2) + "/available");
             availableRef.once("value", function(snapshot){
+                console.log($('#' + $('#tableRef').val().slice(0, 2) + '_queue').children().length);
+                
                 var tmp = snapshot.val();
                 if (origin_table_status == 'free')
                 {

@@ -10,6 +10,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
     <link rel="stylesheet" href="./css/main.css">
 
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
     <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
 
 <script type="text/javascript">
@@ -87,6 +89,7 @@ firebase.initializeApp(config);
 
 </div>
 
+
 <script type="text/javascript">
 
 var database = firebase.database();
@@ -98,11 +101,35 @@ var database = firebase.database();
       var temp = snapshot.child("shop"+i+"/shopName").val();
       var store_list = document.getElementById("store_list");
 
-      store_list.innerHTML +=   "<div class='col s12 m8 offset-m2 l6 offset-l3'><div class='card-panel grey lighten-5 z-depth-1'><div class='row valign-wrapper'><div class='col s2'><img src='image/test.png' alt='' class='responsive-img'></div><div class='col s10'><span class='black-text'>"+temp+"</span></div></div></div></div>";
+      store_list.innerHTML +=   "<div class='col s12 m8 offset-m2 l6 offset-l3'><div class='card-panel grey lighten-5 z-depth-1'><div class='row valign-wrapper'><div class='col s2'><i class='medium material-icons'>store</i></div><div class='col s8'><span class='black-text' id='span"+i+"'>"+temp+"</span></div><div class='col s2'><i class='material-icons' onclick='javascript:favorite_store("+i+")'>favorite</i></div></div></div></div>";
     }
   });
 
 </script>
+<script type="text/javascript">
+  function favorite_store(i){
 
+    var span_i = document.getElementById("span"+i).innerHTML;
+
+
+
+    var favorite_store_counter = localStorage.favorite_store_counter;
+    if(isNaN(favorite_store_counter)){
+      favorite_store_counter=1;
+      localStorage.setItem("favorite_store_counter" , favorite_store_counter);
+    }
+    else{
+      favorite_store_counter++;
+      localStorage.setItem("favorite_store_counter" , favorite_store_counter);
+    }
+
+    localStorage.setItem("favorite_store"+favorite_store_counter, span_i);
+
+    swal(span_i+"已加入最愛");
+
+
+
+  }
+</script>
   </body>
 </html>

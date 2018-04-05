@@ -20,7 +20,7 @@
 	<div class="limiter">
 		<div class="container-table100">
 			<div class="wrap-table100">
-					<div id="table1" class="table">
+					<div id="myTable" class="table">
 
 						<div class="row header">
 							<div class="cell">
@@ -31,24 +31,6 @@
 							</div>
 							<div class="cell">
 								Phone
-							</div>
-							<div class="cell">
-								Delete
-							</div>
-						</div>
-
-						<div class="row">
-							<div class="cell" data-title="ID">
-								Vincent Williamson
-							</div>
-							<div class="cell" data-title="Name">
-								31
-							</div>
-							<div class="cell" data-title="Phone">
-								iOS Developer
-							</div>
-							<div class="cell" data-title="Delete">
-								Washington
 							</div>
 						</div>
 
@@ -69,18 +51,36 @@
 			firebase.initializeApp(config);
 			var database = firebase.database();
 
+			function addEven(){
+				document.querySelectorAll('#myTable #srow').forEach(e => e.addEventListener("click", function() {
+					var temp = $(this).attr("value");
+					if(confirm("確定刪除嗎？")){
+						var adaRef = firebase.database().ref('Deliverys/'+temp);
+						adaRef.remove().then(function() {
+    						console.log("Remove succeeded.")
+  						}).catch(function(error) {
+    						console.log("Remove failed: " + error.message)
+  						});
+							$(this).remove();
+						}else{
+						}
+				console.log("clicked")
+				}));
+			}
+
 			function getPeople(){
 				var query = firebase.database().ref("Deliverys").orderByKey();
 				query.once("value").then(function(snapshot) {
 					snapshot.forEach(function(childSnapshot) {
 						var ref = firebase.database().ref("Deliverys/"+childSnapshot.key);
 						ref.orderByKey().once("value").then(function(snapshot) {
-						$('#table1').append('<div class="row"><div class="cell" data-title="ID">'+snapshot.key+'</div><div class="cell" data-title="Name">'+snapshot.child("name").val()+'</div><div class="cell" data-title="Phoen">'+snapshot.child("phone").val()+'</div><div class="cell" data-title="Delete">Delete</div></div>');
+						$('#myTable').append('<div id="srow" class="row" value='+snapshot.key+'><div class="cell" data-title="ID">'+snapshot.key+'</div><div class="cell" data-title="Name">'+snapshot.child("name").val()+'</div><div class="cell" data-title="Phoen">'+snapshot.child("phone").val()+'</div>');
 								});
 						});
 					});
 				}
-			getPeople();
+				getPeople();
+				window.setTimeout("addEven();",3000 );
 	</script>
 
 

@@ -63,6 +63,25 @@ function getAddress(){
   'center': ['24.1175214', '120.6738148'],
   'zoom': 10,
 });
+function getDistant(){
+  $('.map').tinyMap({
+  'marker': loc,
+  'event': {
+    'idle': {
+      'func': function () {
+        map.tinyMap('get', 'marker', function (markers) {
+            markers.forEach(function (marker) {
+              var meters = 0;
+              var distance = [],
+              now = new google.maps.LatLng(current[0], current[1]);
+              meters = google.maps.geometry.spherical.computeDistanceBetween(marker.getPosition(), now);
+          }
+        }
+      }
+    }
+  }
+});
+}
 
 function resetMarker(){
   getAddress();
@@ -85,7 +104,7 @@ function getcurrent(){
 
 getAddress();
 window.setInterval("resetMarker()",5000);
-window.setInterval("getcurrent()",4000);
+//window.setInterval("getcurrent()",4000);
   /////////////////////////////////////
   </script>
   </body>

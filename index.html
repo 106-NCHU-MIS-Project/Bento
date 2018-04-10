@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
     <link rel="stylesheet" href="./css/main.css">
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyAzUkUrvdaygSJamPdIUkADw4qTuosDjkw"></script>
 
 <style media="screen">
 body{
@@ -64,9 +65,9 @@ td{
           <li><a href='#'>Default</a></li>
         </ul>
         <ul class='side-nav' id='mobile-demo'>
-          <li class="#00838f cyan darken-4" ><a href='#' style="color:white;">個人資訊</a></li>
-          <li><a href='#'>常用地址</a></li>
-          <li><a href='#'>Default</a></li>
+          <li class="#00838f cyan darken-4" ><a href='#' style="color:white;">WELCOME</a></li>
+          <li><a href='./sideNav/personInfo.html'>個人資訊</a></li>
+          <li><a href='./sideNav/address.html'>常用地址</a></li>
           <li><a href='#'>Default</a></li>
         </ul>
       </div>
@@ -228,11 +229,38 @@ function getLocation()
   }
 function showPosition(position)
   {
-  x.innerHTML="Lat: " + parseFloat(position.coords.latitude).toFixed(5) +
-  " Lon: " + parseFloat(position.coords.longitude).toFixed(5);
+    var geocoder = new google.maps.Geocoder();
+
+    // google.maps.LatLng 物件
+    var coord = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+    // 傳入 latLng 資訊至 geocoder.geocode
+    geocoder.geocode({'latLng': coord }, function(results, status) {
+      if (status === google.maps.GeocoderStatus.OK) {
+        // 如果有資料就會回傳
+        if (results) {
+          console.log(results[0].formatted_address);
+          x.innerHTML = results[0].formatted_address;
+          localStorage.setItem("CurrentLocation",results[0].formatted_address);
+        }
+      }
+      // 經緯度資訊錯誤
+      else {
+        alert("無法取得您的位置" + status);
+      }
+    });
+
+
+
   }
   getLocation();
+
+
 </script>
+
+
+
+
 
 
 <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>

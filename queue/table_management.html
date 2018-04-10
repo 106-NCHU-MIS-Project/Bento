@@ -228,7 +228,7 @@
             $('#queue').append(str);
         });     
 
-
+        // 從桌型
         function check_available_token(){
             var rootRef = database.ref("/");
             rootRef.once('value', function(snapshot){
@@ -248,11 +248,11 @@
                         console.log('#1P_' + Number(i + 1));
                         $('#1P_' + Number(i + 1)).css("background-color", "#69f0ae");
                         $('#1P_' + Number(i + 1)).addClass('animated bounce infinite');
-                    }
 
                     if (available_call % 2 == 0)
                     {
                         var available_2P = available_call / 2;
+                    }
                         // for (var i = 0; i < $('#2P_queue').children().length; i++) {
                         //     $('#2P_' + Number(i + 1)).removeClass('animated bounce infinite');
                         //     $('#2P_' + Number(i + 1)).css("background-color", "#bbdefb");
@@ -268,15 +268,15 @@
                     }
                     // console.log(available_call % 2  +"XXXX"+available_call / 2 );
 
-                    else if (available_call % 2 !== 0 && Math.floor(available_call / 2) == 0) {
-                        var available_2P = available_call / 2;
-                        for (var i = 0; i < $('#2P_queue').children().length; i++) {
-                            $('#2P_' + Number(i + 1)).removeClass('animated bounce infinite');
-                            $('#2P_' + Number(i + 1)).css("background-color", "#bbdefb");
-                        }
+                    // else if (available_call % 2 !== 0 && Math.floor(available_call / 2) == 0) {
+                    //     var available_2P = available_call / 2;
+                    //     for (var i = 0; i < $('#2P_queue').children().length; i++) {
+                    //         $('#2P_' + Number(i + 1)).removeClass('animated bounce infinite');
+                    //         $('#2P_' + Number(i + 1)).css("background-color", "#bbdefb");
+                    //     }
 
 
-                    }
+                    // }
 
                 }
                 else if (obj['1P'].available == 0)
@@ -350,6 +350,17 @@
                         $('#4P_' + Number(i + 1)).css("background-color", "#69f0ae");
                         $('#4P_' + Number(i + 1)).addClass('animated bounce infinite');
                     }
+
+
+                    if ($('#3P_queue').children().length + $('#4P_queue').children().length < available_call) {
+                        for (var i = 0; i < Math.abs(available_call * 2 - $('#2P_queue').children().length ) + 1; i++) {
+                            $('#2P_' + Number(i + 1)).css("background-color", "#ab47bc");
+                            $('#2P_' + Number(i + 1)).addClass('animated bounce infinite');
+                        }
+                    }
+
+
+
                 }
                 else if (obj['4P'].available == 0) {
                     for (var i = 0; i < $('#4P_queue').children().length; i++) {

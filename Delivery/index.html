@@ -1,100 +1,142 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <style>
-  #map {
-    height: 400px;
-    width: 100%;
-   }
-</style>
+    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+      <style type="text/css">html {
+          height: 100%;
+        }
+      body {
+        background:
+          -webkit-linear-gradient(rgba(5, 610, 255, 0.4), rgba(135, 60, 255, 0.0) 80%),
+          -webkit-linear-gradient(bottom left, rgba(120, 155, 255, 0.9) 25%, rgba(255, 160, 65, 0.9) 76%);
+        background:
+          -o-linear-gradient(rgba(5, 610, 255, 0.4), rgba(135, 60, 255, 0.0) 80%),
+          -o-linear-gradient(bottom left, rgba(120, 155, 255, 0.9) 25%, rgba(255, 160, 65, 0.9) 76%);
+        background:
+          linear-gradient(rgba(5, 610, 255, 0.4), rgba(135, 60, 255, 0.0) 80%),
+          linear-gradient(to top right, rgba(120, 155, 255, 0.9) 25%, rgba(255, 160, 65, 0.9) 76%);
+          }
+      .cf:before, .cf:after {
+        content:" ";
+        display: table;
+        }
+      .cf:after {
+        clear: both;
+        }
+      .cf {
+        *zoom: 1;
+      }
+      .menu {
+        list-style:none;
+        margin: 50px auto;
+        width: 800px;
+        width: -moz-fit-content;
+        width: -webkit-fit-content;
+        width: fit-content;
+      }
+      .menu > li {
+        background: #34495e;
+        float: left;
+        position: relative;
+        -webkit-transform: skewX(25deg);
+        }
+      .menu a {
+        display: block;
+        color: #fff;
+        text-transform: uppercase;
+        text-decoration: none;
+        font-family: Arial, Helvetica;
+        font-size: 14px;
+    }
+    .menu li:hover {
+        background: #e74c3c;
+      }
+    .menu > li > a {
+      -webkit-transform: skewX(-25deg);
+      padding: 1em 2em;
+    }
+    /* Dropdown */
+    .submenu {
+      position: absolute;
+      width: 200px;
+      left: 50%;
+      margin-left: -100px;
+      -webkit-transform: skewX(-25deg);
+      -webkit-transform-origin: left top;
+    }
+    .submenu li {
+      background-color: #34495e;
+      position: relative;
+      overflow: hidden;
+    }
+    .submenu > li > a {
+      padding: 1em 2em;
+    }
+    .submenu > li::after {
+      content:'';
+      position: absolute;
+      top: -125%;
+      height: 100%;
+      width: 100%;
+      box-shadow: 0 0 50px rgba(0, 0, 0, .9);
+    }
+    /* Odd stuff */
+    .submenu > li:nth-child(odd) {
+      -webkit-transform: skewX(-25deg) translateX(0);
+    }
+    .submenu > li:nth-child(odd) > a {
+      -webkit-transform: skewX(25deg);
+    }
+    .submenu > li:nth-child(odd)::after {
+      right: -50%;
+      -webkit-transform: skewX(-25deg) rotate(3deg);
+    }
+    /* Even stuff */
+    .submenu > li:nth-child(even) {
+      -webkit-transform: skewX(25deg) translateX(0);
+    }
+    .submenu > li:nth-child(even) > a {
+      -webkit-transform: skewX(-25deg);
+    }
+    .submenu > li:nth-child(even)::after {
+      left: -50%;
+      -webkit-transform: skewX(25deg) rotate(3deg);
+    }
+    /* Show dropdown */
+    .submenu, .submenu li {
+      opacity: 0;
+      visibility: hidden;
+    }
+    .submenu li {
+      transition: .2s ease -webkit-transform;
+    }
+    .menu > li:hover .submenu, .menu > li:hover .submenu li {
+      opacity: 1;
+      visibility: visible;
+    }
+    .menu > li:hover .submenu li:nth-child(even) {
+      -webkit-transform: skewX(25deg) translateX(15px);
+    }
+    .menu > li:hover .submenu li:nth-child(odd) {
+      -webkit-transform: skewX(-25deg) translateX(-15px);
+    }
+      </style>
+
+
+    <title>外送人員</title>
   </head>
   <body>
-<script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
-<script>
-  // Initialize Google map
-     var map;
-     var marker;
-     var uluru = {lat: -25.363, lng: 131.044};
-     function initMap() {
-       map = new google.maps.Map(document.getElementById('map'), {
-         zoom: 4,
-         center: uluru
-       });
-       marker = new google.maps.Marker({
-         position: uluru,
-         map: map
-       });
-     }
-  // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyDd2rFHwPXyIkq0iRSinBBfzg31NYJLapE",
-    authDomain: "nchumis2017-5566.firebaseapp.com",
-    databaseURL: "https://nchumis2017-5566.firebaseio.com",
-    projectId: "nchumis2017-5566",
-    storageBucket: "nchumis2017-5566.appspot.com",
-    messagingSenderId: "501160127423"
-  };
-  firebase.initializeApp(config);
-
-
-  /////////////////初始化////////////////////
-
-  var database = firebase.database();
-
-  ///////////////檢查總人數///////////////////////
-  function AddPeople(){
-    database.ref("Deliverys/").once("value").then(function(snapshot) {
-      setPosition(snapshot.numChildren()+1);
-   });
- };
-
-    function setPosition(id){
-     if (navigator.geolocation) {
-           navigator.geolocation.getCurrentPosition(function(position){
-             writeData(id,position.coords.latitude,position.coords.longitude);
-           });
-       } else {
-           console.log("Geolocation is not supported by this browser.");
-       }
-    }
-
-   function writeData(id,latitude,longitude){
-     database.ref("Deliverys/Man"+id).update({
-       Latitude:latitude,
-       Longitude:longitude
-     });
-   }
-//////////////////讀資料////////////////////////
-
-  function readPeople(id){
-    var x = document.getElementById("myText").value;
-    database.ref("Deliverys/Man"+x).on("value", function(snapshot) {
-      var a = snapshot.val().Latitude;
-      var b = snapshot.val().Longitude;
-      marker.setMap(null);
-      var haightAshbury = {lat: a, lng: b};
-      marker = new google.maps.Marker({
-          position: haightAshbury,
-          map: map,
-          center: haightAshbury
-        });
-        var center = new google.maps.LatLng(a, b);
-        map.setZoom(17);
-        map.panTo(center);
-      document.getElementById("demo").innerHTML = "Latitude:"+a+"Longitude:"+b;
-
-  });
-  }
-  /////////////////////////////////////
-</script>
-<button onclick="AddPeople()">新增外送員</button>
-<input type="text" id="myText" value="輸入ID">
-<button onclick="readPeople()">查詢外送員</button>
-<div id="map"></div>
-<p id="demo"></p>
-
-<script async defer
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9niNiTIfnyVn4nZKieMFr_QXJb5ZV7eM&callback=initMap">
-</script>
+    <ul class="menu cf">
+      <li><a href="../index.html">Home</a></li>
+      <li>
+        <a href="#">外送</a>
+        <ul class="submenu">
+          <li><a href="Boss.html">外送人員位置</a></li>
+          <li><a href="footman.html">外送地址</a></li>
+          <li><a href="add.html">管理外送人員</a></li>
+        </ul>
+      </li>
+    </ul>
   </body>
 </html>

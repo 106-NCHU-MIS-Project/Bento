@@ -1,31 +1,34 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <style>
-  #map {
-    height: 400px;
-    width: 100%;
-   }
-</style>
+    <style type="text/css">
+    .map {
+        width: 640px;
+        height: 480px;
+    }
+    .labels {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    color: white;
+    padding: 4px
+}
+    </style>
+
   </head>
-  <body>
-<script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
+<body>
+  <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+  <script src="jquery-3.3.1.js"></script>
+  <script src="jquery.tinyMap.js"></script>
+  <div class="map"></div>
 <script>
-  // Initialize Google map
-     var map;
-     var marker;
-     var uluru = {lat: -25.363, lng: 131.044};
-     function initMap() {
-       map = new google.maps.Map(document.getElementById('map'), {
-         zoom: 4,
-         center: uluru
-       });
-       marker = new google.maps.Marker({
-         position: uluru,
-         map: map
-       });
-     }
-  // Initialize Firebase
+  //initialize google map////////////
+  $.fn.tinyMapConfigure({
+    'key': 'AIzaSyD9niNiTIfnyVn4nZKieMFr_QXJb5ZV7eM',
+    // 使用的地圖語言
+    'language': 'zh‐TW',
+});
+  ////////////////////////////////
+  // Initialize
   var config = {
     apiKey: "AIzaSyDd2rFHwPXyIkq0iRSinBBfzg31NYJLapE",
     authDomain: "nchumis2017-5566.firebaseapp.com",
@@ -35,66 +38,65 @@
     messagingSenderId: "501160127423"
   };
   firebase.initializeApp(config);
-
+  var loc=new Array();
 
   /////////////////初始化////////////////////
-
-  var database = firebase.database();
-
-  ///////////////檢查總人數///////////////////////
-  function AddPeople(){
-    database.ref("Deliverys/").once("value").then(function(snapshot) {
-      setPosition(snapshot.numChildren()+1);
-   });
- };
-
-    function setPosition(id){
-     if (navigator.geolocation) {
-           navigator.geolocation.getCurrentPosition(function(position){
-             writeData(id,position.coords.latitude,position.coords.longitude);
-           });
-       } else {
-           console.log("Geolocation is not supported by this browser.");
-       }
-    }
-
-   function writeData(id,latitude,longitude){
-     database.ref("Deliverys/Man"+id).update({
-       Latitude:latitude,
-       Longitude:longitude
-     });
-   }
-//////////////////讀資料////////////////////////
-
-  function readPeople(id){
-    var x = document.getElementById("myText").value;
-    database.ref("Deliverys/Man"+x).on("value", function(snapshot) {
-      var a = snapshot.val().Latitude;
-      var b = snapshot.val().Longitude;
-      marker.setMap(null);
-      var haightAshbury = {lat: a, lng: b};
-      marker = new google.maps.Marker({
-          position: haightAshbury,
-          map: map,
-          center: haightAshbury
-        });
-        var center = new google.maps.LatLng(a, b);
-        map.setZoom(17);
-        map.panTo(center);
-      document.getElementById("demo").innerHTML = "Latitude:"+a+"Longitude:"+b;
-
+function getAddress(){
+  var query = firebase.database().ref("Deliverys").orderByKey();
+  query.once("value").then(function(snapshot) {
+    snapshot.forEach(function(childSnapshot) {
+      var ref = firebase.database().ref("Deliverys/"+childSnapshot.key);
+      ref.orderByKey().once("value")
+        .then(function(snapshot) {
+        loc.push({'addr':[snapshot.child("Latitude").val(),snapshot.child("Longitude").val()],
+        'text':'文字標籤',
+        'newLabel': snapshot.key,
+        'newLabelCSS': 'labels',
+        'icon': {
+                'url': 'bike/jiche-4.png',
+                'scaledSize': [40, 40]
+            },
+        'animation': 'DROP',
+          })
+      });
+    });
   });
-  }
-  /////////////////////////////////////
-</script>
-<button onclick="AddPeople()">新增外送員</button>
-<input type="text" id="myText" value="輸入ID">
-<button onclick="readPeople()">查詢外送員</button>
-<div id="map"></div>
-<p id="demo"></p>
+}
+///////////////////////Initializemap////////////////////
 
-<script async defer
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9niNiTIfnyVn4nZKieMFr_QXJb5ZV7eM&callback=initMap">
-</script>
+
+  $('.map').tinyMap({
+  'center': ['24.1175214', '120.6738148'],
+  'zoom': 10,
+});
+
+function resetMarker(){
+  $('.map').tinyMap('modify',{
+  'marker': loc,
+  'markerFitBounds': true
+});
+}
+
+function getcurrent(){
+  if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position){
+          var lat = position.coords.latitude;
+          var lon = position.coords.longitude;
+          pan(lat,lon);
+   })
+ }else {
+        console.log("Geolocation is not supported by this browser.");
+    }
+}
+
+function pan(lat,lon){
+  $('.map').tinyMap('panTo', [lat,lon]);
+}
+
+getAddress();
+window.setTimeout("resetMarker()",3000);
+//window.setInterval("getcurrent()",4000);
+  /////////////////////////////////////
+  </script>
   </body>
 </html>

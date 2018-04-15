@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+
+    <link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet'>
+
+    <link rel="stylesheet" href="../css/main.css">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzUkUrvdaygSJamPdIUkADw4qTuosDjkw" async defer></script>
+<style media="screen">
+
+
+td{
+  text-align: center;
+}
+
+</style>
+
+    <title>查看訂單</title>
+  </head>
+
+
+  <body>
+
+
+    <nav>
+      <div class='nav-wrapper #00838f cyan darken-4'>
+        <a href='../index.html' class='brand-logo'>BENTO</a>
+        <a href='#'  style="float:left;position:relative;z-index:1; margin:0 18px;" onclick="javascript:modal_open()"><i class='material-icons'>info_outline</i></a>
+
+      </div>
+    </nav>
+
+    <script type="text/javascript">$(".button-collapse").sideNav();</script>
+
+
+
+
+<div class="" id="div_order_content">
+
+  <!-- <h5><p id="p_info">目前沒有訂單</p></h5> -->
+<div class="container">
+  <h5 style="font-weight:bolder">訂單狀態</h5>
+</div>
+
+
+<div class="row" style="margin-bottom:0px;">
+  <table style="border:1px">
+    <tr>
+      <td style="background-color:#9e9e9e; color:white;">接收訂單</td>
+      <td style="background-color:#eeeeee;">餐點製作</td>
+      <td style="background-color:#9e9e9e; color:white;">正在外送</td>
+      <td style="background-color:#eeeeee;">訂單完成</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <div class="progress">
+          <div class="determinate" style="width: 24.2%"></div>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+</div>
+
+
+
+  <div class="card" style="margin-top:0px;">
+
+    <div class="card-tabs">
+      <ul class="tabs tabs-fixed-width">
+        <li class="tab"><a href="#test4">Test 1</a></li>
+        <li class="tab"><a class="active" href="#test5">Test 2</a></li>
+        <li class="tab"><a href="#test6">Test 3</a></li>
+      </ul>
+    </div>
+    <div class="card-content grey lighten-4">
+      <div id="test4">Test 1</div>
+      <div id="test5">Test 2</div>
+      <div id="test6">Test 3</div>
+    </div>
+  </div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<!-- Modal Structure -->
+<div id="modal1" class="modal">
+  <div class="modal-content">
+    <h4>XX便當店</h4>
+    <hr>
+    <table class="highlight">
+      <tr>
+        <td>電話</td><td>04-22882288</td>
+      </tr>
+      <tr>
+        <td>地址</td><td>台中市南區興大路140號</td>
+      </tr>
+    </table>
+
+  </div>
+  <div class="modal-footer">
+    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">OK</a>
+  </div>
+</div>
+<!-- . -->
+
+  </body>
+
+
+
+
+
+<script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+
+<script type="text/javascript">
+    var config = {
+      apiKey: "AIzaSyDHJvCW6LwYl0fih2PynaWmX3fYGqmel00",
+      authDomain: "all-store-a0408.firebaseapp.com",
+      databaseURL: "https://all-store-a0408.firebaseio.com",
+      projectId: "all-store-a0408",
+      storageBucket: "",
+      messagingSenderId: "982261178985"
+    };
+    firebase.initializeApp(config);
+
+    var database = firebase.database();
+
+
+</script>
+
+
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+  // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
+  $('.modal').modal();
+});
+function modal_open(){
+  $(document).ready(function(){
+    $('#modal1').modal('open');
+
+  });
+}
+</script>
+</html>

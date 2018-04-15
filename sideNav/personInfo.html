@@ -8,8 +8,9 @@
     <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-    <link rel="stylesheet" href="./css/main.css">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
+    <link rel="stylesheet" href="../css/main.css">
 
 
     <title>index</title>
@@ -29,7 +30,7 @@
     <link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet'>
     <nav>
       <div class='nav-wrapper #00838f cyan darken-4'>
-        <a href='./index.html' class='brand-logo'>BENTO</a>
+        <a href='../index.html' class='brand-logo'>BENTO</a>
         <a href='#' data-activates='mobile-demo' class='button-collapse'><i class='material-icons'>menu</i></a>
         <ul class='right hide-on-med-and-down'>
           <li><a href='#'>個人資訊</a></li>
@@ -39,8 +40,8 @@
         </ul>
         <ul class='side-nav' id='mobile-demo'>
           <li class="#00838f cyan darken-4" ><a href='#' style="color:white;">WELCOME</a></li>
-          <li><a href='./sideNav/personInfo.html'>個人資訊</a></li>
-          <li><a href='./sideNav/address.html'>常用地址</a></li>
+          <li><a href='./personInfo.html'>個人資訊</a></li>
+          <li><a href='./address.html'>常用地址</a></li>
           <li><a href='#'>Default</a></li>
         </ul>
       </div>
@@ -56,17 +57,40 @@
       <div class="container">
 
       <div class="card">
-<br><br>
-        <div class="row"><div class="col s12"><a class="waves-effect waves-light btn-large" href="./stores.html">店家列表</a></div></div>
-        <div class="row"><div class="col s12"><a class="waves-effect waves-light btn-large" href="./QRcode/qrcode.html">開新訂單</a></div></div>
-        <div class="row"><div class="col s12"><a class="waves-effect waves-light btn-large" href="./QRcode/Scanner.html">進入訂單</a></div></div>
-        <div class="row"><div class="col s12"><a class="waves-effect waves-light btn-large" href="./restaurant_receive.html">店家接收</a></div></div>
-        <div class="row"><div class="col s12"><a class="waves-effect waves-light btn-large" href="./Delivery/index.html">外送人員</a></div></div>
-        <div class="row"><div class="col s12"><a class="waves-effect waves-light btn-large" href="./JoinUS/JoinUS.html">加入我們</a></div></div>
+        <div class="card-content">
 
-<br>
+        <form class="" action="javascript:changeName()" method="post" >
+          目前名字<input type="text" name="" value="" id="CuttentName" disabled >
+          更改名字<input type="text" name="" value="" id="UserName">
+          <input type="submit" name="" value="更改" class="btn" >
+        </form>
+      </div>
+
     </div>
 </div>
 
   </body>
+  <script type="text/javascript">
+
+var CurrentName = window.localStorage.getItem("UserName");
+if(CurrentName!=""){
+  document.getElementById("CuttentName").value = CurrentName;
+}
+
+    function changeName(){
+
+      var UserName = document.getElementById("UserName").value;
+      if(UserName!=""){console.log(UserName);
+
+      localStorage.setItem("UserName",UserName);
+      swal("成功","已更改名字","success").then((value)=>{
+        location.reload();
+      });
+
+    }
+      else{
+        swal("請輸入名字");
+      }
+    }
+  </script>
 </html>

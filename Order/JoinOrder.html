@@ -6,10 +6,12 @@
     <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
     <style media="screen">
     body{
       font-family: microsoft jhenghei;
+      font-weight: bold;
       }
     </style>
 
@@ -25,7 +27,7 @@
     <!-- navbar -->
     <link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet'>
     <nav>
-      <div class='nav-wrapper'>
+      <div class='nav-wrapper #00838f cyan darken-4'>
         <a href='../index.html' class='brand-logo'>BENTO</a>
         <a href='#' data-activates='mobile-demo' class='button-collapse'><i class='material-icons'>menu</i></a>
         <ul class='right hide-on-med-and-down'>
@@ -56,7 +58,7 @@
 
 
     <div class="" id="form1">
-    <form class="" action="" method="post">
+    <form class="" action="javascript:NameOK()" >
       <div class="container">
         <div class="row">
 
@@ -65,10 +67,13 @@
         單號 <input type="text" id="OrderId" value="" placeholder="OrderXX" disabled>
     </div>
 
-    <div class="input-field col s9">
-      名字 <input type="text" id="OrderName" value="" placeholder="OrderName">
+    <div class="input-field col s6">
+      名字 <input type="text" id="OrderName" value="" placeholder="">
     </div>
 
+    <div class="input-field col s2">
+      <font color="white">.</font><input type="submit" name="" value="確認" class="btn" style="padding-left:14px; padding-right:14px;">
+    </div>
 
   </div>
 
@@ -101,6 +106,15 @@
 
 //////////////init products/////////////////////
   var numBento;
+
+
+
+function NameOK(){
+
+var getName = document.getElementById("OrderName").value;
+
+if(getName !== ""){
+
   database.ref("Products/Bento/Data/").once("value", function(snapshot) {
     numBento = snapshot.numChildren();
     for(var i = 1 ;i<=numBento ; i++){
@@ -113,8 +127,14 @@
   }
 });
 
+}
+
+else{
+  swal("請輸入名字");
+}
 
 
+}
 
 function add_number(i){
 

@@ -89,7 +89,7 @@ footer{
           <div class="card-content">
 
         <form class="" action="javascript:writeData()" method="post">
-
+          店家名稱 <input type="text" id="theOrderShopName" value="XXX便當店" disabled>
           訂單編號 <input type="text" id="OrderId" value="" placeholder="OrderId" disabled>
           名字 <input type="text" id="OrderName" value="主揪人" placeholder="Name">
           電話 <input type="text" id="TEL" value="" placeholder="TEL">
@@ -332,6 +332,7 @@ function del_number(i){
 
   function writeData(){
 
+    var theOrderShopName = document.getElementById("theOrderShopName").value;
     var OrderId = document.getElementById("OrderId").value;
     var OrderName = document.getElementById("OrderName").value;
     var TEL = document.getElementById("TEL").value;
@@ -339,7 +340,7 @@ function del_number(i){
     var OrderTime = document.getElementById("OrderTime").value;
     var OrderStatus = document.getElementById("OrderStatus").value;
     database.ref("Orders/"+OrderId).set({
-
+      theOrderShopName:theOrderShopName,
       OrderId:OrderId,
       OrderStatus:OrderStatus,
       OrderInfo:{
@@ -414,6 +415,27 @@ OrderStatusRef.child('OrderStatus').set(1);
       swal("成功","已送出訂單","success").then((value)=>{
         window.location="./success.html";
       });
+
+var OrderListNumber = localStorage.getItem("OrderListNumber");
+
+var theOrderShopName = document.getElementById("theOrderShopName").value;
+var OrderId = document.getElementById("OrderId").value;
+
+if(localStorage.getItem("OrderListNumber")===null){
+  localStorage.setItem("OrderListNumber",1);
+  localStorage.setItem("OrderId1",OrderId);
+  localStorage.setItem("OrderListShop1",theOrderShopName);
+}
+
+else{
+  OrderListNumber++;
+  localStorage.setItem("OrderId"+OrderListNumber,OrderId);
+  localStorage.setItem("OrderListShop"+OrderListNumber,theOrderShopName);
+  localStorage.setItem("OrderListNumber",OrderListNumber);
+  }
+
+
+
 }
 
 //////////////////////////////////

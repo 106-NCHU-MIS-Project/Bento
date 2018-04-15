@@ -17,7 +17,8 @@ window.history.forward(1);
 
 <style media="screen">
 body{
-  font-family: microsoft jhenghei;
+  font-family: microsoft jhenghei!important;
+  font-weight: bold;
 }
 #div_confirm{
   position: absolute;
@@ -265,7 +266,8 @@ function add_number(i){
       number : number_inner,
       price : price_i,
       total : total_i,
-      name : name_i
+      name : name_i,
+      isPaid : 0
     });
 
 
@@ -304,8 +306,8 @@ function del_number(i){
         number : number_inner,
         price : price_i,
         total : total_i,
-        name : name_i
-
+        name : name_i,
+        isPaid : 0
       });
     });
 

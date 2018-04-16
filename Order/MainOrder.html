@@ -8,6 +8,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="../QRcode/qrcodeJs/jquery.qrcode.js"></script>
+    <script src="../QRcode/qrcodeJs/qrcode.js"></script>
+
+
 <script type="text/javascript">
 
 window.history.forward(1);
@@ -17,7 +21,8 @@ window.history.forward(1);
 
 <style media="screen">
 body{
-  font-family: microsoft jhenghei;
+  font-family: microsoft jhenghei!important;
+  font-weight: bold;
 }
 #div_confirm{
   position: absolute;
@@ -38,30 +43,86 @@ footer{
   <body>
 
 
+
     <!-- navbar -->
+    <!-- navbar -->
+    <!-- navbar -->
+    <!-- navbar -->
+    <!-- navbar -->
+
     <link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet'>
     <nav>
       <div class='nav-wrapper #00838f cyan darken-4'>
         <a href='../index.html' class='brand-logo'>BENTO</a>
-        <a href='#' data-activates='mobile-demo' class='button-collapse'><i class='material-icons'>menu</i></a>
-        <ul class='right hide-on-med-and-down'>
-          <li><a href='#'>個人資訊</a></li>
-          <li><a href='#'>常用地址</a></li>
-          <li><a href='#'>Default</a></li>
-          <li><a href='#'>Default</a></li>
-        </ul>
-        <ul class='side-nav' id='mobile-demo'>
-          <li class="#00838f cyan darken-4" ><a href='#' style="color:white;">WELCOME</a></li>
-          <li><a href='../sideNav/personInfo.html'>個人資訊</a></li>
-          <li><a href='../sideNav/address.html'>常用地址</a></li>
-          <li><a href='#'>Default</a></li>
-        </ul>
+        <div  style="float:left;position:relative;z-index:1; margin:0 18px;" onclick="javascript:modal_open()"><i class='material-icons'>info_outline</i></div>
+
       </div>
     </nav>
     </div>
+
+
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal">
+      <div class="modal-content" style="padding-bottom:0px;">
+        <h4>XX便當店</h4>
+        <hr>
+        <table class="highlight">
+          <tr>
+            <td>電話</td><td>04-22882288</td>
+          </tr>
+          <tr>
+            <td>地址</td><td>台中市南區興大路140號</td>
+          </tr>
+          <tr>
+            <td>邀請朋友QRCODE</td><td><div id="qrcode"></div></td>
+          </tr>
+        </table>
+
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat" style="color:blue!important;">OK</a>
+      </div>
+    </div>
+
+
+    <script type="text/javascript">
+    var url = location.href;
+    var decode = decodeURIComponent(url);
+    var temp = decode.split("?");
+    var vars = temp[1].split("&");
+    jQuery('#qrcode').qrcode({width:"140" ,height:"140" ,text:vars[0]});
+
+    </script>
+    <!-- . -->
+
+    <script type="text/javascript">
+    $(document).ready(function(){
+      // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
+      $('.modal').modal();
+    });
+    function modal_open(){
+      $(document).ready(function(){
+        $('#modal1').modal('open');
+
+      });
+    }
+    </script>
+
 <script type="text/javascript">$(".button-collapse").sideNav();</script>
 
-  <!-- navbar -->
+<!-- navbar -->
+<!-- navbar -->
+<!-- navbar -->
+<!-- navbar -->
+<!-- navbar -->
+
+
+
+
+
+
+
+
 
 
   <div class="card">
@@ -88,7 +149,7 @@ footer{
           <div class="card-content">
 
         <form class="" action="javascript:writeData()" method="post">
-
+          店家名稱 <input type="text" id="theOrderShopName" value="XXX便當店" disabled>
           訂單編號 <input type="text" id="OrderId" value="" placeholder="OrderId" disabled>
           名字 <input type="text" id="OrderName" value="主揪人" placeholder="Name">
           電話 <input type="text" id="TEL" value="" placeholder="TEL">
@@ -265,7 +326,8 @@ function add_number(i){
       number : number_inner,
       price : price_i,
       total : total_i,
-      name : name_i
+      name : name_i,
+      isPaid : 0
     });
 
 
@@ -304,8 +366,8 @@ function del_number(i){
         number : number_inner,
         price : price_i,
         total : total_i,
-        name : name_i
-
+        name : name_i,
+        isPaid : 0
       });
     });
 
@@ -330,6 +392,7 @@ function del_number(i){
 
   function writeData(){
 
+    var theOrderShopName = document.getElementById("theOrderShopName").value;
     var OrderId = document.getElementById("OrderId").value;
     var OrderName = document.getElementById("OrderName").value;
     var TEL = document.getElementById("TEL").value;
@@ -337,7 +400,7 @@ function del_number(i){
     var OrderTime = document.getElementById("OrderTime").value;
     var OrderStatus = document.getElementById("OrderStatus").value;
     database.ref("Orders/"+OrderId).set({
-
+      theOrderShopName:theOrderShopName,
       OrderId:OrderId,
       OrderStatus:OrderStatus,
       OrderInfo:{
@@ -412,6 +475,27 @@ OrderStatusRef.child('OrderStatus').set(1);
       swal("成功","已送出訂單","success").then((value)=>{
         window.location="./success.html";
       });
+
+var OrderListNumber = localStorage.getItem("OrderListNumber");
+
+var theOrderShopName = document.getElementById("theOrderShopName").value;
+var OrderId = document.getElementById("OrderId").value;
+
+if(localStorage.getItem("OrderListNumber")===null){
+  localStorage.setItem("OrderListNumber",1);
+  localStorage.setItem("OrderId1",OrderId);
+  localStorage.setItem("OrderListShop1",theOrderShopName);
+}
+
+else{
+  OrderListNumber++;
+  localStorage.setItem("OrderId"+OrderListNumber,OrderId);
+  localStorage.setItem("OrderListShop"+OrderListNumber,theOrderShopName);
+  localStorage.setItem("OrderListNumber",OrderListNumber);
+  }
+
+
+
 }
 
 //////////////////////////////////
@@ -440,7 +524,7 @@ function getURL() {
     var vars = temp[1].split("&");
     console.log(vars[0]);
     document.getElementById("OrderId").value=vars[0];
-
+    return vars[0];
  }
  getURL();
 //////////////////

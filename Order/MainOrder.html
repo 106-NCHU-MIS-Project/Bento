@@ -80,7 +80,7 @@ footer{
 
       </div>
       <div class="modal-footer">
-        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat" style="color:blue!important;">OK</a>
+        <div  class="modal-action modal-close waves-effect waves-green btn-flat" style="color:blue!important;">OK</div>
       </div>
     </div>
 
@@ -99,6 +99,7 @@ footer{
     $(document).ready(function(){
       // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
       $('.modal').modal();
+      $('.modal').modal('open');
     });
     function modal_open(){
       $(document).ready(function(){
@@ -136,7 +137,7 @@ footer{
         <li class="tab"><a href="#test6" id="a_tab3">查看他人</a></li>
       </ul>
     </div>
-    <div class="card-content grey lighten-4">
+    <div class="card-content grey lighten-4" style="padding-top:12px;padding-bottom:12px;">
 
 
       <div id="test4">
@@ -146,7 +147,7 @@ footer{
         <div class="card" id="form1">
 
 
-          <div class="card-content">
+          <div class="card-content" >
 
         <form class="" action="javascript:writeData()" method="post">
           店家名稱 <input type="text" id="theOrderShopName" value="XXX便當店" disabled>
@@ -196,7 +197,7 @@ footer{
 
 
         <div id="div_products">
-          請先送出訂單資料
+          <h5>請先送出訂單資料</h5>
         </div>
 
 
@@ -208,9 +209,7 @@ footer{
       </div>
       <div id="test6">
 
-
-
-      查看目前訂購
+      <h5>查看目前訂購</h5>
 
         <div class="card" style="display:none;" id="joinPeopleCard">
         <div class="card-content" id="joinPeople">

@@ -11,7 +11,6 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzUkUrvdaygSJamPdIUkADw4qTuosDjkw" async defer></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-    <link rel="stylesheet" href="../css/main.css">
 
     <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
     <script>
@@ -26,7 +25,12 @@
       };
       firebase.initializeApp(config);
     </script>
-
+<style media="screen">
+  html,body{
+    font-family: microsoft jhenghei;
+    font-weight: bold;
+  }
+</style>
     <title>JOINUS</title>
   </head>
   <body>
@@ -76,7 +80,7 @@
 
     <div class="container">
 
-<form class="col s12" id="form1" action="javascript:addshop()" method="post">
+<form class="col s12" id="form1" action="javascript:addressTolatlng()" method="post">
 <br>
 
   <div class="row">
@@ -125,7 +129,6 @@
   <div class="input-field col s12">
     <input type="text" id="address" name="address" value="">
     <label for="address">address</label>
-    <button type="button" name="button" class="btn" onclick="javascript:addressTolatlng()">轉換地址成經緯度</button>
   </div>
 </div>
 
@@ -156,7 +159,37 @@
 
   <script type="text/javascript">
 
+function last_confirm(){
+  var shopName = document.getElementById("shopName").value;
+  var firebaseID = document.getElementById("firebaseID").value;
+  var apiKey = document.getElementById("apiKey").value;
+  var address = document.getElementById("address").value;
+  var briefInfo = document.getElementById("briefInfo").value;
+  var tel = document.getElementById("tel").value;
+  var openHours = document.getElementById("openHours").value;
 
+  swal({
+  html: true,
+  title: "Are you sure?",
+  text: "店家名稱:"+shopName+"\nFirebaseID:"+firebaseID+"\nAPIkey:"+apiKey+"\n地址:"+address+"\n簡介:"+briefInfo+"\n電話:"+tel+"\n營業時間:"+openHours,
+  buttons: true,
+  dangerMode: false,
+})
+.then((willDelete) => {
+  if (willDelete) {
+
+    swal("成功","success").then((value)=>{
+      addshop();                 ////////////////////按下OK就寫入FIREBASE
+    });
+
+
+  }
+
+  else {
+  }
+});
+
+}
 
 //////////////////////////////////////////////
 function addressTolatlng(){
@@ -170,15 +203,12 @@ function addressTolatlng(){
           if (status == google.maps.GeocoderStatus.OK) {
               document.getElementById("lat").value = results[0].geometry.location.lat();
               document.getElementById("lon").value = results[0].geometry.location.lng();
-            console.log(lat+","+lon);
-            swal("成功");
+            console.log(results[0].geometry.location.lat()+","+geometry.location.lng());
           }
-          else{
-            swal("查無地址");
-          }
+
       });
 
-
+last_confirm();
 }
 
 
@@ -224,7 +254,6 @@ function addshop(){
   });
 
 document.getElementById("form1").reset();
-swal("成功");
 }
   </script>
 

@@ -8,6 +8,8 @@
     <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+
     <link rel="stylesheet" href="/css/main.css">
 
     <script src="./qrcodeJs/jquery.qrcode.js"></script>
@@ -75,6 +77,23 @@
 <br>
 
     <script type="text/javascript">
+
+
+
+    var config = {
+      apiKey: "AIzaSyDHJvCW6LwYl0fih2PynaWmX3fYGqmel00",
+      authDomain: "all-store-a0408.firebaseapp.com",
+      databaseURL: "https://all-store-a0408.firebaseio.com",
+      projectId: "all-store-a0408",
+      storageBucket: "",
+      messagingSenderId: "982261178985"
+    };
+    firebase.initializeApp(config);
+
+    var database = firebase.database();
+
+
+
 newQRcode();
 
 
@@ -96,14 +115,27 @@ function newQRcode(){
   var temp = decode.split("?");
   var vars = temp[1].split("&");
 
-  document.getElementById("qrcode").innerHTML="";
+    document.getElementById("qrcode").innerHTML="";
+    var randomQRcode = randomString(2,'A')+randomString(4,'#');
 
-  var randomQRcode = randomString(2,'A')+randomString(4,'#');
+  database.ref("stores").once("value").then(function(snapshot){
 
-  jQuery('#qrcode').qrcode({width:"300" ,height:"300" ,text: randomQRcode});
+    var shop_i_name = snapshot.child(vars[0]+"/shopName").val();
 
-  document.getElementById("QRString").innerHTML = randomQRcode;
-  document.getElementById("QRString").href='../Order/MainOrder.html?'+randomQRcode+"&"+vars[0];
+    /////////////////undone////////////////////
+    /////////////////undone////////////////////
+    var firebase_config;                 
+    /////////////////undone////////////////////
+    /////////////////undone////////////////////
+
+
+    jQuery('#qrcode').qrcode({width:"300" ,height:"300" ,text: randomQRcode+"&"+shop_i_name});
+
+    document.getElementById("QRString").innerHTML = randomQRcode;
+
+    document.getElementById("QRString").href='../Order/MainOrder.html?'+randomQRcode+"&"+shop_i_name;
+    console.log(shop_i_name);
+  });
 }
 
 </script>

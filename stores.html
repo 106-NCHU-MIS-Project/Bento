@@ -101,7 +101,7 @@ var database = firebase.database();
       var temp = snapshot.child("shop"+i+"/shopName").val();
       var store_list = document.getElementById("store_list");
 
-      store_list.innerHTML +=   "<div class='col s12 m8 offset-m2 l6 offset-l3'><div class='card-panel grey lighten-5 z-depth-1'><div class='row valign-wrapper'><div class='col s2'><i class='medium material-icons'>store</i></div><div class='col s8'><span class='black-text' id='span"+i+"'>"+temp+"</span></div><div class='col s2'><i class='material-icons' onclick='javascript:favorite_store("+i+")'>favorite</i></div></div></div></div>";
+      store_list.innerHTML +=   "<div class='col s12 m8 offset-m2 l6 offset-l3'><div class='card-panel grey lighten-5 z-depth-1'><div class='row valign-wrapper'><div class='col s2'><i class='medium material-icons'>store</i></div><div class='col s8'><a href='./QRcode/qrcode.html?"+temp+"'><span class='black-text' id='span"+i+"'>"+temp+"</span></a></div><div class='col s2'><i class='material-icons' onclick='javascript:favorite_store("+i+")'>favorite</i></div></div></div></div>";
     }
   });
 

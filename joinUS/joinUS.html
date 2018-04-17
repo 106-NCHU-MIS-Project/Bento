@@ -8,6 +8,9 @@
     <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzUkUrvdaygSJamPdIUkADw4qTuosDjkw" async defer></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
     <link rel="stylesheet" href="../css/main.css">
 
     <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
@@ -106,6 +109,13 @@
 
 <div class="row">
   <div class="input-field col s12">
+    <input type="text" id="tel" name="tel" value="">
+    <label for="tel">TEL</label>
+  </div>
+</div>
+
+<div class="row">
+  <div class="input-field col s12">
     <input type="text" id="openHours" name="openHours" value="">
     <label for="openHours">openHours</label>
   </div>
@@ -115,18 +125,19 @@
   <div class="input-field col s12">
     <input type="text" id="address" name="address" value="">
     <label for="address">address</label>
+    <button type="button" name="button" class="btn" onclick="javascript:addressTolatlng()">轉換地址成經緯度</button>
   </div>
 </div>
 
 
 <div class="row">
   <div class="input-field col s6">
+    <font color="grey">經度</font>
     <input type="text" id="lat" name="lat" value="">
-    <label for="lat">lat</label>
   </div>
   <div class="input-field col s6">
+    <font color="grey">緯度</font>
     <input type="text" id="lon" name="lon" value="">
-    <label for="lon">lon</label>
   </div>
 </div>
 
@@ -145,38 +156,52 @@
 
   <script type="text/javascript">
 
-  function getLocation() {
-      if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(showPosition);
-      } else {
-          alert("Geolocation is not supported by this browser.");
-      }
-  }
 
-  function showPosition(position) {
-      var lat = position.coords.latitude;
-      var lon = position.coords.longitude;
-      document.getElementById("lat").value=lat;
-      document.getElementById("lon").value=lon;
-  }
-
-  getLocation();
 
 //////////////////////////////////////////////
+function addressTolatlng(){
+  var x=document.getElementById("address").value;
 
+      var geocoder = new google.maps.Geocoder();
+      geocoder.geocode({
+          "address": x
+      }, function (results, status) {
+
+          if (status == google.maps.GeocoderStatus.OK) {
+              document.getElementById("lat").value = results[0].geometry.location.lat();
+              document.getElementById("lon").value = results[0].geometry.location.lng();
+            console.log(lat+","+lon);
+            swal("成功");
+          }
+          else{
+            swal("查無地址");
+          }
+      });
+
+
+}
 
 
   var database = firebase.database();
 
 function addshop(){
+
+
+
+
+
   var shopName = document.getElementById("shopName").value;
   var firebaseID = document.getElementById("firebaseID").value;
   var apiKey = document.getElementById("apiKey").value;
   var address = document.getElementById("address").value;
   var briefInfo = document.getElementById("briefInfo").value;
+  var tel = document.getElementById("tel").value;
   var openHours = document.getElementById("openHours").value;
   var lat = document.getElementById("lat").value;
   var lon = document.getElementById("lon").value;
+
+  // var lat = document.getElementById("lat").value;
+  // var lon = document.getElementById("lon").value;
 
   database.ref("stores").once("value").then(function(snapshot){
     var counter = snapshot.child("counter").val();
@@ -184,6 +209,7 @@ function addshop(){
     database.ref("stores/"+"shop"+counter+"/shopName").set(shopName);
     database.ref("stores/"+"shop"+counter+"/shopInfo/address").set(address);
     database.ref("stores/"+"shop"+counter+"/shopInfo/briefInfo").set(briefInfo);
+    database.ref("stores/"+"shop"+counter+"/shopInfo/tel").set(tel);
     database.ref("stores/"+"shop"+counter+"/shopInfo/openHours").set(openHours);
     database.ref("stores/"+"shop"+counter+"/shopInfo/location").set({
       lat:lat,
@@ -198,6 +224,7 @@ function addshop(){
   });
 
 document.getElementById("form1").reset();
+swal("成功");
 }
   </script>
 

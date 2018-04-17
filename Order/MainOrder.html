@@ -64,14 +64,14 @@ footer{
     <!-- Modal Structure -->
     <div id="modal1" class="modal">
       <div class="modal-content" style="padding-bottom:0px;">
-        <h4>XX便當店</h4>
+        <h4 id="modal_shopName">XX便當店</h4>
         <hr>
         <table class="highlight">
           <tr>
-            <td>電話</td><td>04-22882288</td>
+            <td>電話</td><td id="modal_shopTel">04-22882288</td>
           </tr>
           <tr>
-            <td>地址</td><td>台中市南區興大路140號</td>
+            <td>地址</td><td id="modal_shopAddress">台中市南區興大路140號</td>
           </tr>
           <tr>
             <td>邀請朋友QRCODE</td><td><div id="qrcode"></div></td>
@@ -91,7 +91,8 @@ footer{
     var temp = decode.split("?");
     var vars = temp[1].split("&");
     jQuery('#qrcode').qrcode({width:"140" ,height:"140" ,text:vars[0]});
-
+    console.log(vars[1]);      /////////////vars[1]店家名稱 ,vars[0]訂單序號
+    document.getElementById("modal_shopName").innerHTML = vars[1]; 
     </script>
     <!-- . -->
 
@@ -150,7 +151,7 @@ footer{
           <div class="card-content" >
 
         <form class="" action="javascript:writeData()" method="post">
-          店家名稱 <input type="text" id="theOrderShopName" value="XXX便當店" disabled>
+          店家名稱 <input type="text" id="theOrderShopName" value="" disabled>
           訂單編號 <input type="text" id="OrderId" value="" placeholder="OrderId" disabled>
           名字 <input type="text" id="OrderName" value="主揪人" placeholder="Name">
           電話 <input type="text" id="TEL" value="" placeholder="TEL">
@@ -174,6 +175,9 @@ footer{
         </form>
 
         <script type="text/javascript">
+
+          document.getElementById("theOrderShopName").value = vars[1];
+
           var UserName = window.localStorage.getItem("UserName");
           document.getElementById("OrderName").value = "(主揪人)"+UserName;
 

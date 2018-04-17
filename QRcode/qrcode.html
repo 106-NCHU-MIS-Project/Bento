@@ -70,12 +70,13 @@
     </div>
         <!-- <button type="button" name="button" class="btn" onclick="newQRcode()">Random</button> -->
 <h4>訂單編號</h4>
-    <h2><a id="QRString" style="border:1px blue solid; padding:5px;" href='../Order/JoinOrder.html' style="color:blue!important;"></a></h2>
+    <h2><a id="QRString" style="border:1px blue solid; padding:5px;" href='#' style="color:blue!important;"></a></h2>
 <h4>點擊編號進入點餐</h4>
 <br>
 
     <script type="text/javascript">
 newQRcode();
+
 
 function randomString(length, chars) {
     var mask = '';
@@ -90,6 +91,10 @@ function randomString(length, chars) {
 
 
 function newQRcode(){
+  var url = location.href;
+  var decode = decodeURIComponent(url);
+  var temp = decode.split("?");
+  var vars = temp[1].split("&");
 
   document.getElementById("qrcode").innerHTML="";
 
@@ -98,7 +103,7 @@ function newQRcode(){
   jQuery('#qrcode').qrcode({width:"300" ,height:"300" ,text: randomQRcode});
 
   document.getElementById("QRString").innerHTML = randomQRcode;
-  document.getElementById("QRString").href='../Order/MainOrder.html?'+randomQRcode;
+  document.getElementById("QRString").href='../Order/MainOrder.html?'+randomQRcode+"&"+vars[0];
 }
 
 </script>

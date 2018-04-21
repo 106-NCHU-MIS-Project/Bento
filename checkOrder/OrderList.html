@@ -130,7 +130,7 @@ if(OrderListNumber>0){
     var OrderList_div = document.getElementById("OrderList_div");
     var OrderId = localStorage.getItem("OrderId"+i);
     var OrderListShop = localStorage.getItem("OrderListShop"+i);
-    OrderList_div.innerHTML += "<a href='./checkOrder.html?"+OrderId+"'><div class='card'><table><tr><td>"+i+"</td><td>"+OrderId+"</td><td>"+OrderListShop+"</td></tr></table></div></div></a>"
+    OrderList_div.innerHTML += "<a href='./checkOrder.html?"+OrderId+"&"+OrderListShop+"'><div class='card'><table><tr><td>"+i+"</td><td>"+OrderId+"</td><td>"+OrderListShop+"</td></tr></table></div></div></a>"
   }
 }
 

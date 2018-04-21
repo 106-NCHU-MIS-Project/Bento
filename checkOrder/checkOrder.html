@@ -97,7 +97,10 @@ th{
   <div class="card-content">
 
 
-        <table>
+        <table class="highlight">
+          <tr>
+          <td width="40%">訂單序號</td><td id="OrderId"></td>
+          </tr>
           <tr>
           <td width="40%">訂餐人</td><td id="OrderMainName"></td>
           </tr>
@@ -107,21 +110,21 @@ th{
           <tr>
             <td width="40%">預計送餐時間</td><td id="OrderTime"></td>
           </tr>
-          <tr>
-            <td colspan="2" style="text-align:center;"><hr>訂購餐點</td>
-          </tr>
+
 
 
         </table>
-        <table>
+        <table >
           <tr>
+            <td colspan="2" style="text-align:center;"><hr>訂購餐點</td>
+          </tr>
+          <tr style="background-color:#f2f2f2;">
             <th>品項</th><th>數量</th>
           </tr>
-              <div id="OrderDetail_inTable">
 
-                <tr><td class='td_center'>雞腿便當</td><td class='td_center'>3</td></tr>
+        </table>
+        <table class="highlight" id="OrderDetail_inTable">
 
-              </div>
         </table>
 
   </div>
@@ -132,6 +135,13 @@ th{
         <div class="card">
 
         <div class="card-content" id="joinPeople">
+          <form action="#">
+
+
+
+
+          </form>
+
         </div>
         </div>
       </div>
@@ -187,6 +197,7 @@ var temp = decode.split("?");
 var vars = temp[1].split("&");
 console.log(vars[0]+","+vars[1]);
 document.getElementById("OrderListShop_h4_inModal").innerHTML = vars[1];
+document.getElementById("OrderId").innerHTML = vars[0];
 var shop_i;
 
     // var config = {
@@ -296,11 +307,27 @@ var BentoCounter = snapshot.child("OrderDetail/").numChildren()-1;
 //////////bento1 bento2 bento3 and time column  so  -1/////////////
 
 console.log(BentoCounter);
-for(var j = 1 ; j<BentoCounter ; j++){
+for(var j = 1 ; j <= BentoCounter ; j++){
   var temp = snapshot.child("OrderDetail/Bento"+j+"/name/").val();
   var BentoName = [];
   BentoName[j] = temp;
-  console.log(BentoName[j]);
+
+  var Bento_j_counter = [];
+  Bento_j_counter[j] = 0;
+
+  // console.log(BentoName[j]);
+  snapshot.child("OrderDetail/Bento"+j+"/OrderPeople/").forEach(function(childSnapshot){
+    var peopleName = childSnapshot.key;
+    var  child_isPaid = childSnapshot.child("isPaid").val();
+    var  child_name = childSnapshot.child("name").val();
+    var  child_number = parseInt(childSnapshot.child("number").val());
+    var  child_price = childSnapshot.child("price").val();
+    var  child_total = childSnapshot.child("total").val();
+    Bento_j_counter[j] = child_number+Bento_j_counter[j];
+
+  });
+  console.log(BentoName[j]+","+Bento_j_counter[j]);
+  document.getElementById("OrderDetail_inTable").innerHTML += "<tr><td class='td_center'>"+BentoName[j]+"</td><td class='td_center'>"+Bento_j_counter[j]+"</td></tr>";
 }
 
 
@@ -314,12 +341,9 @@ for(var j = 1 ; j<BentoCounter ; j++){
 
 database.ref("Orders/"+vars[0]+"/OrderDetail").on("value", function(snapshot) {
 
-  var DetailBentoNum = snapshot.numChildren();
+  var DetailBentoNum = snapshot.numChildren()-1;
   document.getElementById("joinPeople").innerHTML="";
   for(var i = 1 ;i<=DetailBentoNum ; i++){
-
-    // var a = snapshot.child("Bento"+i+"/"+"name").val();
-    // document.getElementById("joinPeople").innerHTML+=JSON.stringify(a)+"<br>";
 
 
     var query = firebase.database().ref("Orders/"+vars[0]+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/").orderByKey();
@@ -333,7 +357,7 @@ database.ref("Orders/"+vars[0]+"/OrderDetail").on("value", function(snapshot) {
           var childTotal = childSnapshot.child("total").val();
           var childBento = childSnapshot.child("name").val();
           if(childNumber!=0){
-          document.getElementById("joinPeople").innerHTML+="<div class='row'><div class='col s12'><b><p>"+key+":"+childBento+"</p></b><p>數量:"+childNumber+" 價格:"+childPrice+" 小計:"+childTotal+"</p></div></div><hr>";
+          document.getElementById("joinPeople").innerHTML+="<div class='row'><div class='col s12'><b><p>"+key+":"+childBento+"</p></b><p>數量:"+childNumber+" 價格:"+childPrice+" 小計:"+childTotal+"</p><p><input type='checkbox' id='indeterminate-checkbox'/><label for='indeterminate-checkbox'>已付清</label></p></div></div><hr>";
           }
       });
     });

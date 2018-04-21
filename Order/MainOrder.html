@@ -92,7 +92,7 @@ footer{
     var vars = temp[1].split("&");
     jQuery('#qrcode').qrcode({width:"140" ,height:"140" ,text:vars[0]});
     console.log(vars[1]);      /////////////vars[1]店家名稱 ,vars[0]訂單序號
-    document.getElementById("modal_shopName").innerHTML = vars[1]; 
+    document.getElementById("modal_shopName").innerHTML = vars[1];
     </script>
     <!-- . -->
 
@@ -436,7 +436,7 @@ var OrderId = document.getElementById("OrderId").value;
 
 database.ref("Orders/"+OrderId+"/OrderDetail/").on("value", function(snapshot) {
 
-  var DetailBentoNum = snapshot.numChildren();
+  var DetailBentoNum = snapshot.numChildren()-1;
   document.getElementById("joinPeople").innerHTML="";
   for(var i = 1 ;i<=DetailBentoNum ; i++){
 

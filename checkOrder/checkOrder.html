@@ -326,7 +326,7 @@ for(var j = 1 ; j <= BentoCounter ; j++){
     Bento_j_counter[j] = child_number+Bento_j_counter[j];
 
   });
-  console.log(BentoName[j]+","+Bento_j_counter[j]);
+  // console.log(BentoName[j]+","+Bento_j_counter[j]);
   document.getElementById("OrderDetail_inTable").innerHTML += "<tr><td class='td_center'>"+BentoName[j]+"</td><td class='td_center'>"+Bento_j_counter[j]+"</td></tr>";
 }
 
@@ -337,23 +337,47 @@ for(var j = 1 ; j <= BentoCounter ; j++){
 
 
 <script type="text/javascript">
-function isPaid_checkbox_onclick(i,counter){
-  console.log(i+":"+counter);
+function TimeFunction(){
+  var theDate = new Date();
+  var theTime = theDate.getTime();
+
+  var OrderId = document.getElementById("OrderId").value;
+
+  database.ref("Orders/"+vars[0]+"/OrderDetail/time/").set(theTime);
 }
 
-database.ref("Orders/"+vars[0]+"/OrderDetail").on("value", function(snapshot) {
+function isPaid_checkbox_onclick(key,counter,bento_i){
+/////////目前傳進的bento_i傳進的值有問題 解決方法 子目錄下增加欄位/////////
+  var isChecked = document.getElementById("indeterminate-checkbox"+counter).checked;
+
+
+  database.ref("Orders/"+vars[0]+"/OrderDetail/").once("value",function(snapshot){
+    var isPaid = snapshot.child("Bento"+bento_i+"/OrderPeople/"+key+"/isPaid").val();
+    database.ref("Orders/"+vars[0]+"/OrderDetail/"+"Bento"+bento_i+"/OrderPeople/"+key+"/isPaid").set(++isPaid);
+  });
+
+  // if(isChecked==false){
+  // dd.child("Bento"+bento_i+"/OrderPeople/"+key+"/isPaid").set(1);
+  // }
+  // else if(isChecked==true){
+  //   dd.child("Bento"+bento_i+"/OrderPeople/"+key+"/isPaid").set(0);
+  // }
+
+}
+
+database.ref("Orders/"+vars[0]+"/OrderDetail").once("value", function(snapshot) {
 
   var DetailBentoNum = snapshot.numChildren()-1;
   document.getElementById("joinPeople").innerHTML="";
   for(var i = 1 ;i<=DetailBentoNum ; i++){
 
     var counter = 0;
+    var bento_i = i-1;
 
     var query = firebase.database().ref("Orders/"+vars[0]+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/").orderByKey();
     query.once("value").then(function(snapshot) {
         snapshot.forEach(function(childSnapshot) {
           counter++;
-          var bento_i = i;
           var key = childSnapshot.key;
           var childNumber = childSnapshot.child("number").val();
           var childPrice = childSnapshot.child("price").val();
@@ -362,11 +386,11 @@ database.ref("Orders/"+vars[0]+"/OrderDetail").on("value", function(snapshot) {
           var isPaid = childSnapshot.child("isPaid").val();
 
           if(childNumber!=0){
-            if(isPaid==1){
-              document.getElementById("joinPeople").innerHTML+="<div class='row'><div class='col s12'><b><p>"+key+":"+childBento+"</p></b><p>數量:"+childNumber+" 價格:"+childPrice+" 小計:"+childTotal+"</p><p><input type='checkbox' id='indeterminate-checkbox"+counter+"' checked/><label for='indeterminate-checkbox"+counter+"' onclick='javascript:isPaid_checkbox_onclick("+key+","+counter+")'>已付清</label></p></div></div><hr>";
+            if(isPaid%2==1){
+              document.getElementById("joinPeople").innerHTML+="<div class='row'><div class='col s12'><b><p>"+key+":"+childBento+"</p></b><p>數量:"+childNumber+" 價格:"+childPrice+" 小計:"+childTotal+"</p><p><input type='checkbox' id='indeterminate-checkbox"+counter+"' checked/><label for='indeterminate-checkbox"+counter+"' onclick='javascript:isPaid_checkbox_onclick(\""+key+"\","+counter+","+bento_i+")'>已付清</label></p></div></div><hr>";
             }
-            else if(isPaid==0){
-          document.getElementById("joinPeople").innerHTML+="<div class='row'><div class='col s12'><b><p>"+key+":"+childBento+"</p></b><p>數量:"+childNumber+" 價格:"+childPrice+" 小計:"+childTotal+"</p><p><input type='checkbox' id='indeterminate-checkbox"+counter+"'/><label for='indeterminate-checkbox"+counter+"' onclick='javascript:isPaid_checkbox_onclick("+key+","+counter+")'>已付清</label></p></div></div><hr>";
+            else if(isPaid%2==0){
+          document.getElementById("joinPeople").innerHTML+="<div class='row'><div class='col s12'><b><p>"+key+":"+childBento+"</p></b><p>數量:"+childNumber+" 價格:"+childPrice+" 小計:"+childTotal+"</p><p><input type='checkbox' id='indeterminate-checkbox"+counter+"'/><label for='indeterminate-checkbox"+counter+"' onclick='javascript:isPaid_checkbox_onclick(\""+key+"\","+counter+","+bento_i+")'>已付清</label></p></div></div><hr>";
             }
           }
       });

@@ -303,7 +303,7 @@ database.ref("Orders/"+vars[0]).on("value",function(snapshot){
 
     ///////////////////on  OrderStatus //////////////////////////
 
-var BentoCounter = snapshot.child("OrderDetail/").numChildren()-1;
+var BentoCounter = snapshot.child("OrderDetail/").numChildren()-2;
 //////////bento1 bento2 bento3 and time column  so  -1/////////////
 
 console.log(BentoCounter);
@@ -372,7 +372,7 @@ database.ref("Orders/"+vars[0]+"/OrderDetail").once("value", function(snapshot) 
   for(var i = 1 ;i<=DetailBentoNum ; i++){
 
     var counter = 0;
-    var bento_i = i-1;
+    // var bento_i = i-1;
 
     var query = firebase.database().ref("Orders/"+vars[0]+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/").orderByKey();
     query.once("value").then(function(snapshot) {
@@ -384,7 +384,7 @@ database.ref("Orders/"+vars[0]+"/OrderDetail").once("value", function(snapshot) 
           var childTotal = childSnapshot.child("total").val();
           var childBento = childSnapshot.child("name").val();
           var isPaid = childSnapshot.child("isPaid").val();
-
+          var bento_i = childSnapshot.child("bento_i").val();
           if(childNumber!=0){
             if(isPaid%2==1){
               document.getElementById("joinPeople").innerHTML+="<div class='row'><div class='col s12'><b><p>"+key+":"+childBento+"</p></b><p>數量:"+childNumber+" 價格:"+childPrice+" 小計:"+childTotal+"</p><p><input type='checkbox' id='indeterminate-checkbox"+counter+"' checked/><label for='indeterminate-checkbox"+counter+"' onclick='javascript:isPaid_checkbox_onclick(\""+key+"\","+counter+","+bento_i+")'>已付清</label></p></div></div><hr>";

@@ -69,6 +69,7 @@
     </div>
     <script>
         var ordersRef = database.ref("Orders/");
+        // var have_content = false;
         ordersRef.on('value', function(snapshot){
             if (!snapshot.exists()) {
                 $('#list_orders').empty();                
@@ -84,11 +85,15 @@
                 snapshot.forEach(function(childSnap){
                     var str ="";
                     str += '<li><div class="collapsible-header"><i class="material-icons">local_dining</i>'+ childSnap.key+'<span class="neworder new badge" data-badge-caption="" >新訂單</span></div>';
-                    if(childSnap.val().OrderStatus == 0)
+                    if(childSnap.val().OrderStatus == 0 )
                     {
+                        // var str = "";
+                        // str += "<h1>尚無訂單資料</h1>";
+                        // $('#list_orders').append(str);
                         return;
                     }
 
+             
                     var obj = childSnap.child("OrderDetail").val();
                     str += '<div class="collapsible-body"><ul>';
                     $.each(obj, function(key, value){
@@ -146,6 +151,8 @@
             $('#modal1-footer').empty();
             
             ordersRef.child(newOrder).on("value", function (snapshot) {
+                $('#modal1-content').empty();
+                $('#modal1-footer').empty();
                 var newOrderObj = snapshot.val();
                 if(newOrderObj.OrderStatus == 1)
                 {

@@ -129,10 +129,19 @@
                     });
                     str += '</ul>';
                     var order_id = childSnap.child("OrderId").val();
-                    str += '<a href="#!" class="modal-action modal-close waves-effect waves-light btn right red" onclick="javascript:setOrderStatus(\'' + order_id + '\', 6)">拒絕訂單</a>';                    
-                    str += '<a href="#!" class="modal-action modal-close waves-effect waves-green btn right" onclick="javascript:setOrderStatus(\'' + order_id + '\', 2)">接受訂單</a>';
+                    str += '<a href="#!" class="status_group modal-action modal-close waves-effect waves-light btn right red" id="'+ order_id+'reject" onclick="javascript:setOrderStatus(\'' + order_id + '\', 6)">拒絕訂單</a>';
+                    str += '<a href="#!" class="status_group modal-action modal-close waves-effect waves-light btn right grey" style="display:none" id="' + order_id +'cancel" onclick="javascript:setOrderStatus(\'' + order_id + '\', 5)">取消訂單</a>';                     
+                    str += '<a href="#!" class="status_group modal-action modal-close waves-effect waves-light btn right orange" style="display:none" id="' + order_id +'delivery" onclick="javascript:setOrderStatus(\'' + order_id + '\', 3)">開始外送</a>';                                                           
+                    str += '<a href="#!" class="status_group modal-action modal-close waves-effect waves-green btn right" id="' + order_id +'accept" onclick="javascript:setOrderStatus(\'' + order_id + '\', 2)">接受訂單</a>';
                     str += '</div></li>';
                     $('#list_orders').append(str);
+                    if (childSnap.val().OrderStatus == 2) {
+                        $("#"+ order_id +"reject").hide();
+                        $("#" + order_id +"accept").hide();
+                        $("#" + order_id +"delivery").show();
+                        $("#" + order_id +"cancel").show();
+                
+                    }
 
                 });
             }
@@ -212,6 +221,14 @@
         }
         function setOrderStatus(orderID, token){
             ordersRef.child(orderID+"/OrderStatus").set(token);
+            
+            if (token == 2) {
+                $("#"+ orderID +"reject").hide();
+                $("#" + orderID +"accept").hide();                
+                $("#" + orderID +"delivery").show();
+                $("#" + orderID +"cancel").show();
+                
+            }
         }
         
 

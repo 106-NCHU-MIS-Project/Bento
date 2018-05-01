@@ -163,6 +163,7 @@ function add_number(i){
       });
     }
     database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/"+OrderName+"/").set({
+      bento_i : i,
       number : number_inner,
       price : price_i,
       total : total_i,
@@ -202,6 +203,7 @@ function del_number(i){
         });
       }
       database.ref("Orders/"+OrderId+"/OrderDetail/"+"Bento"+i+"/"+"OrderPeople/"+OrderName+"/").set({
+        bento_i : i,
         number : number_inner,
         price : price_i,
         total : total_i,

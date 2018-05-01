@@ -56,9 +56,42 @@
         var database = firebase.database();
     </script>
 
+    <div class="row"></div>
     <div class="row">
-        <ul id="list_orders" class="collapsible popout" data-collapsible="accordion"></ul>
+        <div class="col s12">
+            <ul class="tabs">
+                <li class="tab col s3">
+                    <a href="#accept">製作中</a>
+                </li>
+                <li class="tab col s3">
+                    <a href="#delivery">外送中</a>
+                </li>
+                <li class="tab col s2">
+                    <a href="#complete">已完成</a>
+                </li>
+                <li class="tab col s2">
+                    <a href="#reject">已拒絕</a>
+                </li>
+                <li class="tab col s2">
+                    <a href="#cancel">取消訂單</a>
+                </li>
+            </ul>
+        </div>
+        <div id="accept" class="col s12">
+            <div class="row">
+                <ul id="list_orders" class="collapsible popout" data-collapsible="accordion"></ul>
+            </div>
+        </div>
+        <div id="complete" class="col s12">放已完成訂單</div>
+        <div id="delivery" class="col s12">放外送中訂單</div>
+        
+        <div id="reject" class="col s12">放已拒絕訂單</div>
+        <div id="cancel" class="col s12">放已取消訂單</div>
     </div>
+
+
+
+
     <!-- Modal Trigger -->
     <!-- <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a> -->
     
@@ -69,48 +102,83 @@
     </div>
     <script>
         var ordersRef = database.ref("Orders/");
+        // var have_content = false;
         ordersRef.on('value', function(snapshot){
-            $('#list_orders').empty();                
-            snapshot.forEach(function(childSnap){
-                var str ="";
-                str += '<li><div class="collapsible-header"><i class="material-icons">local_dining</i>'+ childSnap.key+'<span class="new badge" data-badge-caption="">新訂單</span></div>';
-                var obj = childSnap.child("OrderDetail").val();
-                str += '<div class="collapsible-body"><ul>';
-                $.each(obj, function(key, value){
-                    var num = 0;
-                    if (key == "time")
-                        return;
-                    $.each(value.OrderPeople, function(person){
-                        num += Number(value.OrderPeople[person].number);
-                    });
-                    
-
-                    str += '<li>'+value.name+ ":"+ num+'</li>';
-                });
-                obj = childSnap.child("OrderInfo").val();
-                str += '<li><h5>訂購人資料</h5></li>';
+            if (!snapshot.exists()) {
+                $('#list_orders').empty();                
                 
-                $.each(obj, function(key, value){
-                    switch(key){
-                        case "Address":
-                           str += '<li>地址' + ":" + value + '</li>';
-                           break;
-                        case "OrderMainName":
-                            str += '<li>訂購人' + ":" + value + '</li>';
-                            break;
-                        case "OrderTime":
-                            str += '<li>訂購時間' + ":" + value + '</li>';
-                            break;
-                        case "TEL":
-                            str += '<li>聯絡電話' + ":" + value + '</li>';
-                            break;
-                    }
-        
-                });
-                str += '</ul></div></li>';
+                var str = "";
+                str += "<h1>尚無訂單資料</h1>";
                 $('#list_orders').append(str);
 
-            });
+            }
+            else 
+            {
+                $('#list_orders').empty();                
+                snapshot.forEach(function(childSnap){
+                    var str ="";
+                    str += '<li><div class="collapsible-header"><i class="material-icons">local_dining</i>'+ childSnap.key+'<span class="neworder new badge" data-badge-caption="" >新訂單</span></div>';
+                    if(childSnap.val().OrderStatus == 0 || childSnap.val().OrderStatus == 5)
+                    {
+                        // var str = "";
+                        // str += "<h1>尚無訂單資料</h1>";
+                        // $('#list_orders').append(str);
+                        return;
+                    }
+
+             
+                    var obj = childSnap.child("OrderDetail").val();
+                    str += '<div class="collapsible-body"><ul>';
+                    $.each(obj, function(key, value){
+                        var num = 0;    
+                        if (key == "time")
+                            return;
+                        $.each(value.OrderPeople, function(person){
+                            num += Number(value.OrderPeople[person].number);
+                        });
+                        
+
+                        str += '<li>'+value.name+ ":"+ num+'</li>';
+                    });
+                    obj = childSnap.child("OrderInfo").val();
+                    str += '<li><h5>訂購人資料</h5></li>';
+                    
+                    $.each(obj, function(key, value){
+                        switch(key){
+                            case "Address":
+                            str += '<li>地址' + ":" + value + '</li>';
+                            break;
+                            case "OrderMainName":
+                                str += '<li>訂購人' + ":" + value + '</li>';
+                                break;
+                            case "OrderTime":
+                                str += '<li>訂購時間' + ":" + value + '</li>';
+                                break;
+                            case "TEL":
+                                str += '<li>聯絡電話' + ":" + value + '</li>';
+                                break;
+                        }
+            
+                    });
+                    str += '</ul>';
+                    var order_id = childSnap.child("OrderId").val();
+                    str += '<a href="#!" class="status_group modal-action modal-close waves-effect waves-light btn right red" id="'+ order_id+'reject" onclick="javascript:setOrderStatus(\'' + order_id + '\', 6)">拒絕訂單</a>';
+                    str += '<a href="#!" class="status_group modal-action modal-close waves-effect waves-light btn right grey" style="display:none" id="' + order_id +'cancel" onclick="javascript:setOrderStatus(\'' + order_id + '\', 5)">取消訂單</a>';                     
+                    str += '<a href="#!" class="status_group modal-action modal-close waves-effect waves-light btn right orange" style="display:none" id="' + order_id +'delivery" onclick="javascript:setOrderStatus(\'' + order_id + '\', 3)">開始外送</a>';                                                           
+                    str += '<a href="#!" class="status_group modal-action modal-close waves-effect waves-green btn right" id="' + order_id +'accept" onclick="javascript:setOrderStatus(\'' + order_id + '\', 2)">接受訂單</a>';
+                    str += '</div></li>';
+                    $('#list_orders').append(str);
+                    if (childSnap.val().OrderStatus == 2) {
+                        $("#"+ order_id +"reject").hide();
+                        $("#" + order_id +"accept").hide();
+                        $("#" + order_id +"delivery").show();
+                        $("#" + order_id +"cancel").show();
+                
+                    }
+
+                });
+            }
+
         });
 
 
@@ -125,6 +193,8 @@
             $('#modal1-footer').empty();
             
             ordersRef.child(newOrder).on("value", function (snapshot) {
+                $('#modal1-content').empty();
+                $('#modal1-footer').empty();
                 var newOrderObj = snapshot.val();
                 if(newOrderObj.OrderStatus == 1)
                 {
@@ -159,28 +229,42 @@
                             case "OrderTime":
                                 str += '<li>訂購時間' + ":" + value + '</li>';
                                 break;
-                            case "TEL":
-                                str += '<li>聯絡電話' + ":" + value + '</li>';
-                                break;
+                            // case "TEL":
+                            //     str += '<li>聯絡電話' + ":" + value + '</li>';
+                            //     break;
                         }
 
                     });
 
-                    footer += '<a href="#!" class="modal-action modal-close waves-effect waves-green btn" onclick="javascript:setOrderStatus(\'' + newOrder + '\', 6)">拒絕訂單</a>';
-                    footer += '<a href="#!" class="modal-action modal-close waves-effect waves-green btn" onclick="javascript:setOrderStatus(\'' + newOrder + '\', 2)">接受訂單</a>';
+                    footer += '<a href="#!" class="modal-action modal-close waves-effect waves-green btn" >確認</a>';
+                    // footer += '<a href="#!" class="modal-action modal-close waves-effect waves-green btn" onclick="javascript:setOrderStatus(\'' + newOrder + '\', 2)">接受訂單</a>';
 
 
                     $('#modal1-content').append(str);
                     $('#modal1-footer').append(footer);
+                    // if ($('#modal1-content').children().length == 0)
+                        // $('#modal1').modal('close');
+                    
                     $('#modal1').modal('open');
                 }
-                else {}
+                    
+                // else {}
 
             });
         }
         function setOrderStatus(orderID, token){
-            ordersRef.child(orderID)
+            ordersRef.child(orderID+"/OrderStatus").set(token);
+            
+            if (token == 2) {
+                $("#"+ orderID +"reject").hide();
+                $("#" + orderID +"accept").hide();                
+                $("#" + orderID +"delivery").show();
+                $("#" + orderID +"cancel").show();
+                
+            }
         }
+        
+
     </script>
 </body>
 

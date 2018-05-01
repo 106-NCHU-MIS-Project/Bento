@@ -14,20 +14,30 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.0.7/sweetalert2.all.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
 
-    <title>查看訂單-店名</title>
+    <title>訂單管理-店名</title>
     <script>
         $(document).ready(function () {
             $('.modal').modal();
+            $('ul.tabs').tabs({
+                swipeable: true,
+                responsiveThreshold: Infinity
+            });
         });
 
-
     </script>
+    <style>
+        .carousel .carousel-item{
+            height:100%;
+        }
+        
+        
+    </style>
 </head>
 
 <body>
     <nav>
         <div class="nav-wrapper">
-            <a href="#" class="brand-logo">查看訂單</a>
+            <a href="#" class="brand-logo">訂單管理</a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li>
                     <a href="sass.html">Sass</a>
@@ -77,7 +87,7 @@
                 </li>
             </ul>
         </div>
-        <div id="accept" class="col s12">
+        <div id="accept" class="col s12" >
             <div class="row">
                 <ul id="list_orders" class="collapsible popout" data-collapsible="accordion"></ul>
             </div>

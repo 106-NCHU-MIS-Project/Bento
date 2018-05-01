@@ -2,141 +2,83 @@
 <html>
   <head>
     <meta charset="utf-8">
-	    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
-      <style type="text/css">html {
-          height: 100%;
-        }
-      body {
-        background:
-          -webkit-linear-gradient(rgba(5, 610, 255, 0.4), rgba(135, 60, 255, 0.0) 80%),
-          -webkit-linear-gradient(bottom left, rgba(120, 155, 255, 0.9) 25%, rgba(255, 160, 65, 0.9) 76%);
-        background:
-          -o-linear-gradient(rgba(5, 610, 255, 0.4), rgba(135, 60, 255, 0.0) 80%),
-          -o-linear-gradient(bottom left, rgba(120, 155, 255, 0.9) 25%, rgba(255, 160, 65, 0.9) 76%);
-        background:
-          linear-gradient(rgba(5, 610, 255, 0.4), rgba(135, 60, 255, 0.0) 80%),
-          linear-gradient(to top right, rgba(120, 155, 255, 0.9) 25%, rgba(255, 160, 65, 0.9) 76%);
-          }
-      .cf:before, .cf:after {
-        content:" ";
-        display: table;
-        }
-      .cf:after {
-        clear: both;
-        }
-      .cf {
-        *zoom: 1;
-      }
-      .menu {
-        list-style:none;
-        margin: 50px auto;
-        width: 800px;
-        width: -moz-fit-content;
-        width: -webkit-fit-content;
-        width: fit-content;
-      }
-      .menu > li {
-        background: #34495e;
-        float: left;
-        position: relative;
-        -webkit-transform: skewX(25deg);
-        }
-      .menu a {
-        display: block;
-        color: #fff;
-        text-transform: uppercase;
-        text-decoration: none;
-        font-family: Arial, Helvetica;
-        font-size: 14px;
-    }
-    .menu li:hover {
-        background: #e74c3c;
-      }
-    .menu > li > a {
-      -webkit-transform: skewX(-25deg);
-      padding: 1em 2em;
-    }
-    /* Dropdown */
-    .submenu {
-      position: absolute;
-      width: 200px;
-      left: 50%;
-      margin-left: -100px;
-      -webkit-transform: skewX(-25deg);
-      -webkit-transform-origin: left top;
-    }
-    .submenu li {
-      background-color: #34495e;
-      position: relative;
-      overflow: hidden;
-    }
-    .submenu > li > a {
-      padding: 1em 2em;
-    }
-    .submenu > li::after {
-      content:'';
-      position: absolute;
-      top: -125%;
-      height: 100%;
-      width: 100%;
-      box-shadow: 0 0 50px rgba(0, 0, 0, .9);
-    }
-    /* Odd stuff */
-    .submenu > li:nth-child(odd) {
-      -webkit-transform: skewX(-25deg) translateX(0);
-    }
-    .submenu > li:nth-child(odd) > a {
-      -webkit-transform: skewX(25deg);
-    }
-    .submenu > li:nth-child(odd)::after {
-      right: -50%;
-      -webkit-transform: skewX(-25deg) rotate(3deg);
-    }
-    /* Even stuff */
-    .submenu > li:nth-child(even) {
-      -webkit-transform: skewX(25deg) translateX(0);
-    }
-    .submenu > li:nth-child(even) > a {
-      -webkit-transform: skewX(-25deg);
-    }
-    .submenu > li:nth-child(even)::after {
-      left: -50%;
-      -webkit-transform: skewX(25deg) rotate(3deg);
-    }
-    /* Show dropdown */
-    .submenu, .submenu li {
-      opacity: 0;
-      visibility: hidden;
-    }
-    .submenu li {
-      transition: .2s ease -webkit-transform;
-    }
-    .menu > li:hover .submenu, .menu > li:hover .submenu li {
-      opacity: 1;
-      visibility: visible;
-    }
-    .menu > li:hover .submenu li:nth-child(even) {
-      -webkit-transform: skewX(25deg) translateX(15px);
-    }
-    .menu > li:hover .submenu li:nth-child(odd) {
-      -webkit-transform: skewX(-25deg) translateX(-15px);
-    }
-      </style>
+
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <link rel="stylesheet" href="../css/main.css">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzUkUrvdaygSJamPdIUkADw4qTuosDjkw" async defer></script>
+<style media="screen">
+body{
+}
+a{
+  color:black;
+  text-decoration: none;
+
+}
+.font1{
+  color:white;
+  font-size: 22px;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+
+}
+.font2{
+  color:white;
+  font-size: 20px;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+
+}
 
 
-    <title>外送人員</title>
+
+td{
+  text-align: center;
+}
+</style>
+
+    <title>BENTO</title>
   </head>
   <body>
-    <ul class="menu cf">
-      <li><a href="../index.html">Home</a></li>
-      <li>
-        <a href="#">外送</a>
-        <ul class="submenu">
-          <li><a href="Boss.html">外送人員位置</a></li>
-          <li><a href="footman.html">外送地址</a></li>
-          <li><a href="add.html">管理外送人員</a></li>
+    <link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet'>
+    <nav>
+      <div class='nav-wrapper #00838f cyan darken-4'>
+        <a href='../index.html' class='brand-logo'>BENTO</a>
+        <a href='#' data-activates='mobile-demo' class='button-collapse'><i class='material-icons'>menu</i></a>
+        <ul class='side-nav' id='mobile-demo'>
+          <li class="#00838f cyan darken-4" ><a href='#' style="color:white;">Menu</a></li>
+          <li><a href='./sideNav/personInfo.html'>個人資訊</a></li>
+          <li><a href='./sideNav/address.html'>常用地址</a></li>
+          <li><a href='#'>Default</a></li>
         </ul>
-      </li>
-    </ul>
-  </body>
+      </div>
+    </nav>
+
+<script type="text/javascript">$(".button-collapse").sideNav();</script>
+
+<div class="row" style="margin-bottom:0px!important;opacity:0.9;border-bottom:1px white solid;">
+
+<a href="Boss.html" >
+  <div class="col s6 waves-effect waves-light" style="border:2px white solid;border-radius:20px;width:(100/12*3)%;background-color:#304ffe;background-size:cover; background-repeat:no-repeat; padding-top:8vh;padding-bottom:8vh; text-align:center;">
+    <font class="font1" >外送人員位置&nbsp&nbsp</font>
+  </div>
+</a>
+
+<a href="footman.html">
+  <div class="col s6 waves-effect waves-light" style="border:2px white solid;border-radius:20px;width:(100/12*3)%;background-color:#304ffe;background-size:cover; background-repeat:no-repeat; padding-top:8vh;padding-bottom:8vh; text-align:center;">
+  <font class="font1">外送人員查詢地址</font>
+  </div>
+</a>
+</div>
+<div class="row">
+<a href="add.html">
+  <div class="col s12 waves-effect waves-light" style="border:2px white solid;border-radius:20px;width:(100/12*3)%;background-color:#6200ea;background-size:cover; background-repeat:no-repeat; padding-top:8vh;padding-bottom:8vh; text-align:center;">
+  <font class="font1">管理外送人員</font>
+  </div>
+</a>
+
+</div>
+</body>
+
 </html>

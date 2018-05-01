@@ -60,13 +60,19 @@
     <div class="row">
         <div class="col s12">
             <ul class="tabs">
-                <li class="tab col s4">
+                <li class="tab col s3">
                     <a href="#accept">製作中</a>
                 </li>
-                <li class="tab col s4">
+                <li class="tab col s3">
+                    <a href="#delivery">外送中</a>
+                </li>
+                <li class="tab col s2">
+                    <a href="#complete">已完成</a>
+                </li>
+                <li class="tab col s2">
                     <a href="#reject">已拒絕</a>
                 </li>
-                <li class="tab col s4">
+                <li class="tab col s2">
                     <a href="#cancel">取消訂單</a>
                 </li>
             </ul>
@@ -76,6 +82,9 @@
                 <ul id="list_orders" class="collapsible popout" data-collapsible="accordion"></ul>
             </div>
         </div>
+        <div id="complete" class="col s12">放已完成訂單</div>
+        <div id="delivery" class="col s12">放外送中訂單</div>
+        
         <div id="reject" class="col s12">放已拒絕訂單</div>
         <div id="cancel" class="col s12">放已取消訂單</div>
     </div>
@@ -121,7 +130,7 @@
                     var obj = childSnap.child("OrderDetail").val();
                     str += '<div class="collapsible-body"><ul>';
                     $.each(obj, function(key, value){
-                        var num = 0;
+                        var num = 0;    
                         if (key == "time")
                             return;
                         $.each(value.OrderPeople, function(person){

@@ -14,20 +14,30 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.0.7/sweetalert2.all.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
 
-    <title>查看訂單-店名</title>
+    <title>訂單管理-店名</title>
     <script>
         $(document).ready(function () {
             $('.modal').modal();
+            $('ul.tabs').tabs({
+                swipeable: true,
+                responsiveThreshold: Infinity
+            });
         });
 
-
     </script>
+    <style>
+        .carousel .carousel-item{
+            height:100%;
+        }
+        
+        
+    </style>
 </head>
 
 <body>
     <nav>
         <div class="nav-wrapper">
-            <a href="#" class="brand-logo">查看訂單</a>
+            <a href="#" class="brand-logo">訂單管理</a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li>
                     <a href="sass.html">Sass</a>
@@ -60,6 +70,9 @@
     <div class="row">
         <div class="col s12">
             <ul class="tabs">
+                <li class="tab col s2">
+                    <a href="#waiting">等待確認</a>
+                </li>
                 <li class="tab col s3">
                     <a href="#accept">製作中</a>
                 </li>
@@ -72,21 +85,34 @@
                 <li class="tab col s2">
                     <a href="#reject">已拒絕</a>
                 </li>
-                <li class="tab col s2">
-                    <a href="#cancel">取消訂單</a>
-                </li>
             </ul>
         </div>
-        <div id="accept" class="col s12">
+        <div id="waiting" class="col s12">放等待中訂單
             <div class="row">
-                <ul id="list_orders" class="collapsible popout" data-collapsible="accordion"></ul>
+                <ul id="list_waiting" class="collapsible popout" data-collapsible="accordion"></ul>
             </div>
         </div>
-        <div id="complete" class="col s12">放已完成訂單</div>
-        <div id="delivery" class="col s12">放外送中訂單</div>
+        <div id="accept" class="col s12" >
+            <div class="row">
+                <ul id="list_accept" class="collapsible popout" data-collapsible="accordion"></ul>
+            </div>
+        </div>
+        <div id="delivery" class="col s12">放外送中訂單
+            <div class="row">
+                <ul id="list_delivery" class="collapsible popout" data-collapsible="accordion"></ul>
+            </div>
+        </div>
+        <div id="complete" class="col s12">放已完成訂單
+            <div class="row">
+                <ul id="list_complete" class="collapsible popout" data-collapsible="accordion"></ul>
+            </div>
+        </div>
         
-        <div id="reject" class="col s12">放已拒絕訂單</div>
-        <div id="cancel" class="col s12">放已取消訂單</div>
+        <div id="reject" class="col s12">放已拒絕訂單
+            <div class="row">
+                <ul id="list_reject" class="collapsible popout" data-collapsible="accordion"></ul>
+            </div>
+        </div>
     </div>
 
 
@@ -114,11 +140,19 @@
             }
             else 
             {
-                $('#list_orders').empty();                
+                $('#list_accept').empty();
+                $('#list_waiting').empty();
+                $('#list_delivery').empty();
+                $('#list_complete').empty();                
+                $('#list_reject').empty();                
+                                
+                                
+                                
                 snapshot.forEach(function(childSnap){
                     var str ="";
+                    var list_append_place = '';
                     str += '<li><div class="collapsible-header"><i class="material-icons">local_dining</i>'+ childSnap.key+'<span class="neworder new badge" data-badge-caption="" >新訂單</span></div>';
-                    if(childSnap.val().OrderStatus == 0 || childSnap.val().OrderStatus == 5)
+                    if(childSnap.val().OrderStatus == 0 )
                     {
                         // var str = "";
                         // str += "<h1>尚無訂單資料</h1>";
@@ -126,7 +160,26 @@
                         return;
                     }
 
-             
+                    switch(childSnap.val().OrderStatus){
+                        case 1: 
+                            list_append_place = '#list_waiting';
+                            break;
+                        case 2: 
+                            list_append_place = '#list_accept';
+                            break;
+                        case 3:
+                            list_append_place = '#list_delivery';
+                            break;
+                        case 4:
+                            list_append_place = '#list_complete';
+                            break;
+                        case 5:
+                            list_append_place = '#list_cancel';
+                            break;
+                        case 6:
+                            list_append_place = '#list_reject';
+                            break;
+                    }
                     var obj = childSnap.child("OrderDetail").val();
                     str += '<div class="collapsible-body"><ul>';
                     $.each(obj, function(key, value){
@@ -167,7 +220,7 @@
                     str += '<a href="#!" class="status_group modal-action modal-close waves-effect waves-light btn right orange" style="display:none" id="' + order_id +'delivery" onclick="javascript:setOrderStatus(\'' + order_id + '\', 3)">開始外送</a>';                                                           
                     str += '<a href="#!" class="status_group modal-action modal-close waves-effect waves-green btn right" id="' + order_id +'accept" onclick="javascript:setOrderStatus(\'' + order_id + '\', 2)">接受訂單</a>';
                     str += '</div></li>';
-                    $('#list_orders').append(str);
+                    $(list_append_place).append(str);
                     if (childSnap.val().OrderStatus == 2) {
                         $("#"+ order_id +"reject").hide();
                         $("#" + order_id +"accept").hide();
@@ -261,6 +314,13 @@
                 $("#" + orderID +"delivery").show();
                 $("#" + orderID +"cancel").show();
                 
+            }
+            else if (token == 3) {
+                $("#" + orderID + "reject").hide();
+                $("#" + orderID + "accept").hide();
+                $("#" + orderID + "delivery").hide();
+                $("#" + orderID + "cancel").hide();
+
             }
         }
         

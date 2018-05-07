@@ -43,12 +43,14 @@
   var current=new Array();
   var distance =new Array();
   var now;
+var Farthest;
 
   /////////////////取得位置資訊////////////////////
 function getAddress(){
   var query = firebase.database().ref("Orders").orderByKey();
   query.once("value").then(function(snapshot) {
     snapshot.forEach(function(childSnapshot) {
+      if(childSnapshot.child("OrderStatus").val()== "3"/** && snapshot.child("deliveryMid").val()=="3"**/){
       var ref = firebase.database().ref("Orders/"+childSnapshot.key+"/OrderInfo/");
       ref.once("value")
         .then(function(snapshot) {
@@ -56,6 +58,7 @@ function getAddress(){
             loc.push({'addr':[addr.geometry.location.lat(),addr.geometry.location.lng()],'text':snapshot.ref.parent.key})
   });
       });
+    }
     });
   },function(error) {
   // The Promise was rejected.
@@ -80,7 +83,6 @@ function getDistant(){
   'event': {
     'idle': {
       'func': function () {
-          Farthest = false,
           // 取得目前地圖中心
           now = new google.maps.LatLng(current[0], current[1]);
 

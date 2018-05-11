@@ -1,149 +1,130 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="zh-TW">
   <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- material CSS -->
+    <link rel="stylesheet" href="css/materialize.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <script  type="text/javascript"  src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+    <script  type="text/javascript"  src="jquery-3.3.1.js"></script>
+    <script  type="text/javascript"  src="jquery.tinyMap.js"></script>
+    <script  type="text/javascript"  src="materialize.js"></script>
+    <!-- google CSS -->
     <style type="text/css">
     .map {
-        width: 640px;
-        height: 480px;
+      overflow:hidden;
+      padding-bottom:50%;
+      position:relative;
+      height:0;
     }
-    .labels {
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 4px;
-    color: white;
-    padding: 4px
-}
+    .backimg {
+      background-image:url('img/delivery.jpg');
+      background-repeat:no-repeat;
+      background-size:auto;
+    }
+    .tabs .tab a {
+      color: rgba(79, 235, 39, 0.7);
+    }
+    .tabs .tab a:focus, .tabs .tab a:focus.active {
+      background-color: rgba(79, 235, 39, 0.1);
+    }
+    .tabs .tab a:hover, .tabs .tab a.active {
+      color: rgba(79, 235, 39, 1);
+    }
+    .tabs .indicator {
+      background-color: rgba(79, 235, 39, 0.51);
+    }
     </style>
-
+    <title>外送人員專用</title>
   </head>
-<body>
-  <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
-  <script src="jquery-3.3.1.js"></script>
-  <script src="jquery.tinyMap.js"></script>
-  <div class="map"></div>
-<script>
-  //initialize google map////////////
-  $.fn.tinyMapConfigure({
-    'key': 'AIzaSyBmKFudinNxKD27eVaOUsBBaqEEt9o0ONQ',
-    'libraries': 'geometry',
-    // 使用的地圖語言
-    'language': 'zh‐TW',
-});
-  ////////////////////////////////
-  // Initialize
-  var config = {
-    apiKey: "AIzaSyDd2rFHwPXyIkq0iRSinBBfzg31NYJLapE",
-    authDomain: "nchumis2017-5566.firebaseapp.com",
-    databaseURL: "https://nchumis2017-5566.firebaseio.com",
-    projectId: "nchumis2017-5566",
-    storageBucket: "nchumis2017-5566.appspot.com",
-    messagingSenderId: "501160127423"
-  };
-  firebase.initializeApp(config);
-  var loc=new Array();
-  var current=new Array();
-  var distance =new Array();
-  var now;
-var Farthest;
+  <body>
+    <div id="navbar">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <nav>
+      <div class="nav-wrapper green darken-1">
+        <ul id="slide-out" class="sidenav green lighten-2">
+            <li><div class="user-view">
+          <div class="background">
+            <img  class="backimg" src="img/delivery.jpg">
+          </div>
+          <a href="#user"><img class="circle" src="img/men.jpg"></a>
+          <a href="#name"><span class="white-text name">John Doe</span></a>
+          <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+                </div></li>
+          <li><a href="#!">First Link With Icon</a></li>
+          <li><a href="#!">Second Link</a></li>
+          <li><div class="divider"></div></li>
+          <li><a class="subheader">Subheader</a></li>
+          <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+        </ul>
+        <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <a href="/index.html" class="brand-logo center">BENTO</a>
+      </div>
+    </nav>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col s12">
+        <ul class="tabs tabs-fixed-width z-depth-3">
+          <li class="tab col s3"><a href="#test1" onclick="getAddress()">取得訂單</a></li>
+          <li class="tab col s3"><a class="active" href="#test2">訂單定位</a></li>
+          <li class="tab col s3"><a href="#test3">我的位置</a></li>
+          <li class="tab col s3"><a href="#test4">規劃路線</a></li>
+        </ul>
+      </div>
+    </div>
 
-  /////////////////取得位置資訊////////////////////
-function getAddress(){
-  var query = firebase.database().ref("Orders").orderByKey();
-  query.once("value").then(function(snapshot) {
-    snapshot.forEach(function(childSnapshot) {
-      if(childSnapshot.child("OrderStatus").val()== "3"/** && snapshot.child("deliveryMid").val()=="3"**/){
-      var ref = firebase.database().ref("Orders/"+childSnapshot.key+"/OrderInfo/");
-      ref.once("value")
-        .then(function(snapshot) {
-          $('.map').tinyMap('query', snapshot.child("Address").val(), function (addr) {
-            loc.push({'addr':[addr.geometry.location.lat(),addr.geometry.location.lng()],'text':snapshot.ref.parent.key})
-  });
-      });
-    }
-    });
-  },function(error) {
-  // The Promise was rejected.
-  console.error(error);
-});
-}
+    <div class="map"></div>
 
-///////////////////////Initializemap////////////////////
+    <br>
+    <div class="row">
+      <div class="col s6">
+        現在的位置：<br>
+        <pon id="position_p"></pon>
+      </div>
+      <div class="col s6">
+        自動更新位置：
+        <div class="switch">
+        <label>
+          Off
+        <input type="checkbox">
+        <span class="lever"></span>
+          On
+        </label>
+        </div>
+      </div>
+    </div>
 
+      <div class="row" id="card">
+          <div class="col s12 m6">
+            <div class="card">
+              <div class="card-content black-text">
+                <span class="card-title">Card Title</span>
+                <p>I am a very simple card. I am good at containing small bits of information.
+                I am convenient because I require little markup to use effectively.</p>
+              </div>
+              <div class="card-action">
+                <a class="waves-effect waves-light btn-small light-green accent-4"><i class="material-icons left">place</i>所在位置</a>
+                <a class="waves-effect waves-light btn-small light-green accent-4"><i class="material-icons left">check</i>已經送達</a>
+              </div>
+            </div>
+          </div>
+      </div>
 
-  $('.map').tinyMap({
-  'center': ['24.1175214', '120.6738148'],
-  'zoom': 10,
-});
+      <div id="modal1" class="modal">
+        <div class="modal-content">
+          <h4>Modal Header</h4>
+          <p>A bunch of text</p>
+        </div>
+        <div class="modal-footer">
+          <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+        </div>
+    </div>
 
-function getDistant(){
-  distance.length = 0;
-
-  $('.map').tinyMap('modify',{
-  'marker': loc,
-  'markerFitBounds': true,
-  'event': {
-    'idle': {
-      'func': function () {
-          // 取得目前地圖中心
-          now = new google.maps.LatLng(current[0], current[1]);
-
-        $('.map').tinyMap('get', 'marker', function (markers) {
-            markers.forEach(function (marker) {
-              var meters = 0;
-              // 忽略標有 ignore: true 屬性的標記
-              if (!marker.hasOwnProperty('ignore')) {
-              meters = google.maps.geometry.spherical.computeDistanceBetween(marker.getPosition(),now);
-              distance.push(meters);
-              console.log(meters);
-            }
-          });
-              Farthest = distance.indexOf(Math.max.apply(Math, distance));
-              if (false !== Farthest && -1 !== Farthest) {
-                  if ('undefined' !== typeof markers[Farthest].infoWindow) {
-                    // 開啟此標記的 infoWindow
-                    markers[Farthest].infoWindow.open(this, markers[Farthest]);
-                      // 移動此標記至地圖中心
-                      this.panTo(markers[Farthest].position);
-                  }
-              }
-          });
-        },'once': true // 僅執行一次
-      }
-    }
-    });
-    }
-
-/////////////////getNowPosition//////////////////
-function getNowPosition(){
-var getPosition = function (options) {
-  return new Promise(function (resolve, reject) {
-    navigator.geolocation.getCurrentPosition(resolve, reject, options);
-  });
-}
-getPosition()
-  .then((position) => {
-    current=[position.coords.latitude,position.coords.longitude];
-    $('.map').tinyMap('modify',{
-      'marker':[{'addr': current, 'text': '目前位置'},
-    ],
-  }
-  )
-    console.log(position);
-  })
-  .catch((err) => {
-    console.error(err.message);
-  });
-}
-/////////////////////////////////
-
-function pantomap(){
-  $('.map').tinyMap('panTo', [current[0],current[1]]);
-}
-
-
-window.setInterval("getAddress()",2000);
-  /////////////////////////////////////
-  </script>
-  <button type="button" onclick="getNowPosition()">取得目前位置</button>
-  <button type="button" onclick="getDistant()">計算路徑</button>
+    <script  type="text/javascript"  src="initialize.js"></script>
+    <script  type="text/javascript"  src="footman.js"></script>
   </body>
 </html>

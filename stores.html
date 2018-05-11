@@ -27,7 +27,12 @@ var config = {
 firebase.initializeApp(config);
 
 </script>
-
+<style media="screen">
+  span{
+    padding:40px;
+    font-size: 16px;
+  }
+</style>
 
     <title>index</title>
   </head>
@@ -99,9 +104,13 @@ var database = firebase.database();
     document.getElementById("store_list").innerHTML="";
     for(var i =1 ; i<=counter ; i++){
       var temp = snapshot.child("shop"+i+"/shopName").val();
+      var briefInfo = snapshot.child("shop"+i+"/shopInfo/briefInfo").val();
+
       var store_list = document.getElementById("store_list");
 
-      store_list.innerHTML +=   "<div class='col s12 m8 offset-m2 l6 offset-l3'><div class='card-panel grey lighten-5 z-depth-1'><div class='row valign-wrapper'><div class='col s2'><i class='medium material-icons'>store</i></div><div class='col s8'><a href='./QRcode/qrcode.html?shop"+i+"'><span class='black-text' id='span"+i+"'>"+temp+"</span></a></div><div class='col s2'><i class='material-icons' onclick='javascript:favorite_store("+i+")'>favorite</i></div></div></div></div>";
+
+
+      store_list.innerHTML +=   "<div class='col s12 m8 offset-m2 l6 offset-l3'><div class='card-panel grey lighten-5 z-depth-1'><div class='row valign-wrapper'><div class='col s2'><i class='medium material-icons'>store</i></div><div class='col s8'><a href='./store_menu.html?shop"+i+"'><span class='black-text' id='span"+i+"'>"+temp+"</span><br><br>"+briefInfo+"</a></div><div class='col s2'><i class='material-icons' onclick='javascript:favorite_store("+i+")'>favorite</i></div></div></div></div>";
     }
   });
 

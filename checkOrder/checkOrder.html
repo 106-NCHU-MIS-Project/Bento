@@ -303,7 +303,7 @@ database.ref("Orders/"+vars[0]).on("value",function(snapshot){
 
     ///////////////////on  OrderStatus //////////////////////////
 
-var BentoCounter = snapshot.child("OrderDetail/").numChildren()-2;
+var BentoCounter = snapshot.child("OrderDetail/").numChildren()-1;
 //////////bento1 bento2 bento3 and time column  so  -1/////////////
 
 console.log(BentoCounter);

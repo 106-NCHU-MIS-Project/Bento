@@ -14,7 +14,9 @@
     <!-- <link rel="stylesheet" href="../css/main.css"> -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzUkUrvdaygSJamPdIUkADw4qTuosDjkw" async defer></script>
 <style media="screen">
-
+#map {
+   height: 350px;
+ }
 body{
   font-family: microsoft jhenghei;
   font-weight: bold;
@@ -130,7 +132,46 @@ th{
   </div>
 </div>
       </div>
-      <div id="test5"></div>
+      <div id="test5">
+        <div class="card" style="padding-bottom:20px;">
+          <div class="" id="delivery_when_status_3">
+            <h5 style="text-align:center; padding:30px;" id="not_yet_info_in_status_3">尚未外送...請耐心等候</h5>
+            <table class="highlight" style=>
+              <tr>
+                <td colspan="2" style="padding-left:20px;padding-right:20px; padding-bottom:0px;">餐點狀態
+                  <hr>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding-top:0px; padding-left:20px; width:20%" >溫度</td><td id="td_temperature" style="padding-top:0px;"></td>
+              </tr>
+              <tr>
+                <td style="padding-top:0px; padding-left:20px; width:20%">濕度</td><td id="td_humidity" style="padding-top:0px;"></td>
+              </tr>
+            </table>
+              <!-- GOOGLE MAP -->
+            <div id="map" ></div>
+            <script>
+              var map;
+              function initMap() {
+                map = new google.maps.Map(document.getElementById('map'), {
+                  center: {lat: 24.121752, lng: 120.676264},
+                  zoom: 15
+                });
+              }
+
+              $("#delivery_when_status_3").hide();
+            </script>
+
+
+
+        </div>
+      </div>
+
+
+
+
+      </div>
       <div id="test6">
         <div class="card">
 
@@ -292,6 +333,19 @@ database.ref("Orders/"+vars[0]).on("value",function(snapshot){
     var temp = document.getElementById("OrderStatus_3");
     temp.style.backgroundColor = "#9e9e9e";
     temp.color = "white";
+
+
+        ///////////////////GOOGLE MAP+sensor///////////////
+        $("#delivery_when_status_3").show();
+        $("#not_yet_info_in_status_3").hide();
+        initMap();
+
+      database.ref("sensor").on("value",function(snapshot){
+        var temperature = snapshot.child("temperature").val();
+        var humidity = snapshot.child("humidity").val();
+        document.getElementById("td_temperature").innerHTML = temperature;
+        document.getElementById("td_humidity").innerHTML = humidity;
+      });
   }
   else if(OrderStatus==4){
     document.getElementById("progressBarDiv").style.width = "100%";

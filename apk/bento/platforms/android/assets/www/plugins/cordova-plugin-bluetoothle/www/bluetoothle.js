@@ -1,5 +1,4 @@
-cordova.define("cordova-plugin-bluetoothle.BluetoothLe", function(require, exports, module) {
-var bluetoothleName = "BluetoothLePlugin";
+cordova.define("cordova-plugin-bluetoothle.BluetoothLe", function(require, exports, module) { var bluetoothleName = "BluetoothLePlugin";
 var bluetoothle = {
   initialize: function(successCallback, params) {
     cordova.exec(successCallback, successCallback, bluetoothleName, "initialize", [params]);

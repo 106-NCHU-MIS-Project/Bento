@@ -86,5 +86,23 @@
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "cordova-plugin-local-notification": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-local-notification@0.8.4"
+        }
+    },
+    "cordova-plugin-camera": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-camera"
+        }
+    },
+    "cordova-plugin-qrscanner": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-qrscanner"
+        }
     }
 }

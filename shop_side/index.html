@@ -8,8 +8,10 @@
     <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="../css/main.css">
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzUkUrvdaygSJamPdIUkADw4qTuosDjkw" async defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.0.7/sweetalert2.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.0.7/sweetalert2.all.js"></script>
 <style media="screen">
 body{
   background-image: url("./main.jpg");
@@ -80,7 +82,9 @@ td{
 
 <div class="card " style="margin-top:40%;">
   <div class="card-content container">
-    <form class="" action="../restaurant_receive.html" method="post">
+
+
+    <form class="" action="javascript:form_confirm()" method="post">
       <div class="row">
         <div class="input-field col s12">
           <input type="text" id="account" name="account" value="">
@@ -90,7 +94,7 @@ td{
 
       <div class="row">
         <div class="input-field col s12">
-          <input type="text" id="pwd" name="pwd" value="">
+          <input type="password" id="pwd" name="pwd" value="">
           <label for="address">密碼</label>
         </div>
       </div>
@@ -110,7 +114,23 @@ td{
   </body>
 
 
+<script type="text/javascript">
+  function form_confirm(){
+    var form_a = document.getElementById("account").value;
+    var form_b = document.getElementById("pwd").value;
 
+    if(form_a!="abc" || form_b!="123"){
+        setTimeout(function(){swal("帳密錯誤");},500);
+    }
+    else{
+      setTimeout(function(){
+        swal("歡迎回來");
+        setTimeout(function(){  location.href="../restaurant_receive.html";},300)
+
+      },500);
+    }
+  }
+</script>
 
 
 

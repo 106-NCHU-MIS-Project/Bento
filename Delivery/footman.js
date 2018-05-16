@@ -9,7 +9,7 @@ var Farthest;
 
 /////////////////取得位置資訊////////////////////
 function getAddress(){
-
+  $(".modal").remove();
   $( "#card" ).empty();
   loc.length = 0;
 
@@ -23,7 +23,12 @@ function getAddress(){
         var namet= childSnapshot.child("OrderInfo/OrderMainName").val();
         var telt= childSnapshot.child("OrderInfo/TEL").val();
 
-        $("<div class='col s12 m6'><div class='card'><div class='card-content black-text'><span class='card-title'><a class='waves-effect waves-light btn modal-trigger' href='#modal1'>"+idt+"</a></span><p>訂購人姓名："+namet+"</br>手機："+telt+"</br>地址："+addt+"</p></div><div class='card-action'><a class='waves-effect waves-light btn-small light-green accent-4' onclick='pantomap(\""+addt+"\")'><i class='material-icons left'>place</i>所在位置</a><a class='waves-effect waves-light btn-small light-green accent-4' onclick='setStatus(\""+idt+"\")'><i class='material-icons left'>check</i>已經送達</a></div></div></div>").appendTo("#card");
+        $("<div class='col s12 m6'><div class='card'><div class='card-content black-text'><span class='card-title'><a class='waves-effect waves-light btn modal-trigger' href='#modal"+idt+"'>"+idt+"</a></span><p>訂購人姓名："+namet+"</br>手機："+telt+"</br>地址："+addt+"</p></div><div class='card-action'><a class='waves-effect waves-light btn-small light-green accent-4' onclick='pantomap(\""+addt+"\")'><i class='material-icons left'>place</i>所在位置</a><a class='waves-effect waves-light btn-small light-green accent-4' onclick='setStatus(\""+idt+"\")'><i class='material-icons left'>check</i>已經送達</a></div></div></div>").appendTo("#card");
+
+
+        $("#modalall").after("<div id='modal"+idt+"' class='modal'> <div class='modal-content'><h4>訂單內容</h4><p></p></div><div class='modal-footer'><a href='#!' class='modal-close waves-effect waves-green btn-flat'>Agree</a></div></div>");
+        madaldisplay(idt);
+
       var ref = firebase.database().ref("Orders/"+childSnapshot.key+"/OrderInfo/");
       ref.once("value")
         .then(function(snapshot) {
@@ -43,7 +48,7 @@ function getAddress(){
   console.error(error);
 });
 
-  $('.modal').modal();
+
 }
 
 ///////////////////////Initializemap////////////////////
@@ -129,16 +134,22 @@ getPosition()
 ///////////////panTOmap//////////////////
 
 function pantomap(addrs){
-  if(addrs !== "" && addrs !== null){
-  var geocoder = new google.maps.Geocoder();
-  geocoder.geocode( { 'address': addrs}, function(results, status) {
-  if (status == 'OK') {
-    $('.map').tinyMap('panTo', results[0].geometry.location);
-      } else {
-        console.error('Geocode was not successful for the following reason: ' + status);
+
+  window.scrollTo(500, 0);
+
+  setTimeout(function(){
+    if(addrs !== "" && addrs !== null){
+      var geocoder = new google.maps.Geocoder();
+      geocoder.geocode( { 'address': addrs}, function(results, status) {
+        if (status == 'OK') {
+          $('.map').tinyMap('panTo', results[0].geometry.location);
+          } else {
+            console.error('Geocode was not successful for the following reason: ' + status);
+          }
+        });
       }
-    });
-  }
+   }, 700);
+
 }
 
 ////////////////setStatus/////////////////////////
@@ -162,15 +173,14 @@ function madaldisplay(temp_id){
       var ref = firebase.database().ref("Orders/"+temp_id+"/OrderDetail/"+childSnapshot.key+"/OrderPeople/").orderByKey();
       ref.once("value").then(function(cchildSnapshot) {
         cchildSnapshot.forEach(function(ccchildSnapshot) {
-            $("#modal1").empty();
-            $('#modal1').append('<div class="modal-content"><h4>訂單內容</h4><p>'+ccchildSnapshot.child("name").val()+ccchildSnapshot.child("number").val()+';</p></div><div class="modal-footer"><a href="#!" class="modal-close waves-effect waves-green btn-flat">確認</a></div>');
-            window.setTimeout( function(){
-                 window.location = "#modal1";
-             }, 100 );
+            $(document.createTextNode(ccchildSnapshot.child("name").val()+" X "+ccchildSnapshot.child("number").val())).appendTo("#modal"+temp_id+" .modal-content p");
+            $(document.createElement("br") ).appendTo("#modal"+temp_id+" .modal-content p");
           })
         })
       })
     })
+
+      $('.modal').modal();
 }
 
 ////////////////////////////////////////
@@ -197,4 +207,5 @@ $(document).ready(function(){
         });
       }
   });
+
 });

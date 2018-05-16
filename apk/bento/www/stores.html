@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <link rel="stylesheet" href="./css/main.css">
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+
+<script type="text/javascript">
+// Initialize Firebase
+var config = {
+  apiKey: "AIzaSyDHJvCW6LwYl0fih2PynaWmX3fYGqmel00",
+  authDomain: "all-store-a0408.firebaseapp.com",
+  databaseURL: "https://all-store-a0408.firebaseio.com",
+  projectId: "all-store-a0408",
+  storageBucket: "",
+  messagingSenderId: "982261178985"
+};
+firebase.initializeApp(config);
+
+</script>
+
+
+    <title>index</title>
+  </head>
+  <body>
+
+    <!-- navbar -->
+    <!-- <div id="navbar"></div> -->
+
+    <!-- <script type="text/javascript">
+    var ajax = new XMLHttpRequest();
+    ajax.open("GET", "/navbar.html", false);
+    ajax.send();
+    document.getElementById("navbar").innerHTML += ajax.responseText;
+    </script>
+    <script type="text/javascript">$(".button-collapse").sideNav();</script> -->
+    <link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet'>
+    <nav>
+      <div class='nav-wrapper #00838f cyan darken-4'>
+        <a href='./index.html' class='brand-logo'>BENTO</a>
+        <a href='#' data-activates='mobile-demo' class='button-collapse'><i class='material-icons'>menu</i></a>
+        <ul class='right hide-on-med-and-down'>
+          <li><a href='#'>個人資訊</a></li>
+          <li><a href='#'>常用地址</a></li>
+          <li><a href='#'>Default</a></li>
+          <li><a href='#'>Default</a></li>
+        </ul>
+        <ul class='side-nav' id='mobile-demo'>
+          <li class="#00838f cyan darken-4" ><a href='#' style="color:white;">WELCOME</a></li>
+          <li><a href='./sideNav/personInfo.html'>個人資訊</a></li>
+          <li><a href='./sideNav/address.html'>常用地址</a></li>
+          <li><a href='#'>Default</a></li>
+        </ul>
+      </div>
+    </nav>
+    </div>
+<script type="text/javascript">$(".button-collapse").sideNav();</script>
+
+
+  <!-- navbar -->
+
+<br>
+<div class='container' id='store_list'>
+
+<br><br><br><br><br><br><br><br><br>
+  <div class="preloader-wrapper big active">
+    <div class="spinner-layer spinner-blue-only">
+      <div class="circle-clipper left">
+        <div class="circle"></div>
+      </div><div class="gap-patch">
+        <div class="circle"></div>
+      </div><div class="circle-clipper right">
+        <div class="circle"></div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+</div>
+
+
+<script type="text/javascript">
+
+var database = firebase.database();
+
+  database.ref("stores").once("value").then(function(snapshot){
+    var counter = snapshot.child("counter").val();
+    document.getElementById("store_list").innerHTML="";
+    for(var i =1 ; i<=counter ; i++){
+      var temp = snapshot.child("shop"+i+"/shopName").val();
+      var store_list = document.getElementById("store_list");
+
+      store_list.innerHTML +=   "<div class='col s12 m8 offset-m2 l6 offset-l3'><div class='card-panel grey lighten-5 z-depth-1'><div class='row valign-wrapper'><div class='col s2'><i class='medium material-icons'>store</i></div><div class='col s8'><a href='./QRcode/qrcode.html?shop"+i+"'><span class='black-text' id='span"+i+"'>"+temp+"</span></a></div><div class='col s2'><i class='material-icons' onclick='javascript:favorite_store("+i+")'>favorite</i></div></div></div></div>";
+    }
+  });
+
+</script>
+<script type="text/javascript">
+  function favorite_store(i){
+
+    var span_i = document.getElementById("span"+i).innerHTML;
+
+
+
+    var favorite_store_counter = localStorage.favorite_store_counter;
+    if(isNaN(favorite_store_counter)){
+      favorite_store_counter=1;
+      localStorage.setItem("favorite_store_counter" , favorite_store_counter);
+    }
+    else{
+      favorite_store_counter++;
+      localStorage.setItem("favorite_store_counter" , favorite_store_counter);
+    }
+
+    localStorage.setItem("favorite_store"+favorite_store_counter, span_i);
+
+    swal(span_i+"已加入最愛");
+
+
+
+  }
+</script>
+  </body>
+</html>

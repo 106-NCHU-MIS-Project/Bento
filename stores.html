@@ -153,7 +153,7 @@
 
 
           store_list.innerHTML +=
-            " <div class='col s6 card'><a href='./store_menu.html?shop"+i+"'><div class='col s12'><img class='responsive-img' src='./image/food"+i+".jpg' ></div></a><div class='col s12'><h5 id='span"+i+"'>"+temp+"</h5></div><div class='col s12'><span>"+briefInfo+"</span></div><div class='col s12'><i class='material-icons' onclick='javascript:favorite_store("+i+")'>favorite</i></div></div>";
+            " <div class='col s6 card'><a href='./store_menu.html?shop"+i+"'><div class='col s12'><img class='responsive-img' src='./image/food"+i+".jpg' ></div></a><div class='col s12'><h5 id='span"+i+"'>"+temp+"</h5></div><div class='col s12'><span>"+briefInfo+"</span></div><div class='col s12'><i class='material-icons' id='icon"+i+"' onclick='javascript:favorite_store("+i+")'>favorite_border</i></div></div>";
 
 
       }
@@ -163,9 +163,9 @@
     function favorite_store(i) {
 
       var span_i = document.getElementById("span" + i).innerHTML;
-
-
-
+////////////////按下後更改icon
+      document.getElementById("icon"+i).innerHTML = "favorite";
+////////////////
       var favorite_store_counter = localStorage.favorite_store_counter;
       if (isNaN(favorite_store_counter)) {
         favorite_store_counter = 1;

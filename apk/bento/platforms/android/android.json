@@ -59,6 +59,10 @@
                         {
                             "xml": "<feature name=\"jsHybugger\"><param name=\"android-package\" value=\"org.jshybugger.cordova.JsHybuggerPlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"QRScanner\"><param name=\"android-package\" value=\"com.bitpay.cordova.qrscanner.QRScanner\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -80,6 +84,18 @@
                         },
                         {
                             "xml": "<uses-feature android:name=\"android.hardware.location.gps\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.CAMERA\" android:required=\"false\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-feature android:name=\"android.hardware.camera\" android:required=\"false\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-feature android:name=\"android.hardware.camera.front\" android:required=\"false\" />",
                             "count": 1
                         }
                     ],
@@ -139,6 +155,9 @@
             "PACKAGE_NAME": "com.bento"
         },
         "org.jshybugger.cordova": {
+            "PACKAGE_NAME": "com.bento"
+        },
+        "cordova-plugin-qrscanner": {
             "PACKAGE_NAME": "com.bento"
         }
     },
@@ -237,6 +256,14 @@
             "file": "plugins/org.jshybugger.cordova/www/jsHybuggerLoader.js",
             "pluginId": "org.jshybugger.cordova",
             "runs": true
+        },
+        {
+            "id": "cordova-plugin-qrscanner.QRScanner",
+            "file": "plugins/cordova-plugin-qrscanner/www/www.min.js",
+            "pluginId": "cordova-plugin-qrscanner",
+            "clobbers": [
+                "QRScanner"
+            ]
         }
     ],
     "plugin_metadata": {
@@ -250,6 +277,7 @@
         "cordova-plugin-geolocation": "2.4.3",
         "cordova-plugin-statusbar": "2.4.2",
         "cordova-plugin-bluetoothle": "4.4.3",
-        "org.jshybugger.cordova": "4.5.9"
+        "org.jshybugger.cordova": "4.5.9",
+        "cordova-plugin-qrscanner": "2.5.0"
     }
 }

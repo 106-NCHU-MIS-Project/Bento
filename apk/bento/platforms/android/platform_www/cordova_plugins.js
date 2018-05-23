@@ -93,6 +93,14 @@ module.exports = [
         "file": "plugins/org.jshybugger.cordova/www/jsHybuggerLoader.js",
         "pluginId": "org.jshybugger.cordova",
         "runs": true
+    },
+    {
+        "id": "cordova-plugin-qrscanner.QRScanner",
+        "file": "plugins/cordova-plugin-qrscanner/www/www.min.js",
+        "pluginId": "cordova-plugin-qrscanner",
+        "clobbers": [
+            "QRScanner"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -108,7 +116,8 @@ module.exports.metadata =
     "cordova-plugin-geolocation": "2.4.3",
     "cordova-plugin-statusbar": "2.4.2",
     "cordova-plugin-bluetoothle": "4.4.3",
-    "org.jshybugger.cordova": "4.5.9"
+    "org.jshybugger.cordova": "4.5.9",
+    "cordova-plugin-qrscanner": "2.5.0"
 };
 // BOTTOM OF METADATA
 });

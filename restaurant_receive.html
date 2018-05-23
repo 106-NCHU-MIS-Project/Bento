@@ -22,14 +22,17 @@
                 swipeable: true,
                 responsiveThreshold: Infinity
             });
+
         });
 
     </script>
     <style>
-        .carousel .carousel-item{
+        .carousel .carousel-item {
             height:100%;
         }
-
+        div.tabs-content.carousel.initialized{
+            height: 700px!important;
+        }
 
     </style>
 </head>
@@ -89,7 +92,7 @@
         </div>
         <div id="waiting" class="col s12">放等待中訂單
             <div class="row">
-                <ul id="list_waiting" class="collapsible popout" data-collapsible="accordion"></ul>
+                <ul id="list_waiting" class="collapsible popout" data-collapsible="accordion" ></ul>
             </div>
         </div>
         <div id="accept" class="col s12" >

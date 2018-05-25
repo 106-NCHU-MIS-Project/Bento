@@ -72,8 +72,21 @@
     </div>
         <!-- <button type="button" name="button" class="btn" onclick="newQRcode()">Random</button> -->
 <h4>訂單編號</h4>
-    <h2><a id="QRString" style="border:1px blue solid; padding:5px;" href='#' style="color:blue!important;"></a></h2>
-<h4>點擊編號進入點餐</h4>
+    <h2><a id="QRString" ></a></h2>
+    <div class="preloader-wrapper big active">
+      <div class="spinner-layer spinner-blue-only">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div>
+        <div class="gap-patch">
+          <div class="circle"></div>
+        </div>
+        <div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+    </div>
+<h4>正在產生訂單中...</h4>
 <br>
 
     <script type="text/javascript">
@@ -134,6 +147,7 @@ function newQRcode(){
     document.getElementById("QRString").innerHTML = randomQRcode;
 
     document.getElementById("QRString").href='../Order/MainOrder.html?'+randomQRcode+"&"+shop_i_name;
+    location.href = '../Order/MainOrder.html?'+randomQRcode+"&"+shop_i_name;
     console.log(shop_i_name);
   });
 }

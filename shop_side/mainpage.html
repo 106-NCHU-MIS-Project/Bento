@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="./css/materialize.min.css">
     <script src="./js/materialize.min.js"></script>
     <link rel="stylesheet" href="./css/main.css">
+    <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
 
 
     <title>BENTO店家端</title>
@@ -29,8 +30,8 @@
     <link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet'>
     <nav>
       <div class='nav-wrapper #ab47bc purple lighten-1'>
-        <a href='./index.html' class='brand-logo'>BENTO</a>
-        <a href='#' data-activates='mobile-demo' class='button-collapse'><i class='material-icons'>menu</i></a>
+        <a href='#' class='brand-logo'>BENTO店家端</a>
+        <!-- <a href='#' data-activates='mobile-demo' class='button-collapse'><i class='material-icons'>menu</i></a>
         <ul class='right hide-on-med-and-down'>
           <li><a href='#'>個人資訊</a></li>
           <li><a href='#'>常用地址</a></li>
@@ -39,12 +40,12 @@
         </ul>
         <ul class='side-nav' id='mobile-demo'>
           <li class="#00838f cyan darken-4" ><a href='#' style="color:white;">WELCOME</a></li>
-          <li> <img src="./image/test.png" height="120px" style="margin-top:20px; margin-bottom:10px;"> </li>
+          <li> <img src="./main.jpg" height="120px" style="margin-top:20px; margin-bottom:10px;"> </li>
           <div class="container"><hr></div>
           <li><a href='./sideNav/personInfo.html'>個人資訊</a></li>
           <li><a href='./sideNav/address.html'>常用地址</a></li>
           <li><a href='#'>關於我們</a></li>
-        </ul>
+        </ul> -->
       </div>
     </nav>
 
@@ -56,7 +57,7 @@
   <!-- navbar -->
 <div class="row" style="margin-bottom:0px!important;border-bottom:9px white solid">
     <div class="carousel carousel-slider" data-indicators="true">
-      <a class="carousel-item" href="#one!"><img src="./banner/banner2.jpg"></a>
+      <a class="carousel-item" href="#one!"><img src="./image/banner/banner2.jpg"></a>
 
     </div>
 </div>
@@ -64,7 +65,7 @@
 <script type="text/javascript">
 
 
-  $('.carousel.carousel-slider').carousel({fullWidth: true});
+  $('.carousel.carousel-slider').carousel({fullWidth: true,noWrap:true});
 
 </script>
 <div class="container">
@@ -93,11 +94,11 @@
 </div>
 
 <div class="row">
-  <a href="#">
+
   <div class="col s12">
     <span id="title_span">其他功能</span>
   </div>
-  </a>
+
 </div>
 <hr>
 

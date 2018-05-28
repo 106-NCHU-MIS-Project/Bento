@@ -8,7 +8,7 @@
     <!-- material CSS -->
     <link rel="stylesheet" href="css/materialize.css">
     <link rel="stylesheet" href="../css/main.css">
-    <script  type="text/javascript"  src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+    <script  type="text/javascript"  src="firebase.js"></script>
     <script  type="text/javascript"  src="jquery-3.3.1.js"></script>
     <script  type="text/javascript"  src="jquery.tinyMap.js"></script>
     <script  type="text/javascript"  src="materialize.js"></script>
@@ -37,6 +37,10 @@
     .tabs .indicator {
       background-color: rgba(79, 235, 39, 0.51);
     }
+    .modal-trigger {
+      font-weight: 900;
+      color:rgba(0, 0, 0, 1);
+    }
     </style>
     <title>外送人員專用</title>
   </head>
@@ -50,15 +54,12 @@
           <div class="background">
             <img  class="backimg" src="img/delivery.jpg">
           </div>
-          <a href="#user"><img class="circle" src="img/men.jpg"></a>
-          <a href="#name"><span class="white-text name">John Doe</span></a>
-          <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+          <a href="#name"><span class="white-text name" id="did"></span></a>
+          <a href="#email"><span class="white-text email" id="dphone"></span></a>
                 </div></li>
-          <li><a href="#!">First Link With Icon</a></li>
-          <li><a href="#!">Second Link</a></li>
-          <li><div class="divider"></div></li>
-          <li><a class="subheader">Subheader</a></li>
-          <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+          <li><a class='modal-trigger' href="#modaladd">新增外送訂單</a></li>
+          <li><a href="index.html">登出</a></li>
+          <li><a class="waves-effect" href="../index.html">回到首頁</a></li>
         </ul>
         <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
         <a href="/index.html" class="brand-logo center">BENTO</a>
@@ -70,9 +71,9 @@
       <div class="col s12">
         <ul class="tabs tabs-fixed-width z-depth-3">
           <li class="tab col s3"><a href="#test1" onclick="getAddress()">取得訂單</a></li>
-          <li class="tab col s3"><a class="active" href="#test2">訂單定位</a></li>
-          <li class="tab col s3"><a href="#test3">我的位置</a></li>
-          <li class="tab col s3"><a href="#test4">規劃路線</a></li>
+          <li class="tab col s3"><a href="#test2" onclick="getAllMarkers()">訂單定位</a></li>
+          <li class="tab col s3"><a href="#test3" onclick="getNowPosition()">我的位置</a></li>
+          <li class="tab col s3"><a href="#test4" onclick="drawDirection()">規劃路線</a></li>
         </ul>
       </div>
     </div>
@@ -90,7 +91,7 @@
         <div class="switch">
         <label>
           Off
-        <input type="checkbox">
+        <input type="checkbox" id="autolo">
         <span class="lever"></span>
           On
         </label>
@@ -103,6 +104,18 @@
 
     <div id="modalall">
       </div>
+
+      <!-- Bottom Sheet Modals -->
+    <div id="modaladd" class="modal bottom-sheet">
+      <div class="modal-content">
+        <h4>Modal Header</h4>
+        <p>A bunch of text</p>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+      </div>
+    </div>
+
 
     <script  type="text/javascript"  src="initialize.js"></script>
     <script  type="text/javascript"  src="footman.js"></script>

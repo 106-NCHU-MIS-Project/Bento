@@ -38,12 +38,16 @@ var app = {
     // Update DOM on a Received Event
     receivedEvent: function (id) {
         console.log("ready");
+        $('#app').css("display", "none");
+        
+        $('#bottom_button').css("display", "block");
         if (typeof (QRScanner) != 'undefined') {
             //初始化检测，申请摄像头等权限  
             QRScanner.prepare(onDone); // show the prompt  
         } else {
             alert('插件加载失败');
         }
+        
         function onDone(err, status) {
             if (err) {
                 console.error(err);
@@ -58,7 +62,11 @@ var app = {
                         alert('启动扫描出错：' + JSON.stringify(err));
                     } else {
                         // The scan completed, display the contents of the QR code:  
-                        alert(text);
+                        if (text != null) {
+                            destroyCam();
+                            document.location.href = "../Order/JoinOrder.html?" + text;
+                        }
+
                     }
                 }
                 //开始扫描，需要将页面的背景设置成透明  
@@ -75,5 +83,16 @@ var app = {
                 // ask again" box.) We can ask again at the next relevant opportunity.  
             }
         }  
+
     }
 };
+
+function destroyCam(){
+
+    QRScanner.destroy(function (status) {
+        console.log(status);
+    });
+    $('#app').css("display", "block");
+
+    $('#bottom_button').css("display", "none");
+}

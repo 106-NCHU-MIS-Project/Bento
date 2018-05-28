@@ -83,6 +83,13 @@ td{
 
 <script type="text/javascript">
 
+var CurrentName = window.localStorage.getItem("UserName");
+console.log(CurrentName);
+if(CurrentName==null){
+  localStorage.setItem("UserName","主揪人");
+
+}
+
 function autoplay() {
   $('.carousel').carousel('next');
   setTimeout(autoplay, 3000);

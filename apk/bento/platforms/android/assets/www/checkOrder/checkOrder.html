@@ -5,16 +5,19 @@
 
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+      <script src="../js/jquery-3.2.1.min.js" ></script>
+      <link rel="stylesheet" href="../css/materialize.min.css">
+      <script src="../js/materialize.min.js"></script>
 
     <link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet'>
+    <script src="../js/d3.v3.min.js" async defer></script>
 
     <!-- <link rel="stylesheet" href="../css/main.css"> -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzUkUrvdaygSJamPdIUkADw4qTuosDjkw" async defer></script>
 <style media="screen">
-
+#map {
+   height: 350px;
+ }
 body{
   font-family: microsoft jhenghei;
   font-weight: bold;
@@ -29,6 +32,33 @@ th{
 .td_center{
   text-align: center;
   width: 50%;
+}
+
+path {
+	stroke: DodgerBlue;
+	stroke-width: 1;
+	fill: none;
+}
+.axis {
+	font-size: 11px;
+	fill: gray;
+}
+
+.x.axis line {
+  stroke: lightgrey;
+}
+
+.x.axis .minor {
+  stroke-opacity: .5;
+}
+
+.x.axis path {
+  stroke: #fafafa;
+}
+
+.y.axis line, .y.axis path {
+  fill: none;
+  stroke: lightgrey;
 }
 </style>
 
@@ -56,7 +86,7 @@ th{
 
   <!-- <h5><p id="p_info">目前沒有訂單</p></h5> -->
 <div class="container">
-  <h5 style="font-weight:bolder;text-align:center;">訂單狀態</h5>
+  <h5 style="font-weight:bolder;text-align:center;" id="h5_title">訂單狀態</h5>
 </div>
 
 
@@ -130,7 +160,51 @@ th{
   </div>
 </div>
       </div>
-      <div id="test5"></div>
+      <div id="test5">
+        <div class="card" style="padding-bottom:20px;">
+          <h5 style="text-align:center; padding:30px;" id="not_yet_info_in_status_3">尚未外送...請耐心等候</h5>
+
+          <div class="" id="delivery_when_status_3">
+
+              <!-- GOOGLE MAP -->
+            <div id="map" ></div>
+            <script>
+              var map;
+              function initMap() {
+                map = new google.maps.Map(document.getElementById('map'), {
+                  center: {lat: 24.121752, lng: 120.676264},
+                  zoom: 15
+                });
+              }
+
+              $("#delivery_when_status_3").hide();
+            </script>
+            <table class="highlight" style=>
+              <tr>
+                <td colspan="2" style="padding-left:20px;padding-right:20px; padding-bottom:0px;">餐點狀態
+                  <hr>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding-top:0px; padding-left:20px; width:20%" >溫度</td><td id="td_temperature" style="padding-top:0px;"></td>
+              </tr>
+              <tr>
+                <td style="padding-top:0px; padding-left:20px; width:20%">濕度</td><td id="td_humidity" style="padding-top:0px;"></td>
+              </tr>
+            </table>
+
+            <h4 style="padding-left:20px;">溫度表</h4>
+            <div id="chart">
+
+            </div>
+
+        </div>
+      </div>
+
+
+
+
+      </div>
       <div id="test6">
         <div class="card">
 
@@ -292,6 +366,19 @@ database.ref("Orders/"+vars[0]).on("value",function(snapshot){
     var temp = document.getElementById("OrderStatus_3");
     temp.style.backgroundColor = "#9e9e9e";
     temp.color = "white";
+
+
+        ///////////////////GOOGLE MAP+sensor///////////////
+        $("#delivery_when_status_3").show();
+        $("#not_yet_info_in_status_3").hide();
+        initMap();
+
+      database.ref("sensor").on("value",function(snapshot){
+        var temperature = snapshot.child("temperature").val();
+        var humidity = snapshot.child("humidity").val();
+        document.getElementById("td_temperature").innerHTML = temperature;
+        document.getElementById("td_humidity").innerHTML = humidity;
+      });
   }
   else if(OrderStatus==4){
     document.getElementById("progressBarDiv").style.width = "100%";
@@ -303,7 +390,7 @@ database.ref("Orders/"+vars[0]).on("value",function(snapshot){
 
     ///////////////////on  OrderStatus //////////////////////////
 
-var BentoCounter = snapshot.child("OrderDetail/").numChildren()-2;
+var BentoCounter = snapshot.child("OrderDetail/").numChildren()-1;
 //////////bento1 bento2 bento3 and time column  so  -1/////////////
 
 console.log(BentoCounter);
@@ -400,5 +487,114 @@ database.ref("Orders/"+vars[0]+"/OrderDetail").once("value", function(snapshot) 
   }
 
 });
+</script>
+
+<script>
+
+function chart(){
+  window.addEventListener('load',function(){
+
+    var data=[
+      {x:1, w:250},
+      {x:2, w:220},
+      {x:3, w:180},
+      {x:4, w:170},
+      {x:5, w:160},
+    ];
+
+    var s = d3.select('#delivery_when_status_3')
+              .append('svg')
+              .attr({
+                'width':300,
+                'height':200
+              });
+
+    s.selectAll('rect')
+     .data(data)
+     .enter()
+     .append('rect')
+     .attr({
+      'fill':'#09c',
+      'width':function(d){
+        return d.w;
+      },
+      'height':30,
+      'x':0,
+      'y':function(d){
+        return (d.x-1) * 35;
+      }
+     });
+
+  },false);
+  }
+
+
+
+function chart2(){
+var margin = {top: 10, right: 40, bottom: 50, left: 30};
+var w = document.getElementById("h5_title").offsetWidth-55;  // 寬
+var h = 300 ; // 高
+
+
+var dataset = [62,30,30]; //建立空的資料陣列
+// var Num = 80;
+// for (var i=0; i < 10; i++){
+// 	var newNum = Num - ( Math.floor(Math.random() * 6));
+// 	dataset.push(newNum);
+// 	Num = newNum;
+// }
+//隨機產生一組隨機的數字陣列，數字的值，每次加減不超過5
+//X是資料的數量，Y則是資料的值
+
+console.log(dataset);
+
+var Ymax = 80,
+	Ymin = 0;
+
+var xScale = d3.scale.linear().domain([1, 10]).range([0, w]);
+
+var yScale = d3.scale.linear().domain([Ymin, Ymax]).range([h, 0]);
+
+
+// 增加一個line function，用來把資料轉為x, y
+var line = d3.svg.line()
+	.x(function(d,i) {
+		return xScale(i + 1); //利用尺度運算資料索引，傳回x的位置
+	})
+	.y(function(d) {
+		return yScale(d); //利用尺度運算資料的值，傳回y的位置
+	});
+
+//增加一個SVG元素
+var svg = d3.select('#chart').append('svg')
+	.attr('width', w + margin.left + margin.right) //將左右補滿
+	.attr('height', h + margin.top + margin.bottom) //上下補滿
+	.append('g') //增加一個群組g
+	.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+// 增加x軸線，tickSize是軸線的垂直高度，-h會往上拉高
+// tickSubdivide不清楚是什麼用處
+var xAxis = d3.svg.axis().scale(xScale).orient('bottom').tickSize(-h).tickSubdivide(true);
+// SVG加入x軸線
+svg.append('g')
+	.attr('class', 'x axis')
+	.attr('transform', 'translate(0,' + h + ')')
+	.call(xAxis);
+
+
+// 建立y軸線，4個刻度，數字在左
+var yAxisLeft = d3.svg.axis().scale(yScale).ticks(4).orient('left');
+// SVG加入y軸線
+svg.append('g')
+	.attr('class', 'y axis')
+	.attr('transform', 'translate(0,0)')
+	.call(yAxisLeft);
+
+svg.append('path').attr('d', line(dataset)); //將資料套用d3.svg.line()
+}
+
+chart2();
+
+
 </script>
 </html>

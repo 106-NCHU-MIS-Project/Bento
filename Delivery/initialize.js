@@ -1,7 +1,8 @@
+
 //initialize google map////////////
   $.fn.tinyMapConfigure({
     'key': 'AIzaSyBmKFudinNxKD27eVaOUsBBaqEEt9o0ONQ',
-    'libraries': 'geometry',
+    'libraries': 'geometry,drawing,places',
     // 使用的地圖語言
     'language': 'zh‐TW',
 });

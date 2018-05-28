@@ -23,7 +23,6 @@ if(url.indexOf('?')!=-1)
             telphone = ary[i].split('=')[1];
     }
       $('#did').text("外送人員："+deliveryMid);
-      $('#dphone').text("電話："+telphone);
 }
 if(deliveryMid==""||telphone==""){
   alert("沒有登入");
@@ -31,6 +30,7 @@ if(deliveryMid==""||telphone==""){
 }
 /////////////////取得位置資訊////////////////////
 function getAddress(){
+  var count=0;
   $(".modal").remove();
   $( "#card" ).empty();
   loc.length = 0;
@@ -45,7 +45,7 @@ function getAddress(){
         var namet= childSnapshot.child("OrderInfo/OrderMainName").val();
         var telt= childSnapshot.child("OrderInfo/TEL").val();
 
-        $("<div class='col s12 m6' id='card"+idt+"'><div class='card'><div class='card-content black-text'><span class='card-title'><a class='modal-trigger' href='#modal"+idt+"'>"+idt+"</a></span><p>訂購人姓名："+namet+"</br>手機："+telt+"</br>地址："+addt+"</p></div><div class='card-action'><a class='waves-effect waves-light btn-small light-green accent-4' onclick='pantomap(\""+addt+"\")'><i class='material-icons left'>place</i>所在位置</a><a class='waves-effect waves-light btn-small light-green accent-4' onclick='setStatus(\""+idt+"\")'><i class='material-icons left'>check</i>已經送達</a></div></div></div>").appendTo("#card");
+        $("<div class='col s12 m6' id='card"+idt+"'><div class='card'><div class='card-content black-text'><span class='card-title'><a class='modal-trigger' href='#modal"+idt+"'>"+idt+"</a></span><p>訂購人姓名："+namet+"</br>手機："+telt+"</br>地址："+addt+"</p></div><div class='card-action'><a class='waves-effect waves-light btn-small light-green accent-4' onclick='pantomap(\""+idt+"\",\""+addt+"\")'><i class='material-icons left'>place</i>所在位置</a><a class='waves-effect waves-light btn-small light-green accent-4' onclick='setStatus(\""+idt+"\")'><i class='material-icons left'>check</i>已經送達</a></div></div></div>").appendTo("#card");
 
 
         $("#modalall").after("<div id='modal"+idt+"' class='modal'> <div class='modal-content'><h4>訂單內容</h4><p></p></div><div class='modal-footer'><a href='#!' class='modal-close waves-effect waves-green btn-flat'>Agree</a></div></div>");
@@ -56,8 +56,9 @@ function getAddress(){
 
           if(snapshot.child("Address").val()!==""){
           $('.map').tinyMap('query', snapshot.child("Address").val(), function (addr) {
-
-            loc.push({'addr':[addr.geometry.location.lat(),addr.geometry.location.lng()],'text':snapshot.ref.parent.key,'BentoID':snapshot.ref.parent.key})
+            count++;
+            if(count>9)count=0;
+            loc.push({'addr':[addr.geometry.location.lat(),addr.geometry.location.lng()],'text':snapshot.ref.parent.key,'BentoID':snapshot.ref.parent.key,'icon': {'url': ficons[count],'scaledSize': [20,20]}})
 
               });
             }
@@ -90,10 +91,15 @@ function DrawAllMarkers(){
       'addr':current,
       'text':'現在位置',
       'now':true,
+      'icon': {
+        'url': bicons[0],
+        'scaledSize': [30,30]
+    },
     }]
   });
   $('.map').tinyMap('modify',{
   'marker': loc,
+  'zoom': 13,
   'markerFitBounds': true,
   'event': {
     'idle': {
@@ -116,14 +122,9 @@ function DrawAllMarkers(){
           });
               Farthest = distance.indexOf(Math.max.apply(Math, distance));
               if (false !== Farthest && -1 !== Farthest) {
-                  if ('undefined' !== typeof markers[Farthest].infoWindow) {
-                    // 開啟此標記的 infoWindow
-                    markers[Farthest].infoWindow.open(this, markers[Farthest]);
-                      // 移動此標記至地圖中心
                       this.panTo(markers[Farthest].position);
                       markers[Farthest].endpoint = true;
                       endoint=markers[Farthest].position;
-                  }
               }
               markers.forEach(function (marker) {
                 if(!marker.hasOwnProperty('now')&&!marker.hasOwnProperty('endpoint'))
@@ -187,6 +188,10 @@ function getNowPosition(){
                 ],
               'text':'現在位置',
               'now':true,
+              'icon': {
+                'url': bicons[0],
+                'scaledSize': [30,30]
+            },
             }]
           });
           markers.forEach(function (marker) {
@@ -241,10 +246,17 @@ function getNowPosition(){
 }
 ///////////////panTOmap//////////////////
 
-function pantomap(addrs){
+function pantomap(idt2,addrs){
 
 
   window.scrollTo(500, 100);
+  var m = $('.map').data('tinyMap'),
+        markers = m._markers,
+        marker = {},
+        i = 0;
+    for (i; i < markers.length; i += 1) {
+        markers[i].infoWindow.close();
+    }
 
   setTimeout(function(){
     if(addrs !== "" && addrs !== null){
@@ -252,12 +264,15 @@ function pantomap(addrs){
       geocoder.geocode( { 'address': addrs}, function(results, status) {
         if (status == 'OK') {
           $('.map').tinyMap('panTo', results[0].geometry.location);
-
-          $('.map').tinyMap('modify', {
-                   'marker': [{
-                       'addr':results[0].geometry.location
-                   }]
-               });
+          var markers = $('.map').tinyMap('get', 'marker');
+          markers.forEach(function(marker){
+            if(marker.BentoID == idt2){
+              if ('undefined' !== typeof marker.infoWindow) {
+                var infoWindow = marker.infoWindow;
+                infoWindow.open(m.map, marker); // 開
+              }
+            }
+          })
 
           } else {
             console.error('Geocode was not successful for the following reason: ' + status);
@@ -353,5 +368,4 @@ $(document).ready(function(){
       'zoom'  : 12,
   });
   getNowPosition();
-  $('.modal .bottom-sheet').modal();
 });

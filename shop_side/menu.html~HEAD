@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/css/materialize.min.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/js/materialize.min.js"></script>
+    <script src="./js/jquery-3.2.1.min.js" ></script>
+    <link rel="stylesheet" href="./css/materialize.min.css">
+    <script src="./js/materialize.min.js"></script>
+    <link rel="stylesheet" href="./css/main.css">
     <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
 
     <title>Menu - 店家</title>
@@ -32,8 +33,8 @@
         var database = firebase.database();
     </script>
     <nav>
-        <div class="nav-wrapper">
-            <a href="#" class="brand-logo">&nbspMenu</a>
+      <div class='nav-wrapper #ab47bc purple lighten-1'>
+            <a href="./mainpage.html" class="brand-logo">BENTO店家端</a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li>
                     <a href="sass.html">Sass</a>
@@ -61,25 +62,32 @@
     <script>
         var rootRef = database.ref("Products/");
         rootRef.on('value', function(snapshot){
-            $('#menu').empty(); 
-            
+            $('#menu').empty();
+
             $.each(snapshot.val(), function(key, value){
                 var str = "";
-                str += '<h4>'+key+'</h4>'
-                str += '<ul class="collection" id="menu_list">'
-                
+                str += '<h4>'+key+'</h4><hr>'
+                str += '<table class="striped" id="menu_list"><tr><td>品名</td><td>售價</td><td>簡介</td><td>狀態</td></tr>'
+
                 snapshot.child(key + '/Data').forEach(function(data){
                     var item = data.val();
-                    str +='<li class="collection-item">品名：'+item.ProductName+' &nbsp售價：'+item.ProductPrice+ ' &nbsp簡介：' + item.ProductIntro + ' &nbsp狀態：' + item.ProductStatus + '<i class="material-icons edit" onclick="javascript:edit(\''+item.ProductID+'\')">create</i><i class="material-icons">delete</i></li>';
+                    var tempA;
+                    if(item.ProductStatus == true){
+                      tempA = "開放";
+                    }
+                    else{
+                      tempA = "不開放";
+                    }
+                    str += '<tr><td>品名：' + item.ProductName + ' </td><td>' + item.ProductPrice + ' </td><td>' + item.ProductIntro + '</td><td>' + tempA + '<br><i class="material-icons edit" onclick="javascript:edit(\'' + item.ProductID + '\')">create</i><i class="material-icons">delete</i></td></tr>';
                 });
-                str += '</ul>';
-                $('#menu').append(str); 
+                str += '</table>';
+                $('#menu').append(str);
             });
         });
         function edit(name){
             var cate = name.slice(0, name.length - 1);
             var productRef = database.ref('Products/'+cate+'/Data/'+name);
-            var edit_str = "";            
+            var edit_str = "";
             productRef.once('value', function(snapshot){
                 $('#modal1-content').empty();
                 var obj = snapshot.val();
@@ -95,14 +103,14 @@
                 edit_str += '<label class="active" for="ProductIntro">產品簡介</label></div>';
                 edit_str += '<div class="input-field col s6" >';
                 if (obj.ProductStatus)
-                {   
+                {
                     edit_str += '<input name="ProductStatus" type="radio" id="ProductStatusT" value="true" checked /><label for="ProductStatusT" >開放訂購</label>';
                     edit_str += '<input name="ProductStatus" type="radio" id="ProductStatusF" value="false"/><label for="ProductStatusF" >關閉訂購</label>';
                 }
-                else 
+                else
                 {
                     edit_str += '<input name="ProductStatus" type="radio" id="ProductStatusT" value="true"/><label for="ProductStatusT">開放訂購</label>';
-                    edit_str += '<input name="ProductStatus" type="radio" id="ProductStatusF" value="false" checked /><label for="ProductStatusF">關閉訂購</label>';                    
+                    edit_str += '<input name="ProductStatus" type="radio" id="ProductStatusF" value="false" checked /><label for="ProductStatusF">關閉訂購</label>';
                 }
                 edit_str += '</div></div>';
             });
@@ -117,7 +125,7 @@
                 ProductIntro: $('#ProductIntro').val(),
                 ProductPrice: $('#ProductPrice').val(),
                 ProductName: $('#ProductName').val(),
-                ProductStatus: $("#ProductStatusT").is(":checked")    
+                ProductStatus: $("#ProductStatusT").is(":checked")
             };
             var cate = obj.ProductID.slice(0, obj.ProductID.length - 1);
             var productRef = database.ref('Products/' + cate + '/Data/' + obj.ProductID);

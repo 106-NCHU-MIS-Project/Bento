@@ -5,9 +5,9 @@
 
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <script src="./js/jquery.js" ></script>
+    <link rel="stylesheet" href="./css/materialize.min.css">
+    <script src="./js/materialize.min.js"></script>
     <link rel="stylesheet" href="./css/main.css">
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzUkUrvdaygSJamPdIUkADw4qTuosDjkw" async defer></script>
 <style media="screen">
@@ -42,16 +42,7 @@ td{
   </head>
   <body>
 
-    <!-- navbar -->
-    <!-- <div id="navbar"></div> -->
 
-    <!-- <script type="text/javascript">
-    var ajax = new XMLHttpRequest();
-    ajax.open("GET", "/navbar.html", false);
-    ajax.send();
-    document.getElementById("navbar").innerHTML += ajax.responseText;
-    </script>
-    <script type="text/javascript">$(".button-collapse").sideNav();</script> -->
     <link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet'>
     <nav>
       <div class='nav-wrapper #00838f cyan darken-4'>
@@ -60,23 +51,16 @@ td{
         <ul class='right hide-on-med-and-down'>
           <li><a href='#'>個人資訊</a></li>
           <li><a href='#'>常用地址</a></li>
-          <li><a href='./camera_test/camera.html'>Camera Test</a></li>
-          <li>
-            <a href='./camera_test/Scanner.html'>Scanner Test</a>
-          </li>
-
+          <li><a href='#'>Default</a></li>
+          <li><a href='#'>Default</a></li>
         </ul>
         <ul class='side-nav' id='mobile-demo'>
           <li class="#00838f cyan darken-4" ><a href='#' style="color:white;">WELCOME</a></li>
+          <li> <img src="./image/test.png" height="120px" style="margin-top:20px; margin-bottom:10px;"> </li>
+          <div class="container"><hr></div>
           <li><a href='./sideNav/personInfo.html'>個人資訊</a></li>
           <li><a href='./sideNav/address.html'>常用地址</a></li>
-          <li>
-            <a href='./camera_test/camera.html'>Camera Test</a>
-          </li>
-          
-          <li>
-            <a href='./camera_test/Scanner.html'>Scanner Test</a>
-          </li>
+          <li><a href='#'>關於我們</a></li>
         </ul>
       </div>
     </nav>
@@ -89,7 +73,7 @@ td{
   <!-- navbar -->
 <div class="row" style="margin-bottom:0px!important;border-bottom:9px white solid">
     <div class="carousel carousel-slider" data-indicators="true">
-      <a class="carousel-item" href="#one!"><img src="./image/banner/banner1.jpg"></a>
+      <a class="carousel-item" href="#one!"><img src="./image/banner/banner1-1.jpg"></a>
       <a class="carousel-item" href="#two!"><img src="./image/banner/banner2.jpg"></a>
       <a class="carousel-item" href="#three!"><img src="./image/food1.jpg"></a>
       <a class="carousel-item" href="#four!"><img src="./image/food2.jpg"></a>
@@ -111,7 +95,7 @@ autoplay();
   <i class="tiny material-icons" style="color:blue;">place</i>
 <font style="text-align:center; font-size:18px;font-weight:bold;color:blue;">外送地址</font>
   <br>
-  <font style="font-size:15px;" id="address"></font>
+  <font style="font-size:15px;" id="address">400台中市南區中興大學社館大樓</font>
 </div>
 
 
@@ -119,13 +103,13 @@ autoplay();
 
 <a href="./stores.html" >
   <div class="col s7 waves-effect waves-light" style="border:2px white solid;border-radius:20px;width:(100/12*3)%;background-color:#ffca28;background-image:url('./image/chinesefood-image/food05.jpg'); background-size:cover; background-repeat:no-repeat; padding-top:8vh;padding-bottom:8vh; text-align:center;">
-    <font class="font1" >瀏覽商家</font>
+    <font class="font1" >開始訂餐</font>
   </div>
 </a>
 
 <a href="./checkOrder/OrderList.html">
   <div class="col s5 waves-effect waves-light" style="border:2px white solid;border-radius:20px;width:(100/12*3)%;background-color:#bcaaa4;background-image:url('./image/chinesefood-image/food06.jpg'); background-size:cover; background-repeat:no-repeat; padding-top:8vh;padding-bottom:8vh; text-align:center;">
-  <font class="font1">查看訂單</font>
+  <font class="font1">我的訂單</font>
   </div>
 </a>
 
@@ -161,29 +145,43 @@ autoplay();
 
 <div class="row" style="margin-bottom:0px!important;opacity:0.9;border-bottom:9px white solid;">
 
+  <div class="col s1">
+
+  </div>
+
   <a href="./QRcode/Scanner.html">
-    <div class="col s4 waves-effect waves-light" style="border:2px white solid;border-radius:20px;width:(100/3)%;background-color:#4fc3f7;background-image:url('./image/chinesefood-image/food09.jpg'); background-size:cover; background-repeat:no-repeat; padding-top:7vh;padding-bottom:7vh; text-align:center;">
+    <div class="col s10 waves-effect waves-light" style="border:2px white solid;border-radius:20px;width:(100/3)%;background-color:#4fc3f7;background-image:url('./image/chinesefood-image/food09.jpg'); background-size:cover; background-repeat:no-repeat; padding-top:7vh;padding-bottom:7vh; text-align:center;">
       <font class="font2">加入團購</font>
     </div>
   </a>
+<div class="col s1">
 
-<a href="./restaurant_receive.html">
-  <div class="col s4 waves-effect waves-light" style="border:2px white solid;border-radius:20px;width:(100/3)%;background-color:#0097a7;background-image:url('./image/chinesefood-image/food11.jpg'); background-size:cover; background-repeat:no-repeat; padding-top:7vh;padding-bottom:7vh; text-align:center;">
-    <font class="font2">店家接收</font>
-  </div></a>
+</div>
 
-<a href="./joinUS/joinUS.html">
-  <div class="col s4 waves-effect waves-light" style="border:2px white solid;border-radius:20px;width:(100/3)%;background-color:#eeff41; background-image:url('./image/chinesefood-image/food12.jpg'); background-size:cover; background-repeat:no-repeat; padding-top:7vh;padding-bottom:7vh; text-align:center;">
-    <font class="font2">加入我們</font>
-  </div></a>
+
+</div>
+
+<div class="row" style="margin-bottom:0px!important;opacity:0.9;border-bottom:9px white solid;">
+
+  <div class="col s1">
+
+  </div>
+
+  <a href="./QRcode/Scanner.html">
+    <div class="col s10 waves-effect waves-light" style="border:2px white solid;border-radius:20px;width:(100/3)%;background-color:#4fc3f7;background-image:url('./image/chinesefood-image/food11.jpg'); background-size:cover; background-repeat:no-repeat; padding-top:7vh;padding-bottom:7vh; text-align:center;">
+      <font class="font2">排隊叫號</font>
+    </div>
+  </a>
+<div class="col s1">
+
+</div>
+
 
 </div>
 
 
 
-
-
-<div class="row" style="margin-bottom:0px!important;opacity:0.9;border-bottom:9px white solid;">
+<!-- <div class="row" style="margin-bottom:0px!important;opacity:0.9;border-bottom:9px white solid;">
 
 <a href="./Delivery/index.html">
   <div class="col s6 waves-effect waves-light" style="border:2px white solid;border-radius:20px;width:50%;background-color:#4caf50; background-image:url('./image/food3.jpg'); background-size:cover; background-repeat:no-repeat; padding-top:8vh;padding-bottom:8vh; text-align:center;">
@@ -191,29 +189,15 @@ autoplay();
   </div>
 </a>
 
-<a href="#?">
+<a href="./shop_side/index.html">
   <div class="col s6 waves-effect waves-light" style="border:2px white solid;border-radius:20px;width:50%;background-color:#f06292; background-image:url('./image/food2.jpg'); background-size:cover; background-repeat:no-repeat; padding-top:8vh;padding-bottom:8vh; text-align:center;">
-    <font class="font1">XXXX</font>
-  </div>
-</a>
-
-</div>
-
-<!-- <div class="row" style="margin-bottom:0px!important;opacity:0.9;">
-
-<a href="#?">
-  <div class="col s4 waves-effect waves-light" style="width:(100%/3);background-color:#e040fb;background-image:url('./image/food1.jpg'); background-size:cover; background-repeat:no-repeat; padding-top:8vh;padding-bottom:8vh; text-align:center;">
-    <font class="font1">XXXX</font>
-  </div>
-</a>
-
-<a href="#?">
-  <div class="col s8 waves-effect waves-light" style="width:(100%/3*2);background-color:#bdbdbd; background-image:url('./image/food5.jpg'); background-size:cover; background-repeat:no-repeat; padding-top:8vh;padding-bottom:8vh; text-align:center;">
-    <font class="font1">XXXX</font>
+    <font class="font1">.</font>
   </div>
 </a>
 
 </div> -->
+
+
 
 
 
@@ -254,7 +238,7 @@ function showPosition(position)
       }
       // 經緯度資訊錯誤
       else {
-        alert("無法取得您的位置" + status);
+        swal("無法取得您的位置" + status);
       }
     });
 

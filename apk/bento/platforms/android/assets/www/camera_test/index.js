@@ -37,6 +37,7 @@ var app = {
     },
     // Update DOM on a Received Event
     receivedEvent: function (id) {
+        console.log("ready");
         if (typeof (QRScanner) != 'undefined') {
             //初始化检测，申请摄像头等权限  
             QRScanner.prepare(onDone); // show the prompt  

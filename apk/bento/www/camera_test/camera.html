@@ -43,7 +43,70 @@
     <link type="text/css" rel="stylesheet" href="../css/materialize.min.css" media="screen,projection">
     <!-- <link rel="stylesheet" type="text/css" href="../css/index.css"> -->
     <link rel="stylesheet" type="text/css" href="../css/animate.min.css">
-
+    <style>
+    .qrscanner {  
+    width: 100%;  
+    height: 100%;  
+}  
+body,html{  
+    width:100%;  
+    height:100%;  
+}  
+  
+.qrscanner-area {  
+    width: 100%;  
+    height: 85%;  
+    background: url(../images/scanner.svg) no-repeat center center;  
+    background-size: contain;  
+}  
+  
+.through-line {  
+    left: 20%;  
+    width: 60%;  
+    height: 2px;  
+    background: red;  
+    position: absolute;  
+    animation: myfirst 5s linear infinite alternate;  
+}  
+  
+@keyframes myfirst {  
+    0% {  
+        background: red;  
+        top: 180px;  
+    }  
+  
+    25% {  
+        background: yellow;  
+        top: 220px;  
+    }  
+  
+    50% {  
+        background: blue;  
+        top: 240px;  
+    }  
+  
+    75% {  
+        background: green;  
+        top: 260px;  
+    }  
+  
+    100% {  
+        background: red;  
+        top: 280px;  
+    }  
+}  
+  
+.button-bottom {  
+    width: 128px;  
+    position: absolute;  
+    left: 50%;  
+    bottom: 80px;  
+    margin-left: -64px;  
+}  
+  
+.icon-camera {  
+    float: left;  
+}  </style>
 
 </head>
 
@@ -85,40 +148,9 @@
         </div>
     </div>
 
-    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="../cordova.js"></script>
     <script type="text/javascript" src="./index.js"></script>
-    <script>
-        function scanStart() {
-            app.initialize();
-        }
-        var done = function (err, status) {
-                if (err) {
-                    console.error(err._message);
-                } else {
-                    console.log('QRScanner is initialized. Status:');
-                    console.log(status);
-                }
-            };
-
-        QRScanner.prepare(done); 
-        var callback = function (err, contents) {
-                if (err) {
-                    console.error(err._message);
-                }
-                alert('The QR Code contains: ' + contents);
-            };
-        QRScanner.scan(callback);
-
-        QRScanner.cancelScan(function (status) {
-            console.log(status);
-        });
-        QRScanner.show(function (status) {
-                console.log(status);
-            });
-        QRScanner.hide(function (status) {
-            console.log(status);
-        });    
-    </script>
+    <script>app.initialize();</script>
 </body>
 
 </html>

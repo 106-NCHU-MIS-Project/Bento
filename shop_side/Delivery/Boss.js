@@ -1,102 +1,93 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <style type="text/css">
-    .map {
-        width: 640px;
-        height: 480px;
-    }
-    .labels {
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 4px;
-    color: white;
-    padding: 4px
-}
-    </style>
-
-  </head>
-<body>
-  <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
-  <script src="jquery-3.3.1.js"></script>
-  <script src="jquery.tinyMap.js"></script>
-  <div class="map"></div>
-<script>
-  //initialize google map////////////
-  $.fn.tinyMapConfigure({
-    'key': 'AIzaSyBmKFudinNxKD27eVaOUsBBaqEEt9o0ONQ',
-    // 使用的地圖語言
-    'language': 'zh‐TW',
-});
-  ////////////////////////////////
-  // Initialize
-  var config = {
-    apiKey: "AIzaSyDd2rFHwPXyIkq0iRSinBBfzg31NYJLapE",
-    authDomain: "nchumis2017-5566.firebaseapp.com",
-    databaseURL: "https://nchumis2017-5566.firebaseio.com",
-    projectId: "nchumis2017-5566",
-    storageBucket: "nchumis2017-5566.appspot.com",
-    messagingSenderId: "501160127423"
-  };
-  firebase.initializeApp(config);
-  var loc=new Array();
+var loc=new Array();
+var bicons=["bike/green.png","bike/red.png","bike/blue.png","bike/yellow.png","bike/orange.png","bike/pink.png","bike/purple.png","bike/teal.png","bike/sky.png"];
 
   /////////////////初始化////////////////////
-function getAddress(){
-  var query = firebase.database().ref("Deliverys").orderByKey();
-  query.once("value").then(function(snapshot) {
-    snapshot.forEach(function(childSnapshot) {
-      var ref = firebase.database().ref("Deliverys/"+childSnapshot.key);
-      ref.orderByKey().once("value")
-        .then(function(snapshot) {
-        loc.push({'addr':[snapshot.child("Latitude").val(),snapshot.child("Longitude").val()],
-        'text':'文字標籤',
-        'newLabel': snapshot.key,
-        'newLabelCSS': 'labels',
-        'icon': {
-                'url': 'bike/jiche-4.png',
-                'scaledSize': [40, 40]
-            },
-        'animation': 'DROP',
-          })
+  function getAddress(){
+    var count=0;
+    loc.length = 0;
+    $( "#collapsible1" ).empty();
+
+    var query = firebase.database().ref("Deliverys");
+    query.once("value").then(function(snapshot) {
+      snapshot.forEach(function(childSnapshot) {
+
+          var idt = childSnapshot.key;
+          var lat= childSnapshot.child("Latitude").val();
+          var lon= childSnapshot.child("Longitude").val();
+          var telt= childSnapshot.child("phone").val();
+          var name= childSnapshot.child("name").val();
+          loc.push({'addr':[parseFloat(lat),parseFloat(lon)],'text':idt,'icon': {'url': bicons[count],'scaledSize': [20,20]}});
+          if(count>9)count=0;
+          $("<li>  <div class='collapsible-header'><i class='material-icons'>person</i>"+idt+"&emsp;&emsp;外送者姓名 : "+name
+          +"&emsp;&emsp;電話 : "+telt+"&emsp;<a href='#' onclick='pantomap(\""+idt+"\")'>我的位置</a></div><div class='collapsible-body'><span id='span"+idt+"'></br></span></div></li>").appendTo("#collapsible1");
+          count++;
       });
-    });
+      resetMarker();
+    },function(error) {
+    // The Promise was rejected.
+    console.error(error);
   });
-}
+
+
+     $('.collapsible').collapsible();
+  }
+
 ///////////////////////Initializemap////////////////////
 
 
-  $('.map').tinyMap({
-  'center': ['24.1175214', '120.6738148'],
-  'zoom': 10,
-});
-
 function resetMarker(){
+  $('.map').tinyMap('clear', 'marker');
   $('.map').tinyMap('modify',{
   'marker': loc,
-  'markerFitBounds': true
+  'zoom': 12,
+  'markerFitBounds': true,
 });
 }
 
-function getcurrent(){
-  if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position){
-          var lat = position.coords.latitude;
-          var lon = position.coords.longitude;
-          pan(lat,lon);
-   })
- }else {
-        console.log("Geolocation is not supported by this browser.");
+function pantomap(temp){
+  window.scrollTo(500, 100);
+  var m = $('.map').data('tinyMap'),
+        markers = m._markers,
+        marker = {},
+        i = 0;
+    for (i; i < markers.length; i += 1) {
+        markers[i].infoWindow.close();
     }
+  var markers = $('.map').tinyMap('get', 'marker');
+
+  setTimeout(function(){
+    if(markers !== "" && markers !== null){
+      markers.forEach(function(marker){
+        if(marker.text == temp){
+          $('.map').tinyMap('panTo', marker.addr);
+          var m = $('.map').data('tinyMap');
+          var infoWindow = marker.infoWindow;
+          infoWindow.open(m.map,marker);
+        }
+      })
+      }
+   }, 700);
+
 }
 
-function pan(lat,lon){
-  $('.map').tinyMap('panTo', [lat,lon]);
-}
+$(document).ready(function(){
+    $('.sidenav').sidenav();
 
-getAddress();
-window.setTimeout("resetMarker()",3000);
+      $('.map').tinyMap({
+      'center': ['24.1175214', '120.6738148'],
+      'zoom': 12,
+      'markerFitBounds': true,
+    });
+  getAddress();
+  var query = firebase.database().ref("Deliverys");
+  query.on('child_changed', function(childSnapshot, prevChildKey){
+    getAddress();
+  });
+  query.on('child_removed', function(childSnapshot, prevChildKey){
+    getAddress();
+  });
+
+});
+
+//window.setTimeout("resetMarker()",3000);
 //window.setInterval("getcurrent()",4000);
-  /////////////////////////////////////
-  </script>
-  </body>
-</html>

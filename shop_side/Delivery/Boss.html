@@ -1,102 +1,88 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-TW">
   <head>
-    <style type="text/css">
-    .map {
-        width: 640px;
-        height: 480px;
-    }
-    .labels {
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 4px;
-    color: white;
-    padding: 4px
-}
-    </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+      <link rel="stylesheet" href="css/materialize.css">
+      <link rel="stylesheet" href="../css/main.css">
+      <script  type="text/javascript"  src="firebase.js"></script>
+      <script  type="text/javascript"  src="jquery-3.3.1.js"></script>
+      <script  type="text/javascript"  src="jquery.tinyMap.js"></script>
+      <script  type="text/javascript"  src="materialize.js"></script>
   </head>
+  <style type="text/css">
+  .map {
+    overflow:hidden;
+    padding-bottom:50%;
+    position:relative;
+    height:0;
+  }
+  .tabs .tab a {
+    color: rgba(79, 235, 39, 0.7);
+  }
+  .tabs .tab a:focus, .tabs .tab a:focus.active {
+    background-color: rgba(79, 235, 39, 0.1);
+  }
+  .tabs .tab a:hover, .tabs .tab a.active {
+    color: rgba(79, 235, 39, 1);
+  }
+  .tabs .indicator {
+    background-color: rgba(79, 235, 39, 0.51);
+  }
+  </style>
 <body>
-  <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
-  <script src="jquery-3.3.1.js"></script>
-  <script src="jquery.tinyMap.js"></script>
+
+  <div id="navbar">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <nav>
+    <div class="nav-wrapper green darken-1">
+      <ul id="slide-out" class="sidenav green lighten-2">
+          <li><div class="user-view">
+        <div class="background">
+          <img  class="backimg" src="img/delivery.jpg">
+        </div>
+        <a href="#name"><span class="white-text name" id="did">老闆介面</span></a>
+              </div></li>
+        <li><a href="index.html">登出</a></li>
+        <li><a class="waves-effect" href="../index.html">回到首頁</a></li>
+      </ul>
+      <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+      <a href="/index.html" class="brand-logo center">BENTO</a>
+    </div>
+  </nav>
+  </div>
+
+    <br>
+    <div class="row">
+      <div class="col s12">
+        <ul class="tabs tabs-fixed-width z-depth-3">
+          <li class="tab col s3"><a href="add.html" >新增外送人員</a></li>
+          <li class="tab col s3"><a href="delPeople/index.html" >刪除外送人員</a></li>
+        </ul>
+      </div>
+    </div>
+
   <div class="map"></div>
-<script>
-  //initialize google map////////////
-  $.fn.tinyMapConfigure({
-    'key': 'AIzaSyBmKFudinNxKD27eVaOUsBBaqEEt9o0ONQ',
-    // 使用的地圖語言
-    'language': 'zh‐TW',
-});
-  ////////////////////////////////
-  // Initialize
-  var config = {
-    apiKey: "AIzaSyDd2rFHwPXyIkq0iRSinBBfzg31NYJLapE",
-    authDomain: "nchumis2017-5566.firebaseapp.com",
-    databaseURL: "https://nchumis2017-5566.firebaseio.com",
-    projectId: "nchumis2017-5566",
-    storageBucket: "nchumis2017-5566.appspot.com",
-    messagingSenderId: "501160127423"
-  };
-  firebase.initializeApp(config);
-  var loc=new Array();
 
-  /////////////////初始化////////////////////
-function getAddress(){
-  var query = firebase.database().ref("Deliverys").orderByKey();
-  query.once("value").then(function(snapshot) {
-    snapshot.forEach(function(childSnapshot) {
-      var ref = firebase.database().ref("Deliverys/"+childSnapshot.key);
-      ref.orderByKey().once("value")
-        .then(function(snapshot) {
-        loc.push({'addr':[snapshot.child("Latitude").val(),snapshot.child("Longitude").val()],
-        'text':'文字標籤',
-        'newLabel': snapshot.key,
-        'newLabelCSS': 'labels',
-        'icon': {
-                'url': 'bike/jiche-4.png',
-                'scaledSize': [40, 40]
-            },
-        'animation': 'DROP',
-          })
-      });
-    });
-  });
-}
-///////////////////////Initializemap////////////////////
+  <br>
 
+  <ul class="collapsible" id="collapsible1">
+    <li>
+      <div class="collapsible-header"><i class="material-icons">filter_drama</i>First</div>
+      <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+    </li>
+    <li>
+      <div class="collapsible-header"><i class="material-icons">place</i>Second</div>
+      <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+    </li>
+    <li>
+      <div class="collapsible-header"><i class="material-icons">whatshot</i>Third</div>
+      <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+    </li>
+  </ul>
 
-  $('.map').tinyMap({
-  'center': ['24.1175214', '120.6738148'],
-  'zoom': 10,
-});
-
-function resetMarker(){
-  $('.map').tinyMap('modify',{
-  'marker': loc,
-  'markerFitBounds': true
-});
-}
-
-function getcurrent(){
-  if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position){
-          var lat = position.coords.latitude;
-          var lon = position.coords.longitude;
-          pan(lat,lon);
-   })
- }else {
-        console.log("Geolocation is not supported by this browser.");
-    }
-}
-
-function pan(lat,lon){
-  $('.map').tinyMap('panTo', [lat,lon]);
-}
-
-getAddress();
-window.setTimeout("resetMarker()",3000);
-//window.setInterval("getcurrent()",4000);
-  /////////////////////////////////////
-  </script>
+      <script  type="text/javascript"  src="initialize.js"></script>
+      <script  type="text/javascript"  src="Boss.js"></script>
   </body>
 </html>

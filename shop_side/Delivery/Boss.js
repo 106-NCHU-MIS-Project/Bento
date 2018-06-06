@@ -16,10 +16,18 @@ var bicons=["bike/green.png","bike/red.png","bike/blue.png","bike/yellow.png","b
           var lon= childSnapshot.child("Longitude").val();
           var telt= childSnapshot.child("phone").val();
           var name= childSnapshot.child("name").val();
-          loc.push({'addr':[parseFloat(lat),parseFloat(lon)],'text':idt,'icon': {'url': bicons[count],'scaledSize': [20,20]}});
+          loc.push({'addr':[parseFloat(lat),parseFloat(lon)],'text':idt+'</br>姓名：'+name+'</br>電話：'+telt,'icon': {'url': bicons[count],'scaledSize': [20,20]},'ID':idt});
           if(count>9)count=0;
-          $("<li>  <div class='collapsible-header'><i class='material-icons'>person</i>"+idt+"&emsp;&emsp;外送者姓名 : "+name
-          +"&emsp;&emsp;電話 : "+telt+"&emsp;<a href='#' onclick='pantomap(\""+idt+"\")'>我的位置</a></div><div class='collapsible-body'><span id='span"+idt+"'></br></span></div></li>").appendTo("#collapsible1");
+          $("<li><a href='#' onclick='pantomap(\""+idt+"\")'><div class='collapsible-header' style='font-size:4vw;'>"+idt+"</div></a><div class='collapsible-body'><span id='span"+idt+"'></span></div></li>").appendTo("#collapsible1");
+          $('<h5 style="font-size:4vw;">歷史訂單</h5>').appendTo("#span"+idt);
+          var query = firebase.database().ref("Orders/").orderByKey();
+          query.once("value").then(function(snapshot) {
+            snapshot.forEach(function(cchildSnapshot) {
+              if(cchildSnapshot.child("deliverManID").val()==idt && cchildSnapshot.child("OrderStatus").val()=='4'){
+                $('<h6 style="font-size:3vw;">'+cchildSnapshot.key+'</h6>').appendTo("#span"+idt);
+              }
+            })
+          })
           count++;
       });
       resetMarker();
@@ -39,7 +47,7 @@ function resetMarker(){
   $('.map').tinyMap('clear', 'marker');
   $('.map').tinyMap('modify',{
   'marker': loc,
-  'zoom': 12,
+  'zoom': 14,
   'markerFitBounds': true,
 });
 }
@@ -58,7 +66,10 @@ function pantomap(temp){
   setTimeout(function(){
     if(markers !== "" && markers !== null){
       markers.forEach(function(marker){
-        if(marker.text == temp){
+        if(marker.ID == temp){
+          $('.map').tinyMap('modify',{
+          'zoom': 13,
+        });
           $('.map').tinyMap('panTo', marker.addr);
           var m = $('.map').data('tinyMap');
           var infoWindow = marker.infoWindow;
@@ -75,7 +86,7 @@ $(document).ready(function(){
 
       $('.map').tinyMap({
       'center': ['24.1175214', '120.6738148'],
-      'zoom': 12,
+      'zoom': 14,
       'markerFitBounds': true,
     });
   getAddress();

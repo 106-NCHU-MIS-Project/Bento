@@ -5,6 +5,11 @@
     'libraries': 'geometry,drawing,places',
     // 使用的地圖語言
     'language': 'zh‐TW',
+    'geolocation': {
+    maximumAge: 600000,
+    timeout: 3000,
+    enableHighAccuracy: false
+}
 });
   ////////////Initialize firebase/////////////////////
   var config = {

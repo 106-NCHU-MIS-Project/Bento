@@ -45,10 +45,12 @@ function getAddress(){
         var namet= childSnapshot.child("OrderInfo/OrderMainName").val();
         var telt= childSnapshot.child("OrderInfo/TEL").val();
 
-        $("<div class='col s12 m6' id='card"+idt+"'><div class='card'><div class='card-content black-text'><span class='card-title'><a class='modal-trigger' href='#modal"+idt+"'>"+idt+"</a></span><p>訂購人姓名："+namet+"</br>手機："+telt+"</br>地址："+addt+"</p></div><div class='card-action'><a class='waves-effect waves-light btn-small light-green accent-4' onclick='pantomap(\""+idt+"\",\""+addt+"\")'><i class='material-icons left'>place</i>所在位置</a><a class='waves-effect waves-light btn-small light-green accent-4' onclick='setStatus(\""+idt+"\")'><i class='material-icons left'>check</i>已經送達</a></div></div></div>").appendTo("#card");
+        $("<div class='col s12 m6 l6' id='card"+idt+"'><div class='card'></div></div>").appendTo("#card");
+        $("<a class='modal-trigger' href='#modal"+idt+"'><div class='card-content black-text'><div class='row'><div class='col s12 m12 l12' style='font-size:4vw;'>&nbsp;"+idt+"&nbsp;</div><div class='col s12 m12 l12'><hr class='style6'></div><div class='col s3' style='font-size:2.2vw;'>姓名：</div><div class='col s9' style='font-size:1.9vw;'>&nbsp;"+namet+"&nbsp;</div><div class='col s12 m12 l12'><hr class='style4'></div><div class='col s3' style='font-size:2.2vw;'>手機：</div><div class='col s9' style='font-size:1.9vw;'>&nbsp;"+telt+"&nbsp;</div><div class='col s12 m12 l12'><hr class='style4'></div><div class='col s3' style='font-size:2.2vw;'>地址：</div><div class='col s9' style='font-size:1.3vw;'>&nbsp;"+addt+"&nbsp;</div></div></div></a>").appendTo("#card"+idt+" .card");
+        $("<div class='card-action'><div class='row'><div class='col s6'><a class='waves-effect waves-light btn light-green accent-4' style='font-size:1.5vw;'  onclick='pantomap(\""+idt+"\",\""+addt+"\")'><i class='material-icons left' style='font-size:2.5vw;'>place</i>所在位置</a></div><div class='col s6'><a class='waves-effect waves-light btn light-green accent-4' onclick='setStatus(\""+idt+"\")' style='font-size:1.5vw;'><i class='material-icons left'style='font-size:2.5vw;'>check</i>已經送達</a></div></div></div>").appendTo("#card"+idt+" .card");
 
 
-        $("#modalall").after("<div id='modal"+idt+"' class='modal'> <div class='modal-content'><h4>訂單內容</h4><p></p></div><div class='modal-footer'><a href='#!' class='modal-close waves-effect waves-green btn-flat'>Agree</a></div></div>");
+        $("#modalall").after("<div id='modal"+idt+"' class='modal'> <div class='modal-content'><h4  style='font-size:6vw;'>訂單內容</h4><div class='row' id='row1'></div></div><div class='modal-footer'><a href='#!' class='modal-close waves-effect waves-green btn-flat'>Agree</a></div></div></div>");
         madaldisplay(idt);
       var ref = firebase.database().ref("Orders/"+childSnapshot.key+"/OrderInfo/");
       ref.once("value")
@@ -56,10 +58,9 @@ function getAddress(){
 
           if(snapshot.child("Address").val()!==""){
           $('.map').tinyMap('query', snapshot.child("Address").val(), function (addr) {
-            count++;
             if(count>9)count=0;
-            loc.push({'addr':[addr.geometry.location.lat(),addr.geometry.location.lng()],'text':snapshot.ref.parent.key,'BentoID':snapshot.ref.parent.key,'icon': {'url': ficons[count],'scaledSize': [20,20]}})
-
+            loc.push({'addr':[addr.geometry.location.lat(),addr.geometry.location.lng()],'text':snapshot.ref.parent.key,'BentoID':snapshot.ref.parent.key,'icon': {'url': ficons[count],'scaledSize': [30,30]}});
+            count++;
               });
             }
       });
@@ -122,7 +123,6 @@ function DrawAllMarkers(){
           });
               Farthest = distance.indexOf(Math.max.apply(Math, distance));
               if (false !== Farthest && -1 !== Farthest) {
-                      this.panTo(markers[Farthest].position);
                       markers[Farthest].endpoint = true;
                       endoint=markers[Farthest].position;
               }
@@ -161,6 +161,11 @@ function drawDirection(){
 
 /////////////////getNowPosition//////////////////
 function getNowPosition(){
+  var m = $('.map').data('tinyMap');
+        markert = m._markers;
+    for (var i = 0; i < markert.length; i += 1) {
+        markert[i].infoWindow.close();
+    }
   var onSuccess = function(position) {
     var geocoder = new google.maps.Geocoder;
     var latlng = {lat: parseFloat(position.coords.latitude), lng: parseFloat(position.coords.longitude)};
@@ -198,6 +203,7 @@ function getNowPosition(){
             if (marker.hasOwnProperty('now')){
               marker.set('visible', true);
               startpoint = marker;
+              marker.infoWindow.open(m.map, marker);
             }
           })
         }
@@ -207,6 +213,7 @@ function getNowPosition(){
               marker.setPosition(latlng);
               marker.set('visible', true);
               startpoint = marker;
+              marker.infoWindow.open(m.map, marker);
               //marker.set('visible', !marker.getVisible());
             }
 
@@ -248,11 +255,11 @@ function getNowPosition(){
 
 function pantomap(idt2,addrs){
 
-
+  DrawAllMarkers();
   window.scrollTo(500, 100);
-  var m = $('.map').data('tinyMap'),
-        markers = m._markers,
-        marker = {},
+  var m = $('.map').data('tinyMap');
+        markers = m._markers;
+        marker = {};
         i = 0;
     for (i; i < markers.length; i += 1) {
         markers[i].infoWindow.close();
@@ -289,8 +296,8 @@ function setStatus(tempid){
     var database = firebase.database();
       database.ref("Orders/").child(tempid).update({
         "OrderStatus": 4,
+        "deliverManID":deliveryMid,
           });
-    getAddress();
    }else{
          console.error("錯誤");
        }
@@ -322,13 +329,15 @@ function clearMarkers() {
 
 function madaldisplay(temp_id){
   var query = firebase.database().ref("Orders/"+temp_id+"/OrderDetail/").orderByKey();
+  var totalp=0;
   query.once("value").then(function(snapshot) {
     snapshot.forEach(function(childSnapshot) {
       var ref = firebase.database().ref("Orders/"+temp_id+"/OrderDetail/"+childSnapshot.key+"/OrderPeople/").orderByKey();
       ref.once("value").then(function(cchildSnapshot) {
         cchildSnapshot.forEach(function(ccchildSnapshot) {
-            $(document.createTextNode(ccchildSnapshot.child("name").val()+" X "+ccchildSnapshot.child("number").val())).appendTo("#modal"+temp_id+" .modal-content p");
-            $(document.createElement("br") ).appendTo("#modal"+temp_id+" .modal-content p");
+            $('<div class="col s12">'+ccchildSnapshot.key+'</div>').appendTo("#modal"+temp_id+" .modal-content #row1");
+            $('<div class="col s6">'+ccchildSnapshot.child("name").val()+'</div><div class="col s6">'+ccchildSnapshot.child("number").val()+'</div>').appendTo("#modal"+temp_id+" .modal-content #row1");
+            $(document.createElement("br") ).appendTo("#modal"+temp_id+" .modal-content  #row1");
           })
         })
       })
@@ -368,4 +377,11 @@ $(document).ready(function(){
       'zoom'  : 12,
   });
   getNowPosition();
+  var query = firebase.database().ref("Orders");
+  query.on('child_changed', function(childSnapshot, prevChildKey){
+    getAddress();
+  });
+  query.on('child_removed', function(childSnapshot, prevChildKey){
+    getAddress();
+  });
 });

@@ -168,8 +168,8 @@ function getNowPosition(){
     }
   var onSuccess = function(position) {
     var geocoder = new google.maps.Geocoder;
-    var latlng = {lat: parseFloat(position.coords.latitude), lng: parseFloat(position.coords.longitude)};
-    current=[position.coords.latitude,position.coords.longitude];
+    var latlng = {lat: 24.1203648, lng: 120.6736437};
+    current=[24.1203648 . 120.6736437 ];
     setlatlon();
     geocoder.geocode({'location': latlng}, function(results, status) {
       if (status === 'OK') {
@@ -188,8 +188,8 @@ function getNowPosition(){
           $('.map').tinyMap('modify', {
           'marker': [{
               'addr': [
-                  position.coords.latitude,
-                  position.coords.longitude
+                  24.1203648,
+                  120.6736437
                 ],
               'text':'現在位置',
               'now':true,

@@ -169,7 +169,7 @@ function getNowPosition(){
   var onSuccess = function(position) {
     var geocoder = new google.maps.Geocoder;
     var latlng = {lat: 24.1203648, lng: 120.6736437};
-    current=[24.1203648 . 120.6736437 ];
+    current=[ 24.1203648,120.6736437];
     setlatlon();
     geocoder.geocode({'location': latlng}, function(results, status) {
       if (status === 'OK') {
@@ -244,8 +244,8 @@ function getNowPosition(){
     };
 
   function onError(error) {
-    alert('code: '    + error.code    + '\n' +
-          'message: ' + error.message + '\n');
+    ///alert('code: '    + error.code    + '\n' +
+    ///      'message: ' + error.message + '\n');
     }
     if (navigator.geolocation){
       navigator.geolocation.getCurrentPosition(onSuccess, onError,{timeout: 30000, enableHighAccuracy: true, maximumAge: 75000});

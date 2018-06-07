@@ -247,8 +247,9 @@ function getNowPosition(){
     alert('code: '    + error.code    + '\n' +
           'message: ' + error.message + '\n');
     }
-
-  navigator.geolocation.getCurrentPosition(onSuccess, onError,{timeout: 30000, enableHighAccuracy: true, maximumAge: 75000});
+    if (navigator.geolocation){
+      navigator.geolocation.getCurrentPosition(onSuccess, onError,{timeout: 30000, enableHighAccuracy: true, maximumAge: 75000});
+    }
 
 }
 ///////////////panTOmap//////////////////

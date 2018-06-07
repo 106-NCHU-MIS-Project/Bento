@@ -187,10 +187,7 @@ function getNowPosition(){
         if(typeof startpoint == 'undefined' || startpoint == null || startpoint == ""){
           $('.map').tinyMap('modify', {
           'marker': [{
-              'addr': [
-                  24.1203648,
-                  120.6736437
-                ],
+              'addr':current,
               'text':'現在位置',
               'now':true,
               'icon': {

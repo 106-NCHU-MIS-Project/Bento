@@ -144,8 +144,28 @@
       for (var i = 1; i <= counter; i++) {
         var temp = snapshot.child("shop" + i + "/shopName").val();
         var briefInfo = snapshot.child("shop" + i + "/shopInfo/briefInfo").val();
-
         var store_list = document.getElementById("store_list");
+
+        var rating_number = snapshot.child("shop"+i+"/rating/counter").val();
+        var rating_score = snapshot.child("shop"+i+"/rating/score").val();
+        var star='';
+        switch(rating_score){
+          case 1:
+            star='★☆☆☆☆';
+            break;
+          case 2:
+            star='★★☆☆☆';
+            break;
+          case 3:
+            star='★★★☆☆';
+            break;
+          case 4:
+            star='★★★★☆';
+            break;
+          case 5:
+            star='★★★★★';
+        }
+        var total_rating =star+'('+rating_number+')';
 
 
 
@@ -153,7 +173,7 @@
 
 
           store_list.innerHTML +=
-            " <div class='col s6 card'><a href='./store_menu.html?shop"+i+"'><div class='col s12'><img class='responsive-img' src='./image/food"+i+".jpg' ></div></a><div class='col s12'><h5 id='span"+i+"'>"+temp+"</h5></div><div class='col s12'><span>"+briefInfo+"</span></div><div class='col s12'><i class='material-icons' id='icon"+i+"' onclick='javascript:favorite_store("+i+")'>favorite_border</i></div></div>";
+            " <div class='col s6 card'><a href='./store_menu.html?shop"+i+"'><div class='col s12'><img class='responsive-img' src='./image/food"+i+".jpg' ></div></a><div class='col s12'><h5 id='span"+i+"'>"+temp+"</h5></div><div class='col s12'><span>"+total_rating+"</span><br><span>"+briefInfo+"</span></div><div class='col s12'><i class='material-icons' id='icon"+i+"' onclick='javascript:favorite_store("+i+")'>favorite_border</i></div></div>";
 
 
       }

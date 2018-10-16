@@ -230,7 +230,35 @@
 
 
               <div id="div_rating">
+                <div class="container">
+                  <span style="font-size:20px;">
+                    <div class="row">
+                      <div class="col s12" style="text-align:center;">
+                        評價此餐廳
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col s1">
+                      </div>
+                      <div class="col s2">
+                        <a href="#">1★</a>
+                      </div>
+                      <div class="col s2">
+                        <a href="#">2★</a>
+                      </div>
+                      <div class="col s2">
+                        <a href="#">3★</a>
+                      </div>
+                      <div class="col s2">
+                        <a href="#">4★</a>
+                      </div>
+                      <div class="col s2">
+                        <a href="#">5★</a>
+                      </div>
+                    </div>
 
+                  </span>
+                </div>
               </div>
 
             </div>
@@ -428,8 +456,9 @@ var secondaryAppConfig = {
       database.ref("sensor").on("value", function(snapshot) {
         var temperature = snapshot.child("temperature").val();
         var humidity = snapshot.child("humidity").val();
-        document.getElementById("td_temperature").innerHTML = temperature;
-        document.getElementById("td_humidity").innerHTML = humidity;
+
+        document.getElementById("td_temperature").innerHTML = 45;
+        document.getElementById("td_humidity").innerHTML = 20;
       });
     } else if (OrderStatus == 4) {
       document.getElementById("progressBarDiv").style.width = "100%";

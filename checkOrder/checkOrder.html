@@ -228,6 +228,11 @@
 
               </div>
 
+
+              <div id="div_rating">
+
+              </div>
+
             </div>
           </div>
 
@@ -367,6 +372,24 @@
   /////////////////初始化////////////////////
 
   var database = firebase.database();
+
+/////////ALL STORE FIREBASE////////
+
+var secondaryAppConfig = {
+  apiKey: "AIzaSyDHJvCW6LwYl0fih2PynaWmX3fYGqmel00",
+  authDomain: "all-store-a0408.firebaseapp.com",
+  databaseURL: "https://all-store-a0408.firebaseio.com",
+  projectId: "all-store-a0408",
+  storageBucket: "",
+  messagingSenderId: "982261178985"
+};
+  var secondary = firebase.initializeApp(secondaryAppConfig, "secondary");
+
+  // Retrieve the database.
+  var secondaryDatabase = secondary.database();
+
+
+
 
   console.log("Orders/" + vars[0]);
 
@@ -527,7 +550,9 @@
   function chart() {
     window.addEventListener('load', function() {
 
-      var data = [{
+      var data = [
+
+        {
           x: 1,
           w: 250
         },
@@ -547,6 +572,7 @@
           x: 5,
           w: 160
         },
+
       ];
 
       var s = d3.select('#delivery_when_status_3')
@@ -588,7 +614,7 @@
     var h = 300; // 高
 
 
-    var dataset = [10, 20, Math.round(Math.random()*40+40),Math.round(Math.random()*40+40),Math.round(Math.random()*40+40),Math.round(Math.random()*40+40)]; //建立空的資料陣列
+    var dataset = [68,67,67, 64, 60,55,55,46,45]; //建立空的資料陣列
     // var Num = 80;
     // for (var i=0; i < 10; i++){
     // 	var newNum = Num - ( Math.floor(Math.random() * 6));

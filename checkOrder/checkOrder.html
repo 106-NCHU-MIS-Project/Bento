@@ -9,7 +9,7 @@
   <script src="../js/jquery-3.2.1.min.js"></script>
   <link rel="stylesheet" href="../css/materialize.min.css">
   <script src="../js/materialize.min.js"></script>
-
+<script src="../js/sweetalert.min.js"></script>
   <link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet'>
   <script src="../js/d3.v3.min.js" async defer></script>
 
@@ -311,8 +311,21 @@
           <td>地址</td>
           <td id="address_inModal">台中市南區興大路140號</td>
         </tr>
+        <tr>
+          <td>評價</td>
+        </tr>
+
+
 
       </table>
+      <div class="center" style="font-size:large;">
+
+      <a href="#" onclick='javascript:rating_success(1)'>1★&nbsp;&nbsp;</a>
+      <a href="#" onclick='javascript:rating_success(2)'>2★&nbsp;&nbsp;</a>
+      <a href="#" onclick='javascript:rating_success(3)'>3★&nbsp;&nbsp;</a>
+      <a href="#" onclick='javascript:rating_success(4)'>4★&nbsp;&nbsp;</a>
+      <a href="#" onclick='javascript:rating_success(5)'>5★</a>
+    </div>
 
     </div>
     <div class="modal-footer">
@@ -322,7 +335,12 @@
   <!-- . -->
 
 </body>
+<script type="text/javascript">
 
+  function rating_success(i){
+    swal(i+"星 評價成功!");
+  }
+</script>
 
 
 

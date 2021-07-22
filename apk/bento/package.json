@@ -16,7 +16,7 @@
         "cordova-plugin-device": "^2.0.2",
         "cordova-plugin-dialogs": "^2.0.1",
         "cordova-plugin-geolocation": "^2.4.3",
-        "cordova-plugin-inappbrowser": "^3.0.0",
+        "cordova-plugin-inappbrowser": "^3.1.0",
         "cordova-plugin-jshybugger": "git+https://github.com/jsHybugger/cordova-plugin-jshybugger.git",
         "cordova-plugin-network-information": "^2.0.1",
         "cordova-plugin-splashscreen": "^5.0.2",
